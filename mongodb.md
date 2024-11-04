@@ -39,7 +39,7 @@ Despite MongoDB's advantages, SQL databases are often a better choice when:
 
 In essence, MongoDB is a strong choice for dynamic, scalable, high-throughput applications, while SQL databases excel when data integrity, complex transactions, and structured data relationships are essential.
 
-## POINT 5 Explaination?
+## POINT 5 Explaination ...
 Offers built-in replication and automatic failover, enhancing fault tolerance and data redundancy. Its replica sets allow multiple copies of data across nodes, which is critical for high-availability applications explain this in details?
 
 Built-in replication and automatic failover are essential features for ensuring **high availability** and **fault tolerance** in a database. In MongoDB, these features are implemented using **replica sets**, which help maintain data continuity and minimize downtime. Here’s a detailed breakdown of how MongoDB’s replica sets work and why they’re so valuable.
@@ -107,8 +107,7 @@ If the primary node crashes:
 MongoDB’s built-in replication and automatic failover through replica sets create a highly available, fault-tolerant, and resilient environment for applications. These features make MongoDB a strong choice for mission-critical applications where downtime, data loss, and performance are important considerations.
 
 
-[Replication Doc - Mongodb officaial](https://www.mongodb.com/docs/manual/replication/)
-LINK: https://www.mongodb.com/docs/manual/replication/
+[Mongodb official - Replication](https://www.mongodb.com/docs/manual/replication/)
 
 ## What is database scaling?
 
