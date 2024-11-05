@@ -1,4 +1,4 @@
-[Practic - Restaurants Database](https://www.w3resource.com/mongodb-exercises/#MongoDB_restaurants)
+[Practice - Restaurants Database](https://www.w3resource.com/mongodb-exercises/#MongoDB_restaurants)
 
 
 #### Sample
@@ -28,8 +28,6 @@
  ```js
  db.restaurants.find();
  ```
- db.restaurants.find({}, { "restaurant_id" : 1, "name": 1, "borough": 1, "cuisine" : 1 });
-
 
 2. Write a MongoDB query to display the fields restaurant_id, name, borough and cuisine for all the documents in the collection restaurant.
  ```js
@@ -62,14 +60,14 @@ The command would return a cursor to the documents that match the filter, includ
  db.restrurents.find({"borough":"Bronx"}).limit(5)
  ```
 
-7.Write a MongoDB query to display the next 5 restaurants after skipping first 5 which are in the borough Bronx.
+7. Write a MongoDB query to display the next 5 restaurants after skipping first 5 which are in the borough Bronx.
 ```js
  db.restrurents.find({"borough":"Bronx"}).skip(5).limit(5)
  ```
 
 8. Write a MongoDB query to find the restaurants who achieved a score more than 90.
 ```js
-db.restrurents.find({ grades: { $elemMatch: { "score": { $gt: 90}}}})
+db.restrurents.find({ grades: { $elemMatch: { "score": { $gt: 90 }}}})
  ```
 Explanation:
 
@@ -79,7 +77,7 @@ A listing of all restaurants that have received a score of at least 90 in any of
 
 9. Write a MongoDB query to find the restaurants that achieved a score, more than 80 but less than 100.
 ```js
-db.restrurents.find({ grades: { $elemMatch: { "score": { $gt: 80 ,$lt:100} }}})
+db.restrurents.find({ grades: { $elemMatch: { "score": { $gt: 80 ,$lt:100 }}}})
 ```
 Explanation:
 
