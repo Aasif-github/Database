@@ -52,22 +52,22 @@ The command would return a cursor to the documents that match the filter, includ
 
 5. Write a MongoDB query to display all the restaurant which is in the borough Bronx.
  ```js
- db.restrurents.find({"borough":"Bronx"})
+ db.restaurants.find({"borough":"Bronx"})
  ```
 
 6. Write a MongoDB query to display the first 5 restaurant which is in the borough Bronx.
  ```js
- db.restrurents.find({"borough":"Bronx"}).limit(5)
+ db.restaurants.find({"borough":"Bronx"}).limit(5)
  ```
 
 7. Write a MongoDB query to display the next 5 restaurants after skipping first 5 which are in the borough Bronx.
 ```js
- db.restrurents.find({"borough":"Bronx"}).skip(5).limit(5)
+ db.restaurants.find({"borough":"Bronx"}).skip(5).limit(5)
  ```
 
 8. Write a MongoDB query to find the restaurants who achieved a score more than 90.
 ```js
-db.restrurents.find({ grades: { $elemMatch: { "score": { $gt: 90 }}}})
+db.restaurants.find({ grades: { $elemMatch: { "score": { $gt: 90 }}}})
  ```
 Explanation:
 
@@ -77,7 +77,7 @@ A listing of all restaurants that have received a score of at least 90 in any of
 
 9. Write a MongoDB query to find the restaurants that achieved a score, more than 80 but less than 100.
 ```js
-db.restrurents.find({ grades: { $elemMatch: { "score": { $gt: 80 ,$lt:100 }}}})
+db.restaurants.find({ grades: { $elemMatch: { "score": { $gt: 80 ,$lt:100 }}}})
 ```
 Explanation:
 
@@ -87,45 +87,125 @@ The $elemMatch operator is used to search for documents with an array field that
 
 10. Write a MongoDB query to find the restaurants which locate in latitude value less than -95.754168.
 ```js
-db.restrurents.find({"address.coord": {"lt":-95.754168}});
+db.restaurants.find({"address.coord": {"lt":-95.754168}});
 ```
 
 11. Write a MongoDB query to find the restaurants that do not prepare any cuisine of 'American' and their grade score more than 70 and latitude less than -65.754168.
 ```js
+db.restaurants.find({ $and:[
+   { "cuisine":{ $ne:"American" } },
+   { "grade.score": {$gt: 70} },
+   { "address.coord" {$lt: -65.754168} }
 
+]})
 ```
 
 12. Write a MongoDB query to find the restaurants which do not prepare any cuisine of 'American' and achieved a score more than 70 and located in the longitude less than -65.754168.
 Note : Do this query without using $and operator.
 
+```js
+db.restaurants.find({
+    "cuisine": { $ne: "American" },
+    "grades.score": { $gt: 70 },
+    "address.coord.1": { $lt: -65.754168 }
+});
+```
+
 13. Write a MongoDB query to find the restaurants which do not prepare any cuisine of 'American' and achieved a grade point 'A' not belongs to the borough Brooklyn. The document must be displayed according to the cuisine in descending order.
 ```js
-
+db.restaurants.find({
+   "cuisine": { $ne: "American" },
+   "grade.point":"A",
+   "borough":{$ne:"Brooklyn"}
+}).sort({"cuisine: -1"});
 ```
 
 14. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which contain 'Wil' as first three letters for its name.
 ```js
-
+db.restaurants.find(
+   { name: "/^Wil/"}
+   {
+      "restaurant_id":1,
+      "name":1,
+      "borough":1,
+      "cuisine":1
+   }
 ```
 
 15. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which contain 'ces' as last three letters for its name.
 ```js
-
+db.restaurants.find(
+   { name: "/ces$/"}
+   {
+      "restaurant_id":1,
+      "name":1,
+      "borough":1,
+      "cuisine":1
+   }
 ```
 
 16. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which contain 'Reg' as three letters somewhere in its name.
 ```js
-
+db.restaurants.find(
+   { "name": "/.*Reg*./" }
+   {
+      "restaurant_id":1,
+      "name":1,
+      "borough":1,
+      "cuisine":1
+   }
 ```
 
 17. Write a MongoDB query to find the restaurants which belong to the borough Bronx and prepared either American or Chinese dish.
 ```js
+db.restaurants.find(
+   {
+      "borough":"Bronx"
+   }  
+   {
+      $or: [  
+         {"cuisine":"American"}, 
+         {"cuisine":"Chinese"} 
+      ]
+   })
 
 ```
+- Using $in
+```js
+db.restaurants.find({
+    borough: "Bronx",
+    cuisine: { $in: ["American", "Chinese"] }
+});
+```
+- Using an Aggregation Pipeline
 
+An aggregation pipeline allows more complex transformations and filtering, which can be helpful for additional processing or future extensions.
+
+```js
+db.restaurants.aggregate([
+    {
+        $match: {
+            borough: "Bronx",
+            $or: [
+                { cuisine: "American" },
+                { cuisine: "Chinese" }
+            ]
+        }
+    }
+]);
+```
 18. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which belong to the borough Staten Island or Queens or Bronxor Brooklyn.
 ```js
-
+db.restaurants.find(
+   {"borough":
+      { $in: ["Staten Island","Queens","Bronxor Brooklyn"] },      
+   },
+   {
+      "restaurant_id":1,
+      "name":1,
+      "borough":1,
+      "cuisine":1
+})
 ```
 
 19. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which are not belonging to the borough Staten Island or Queens or Bronxor Brooklyn.
