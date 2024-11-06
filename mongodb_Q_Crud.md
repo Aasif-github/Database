@@ -8,7 +8,7 @@
 - db.collection.insertOne()
 
 ex. 
-```json
+```js
 db.Users.insertOne({
     name:'Jake',
     age:23,
@@ -21,7 +21,7 @@ db.Users.insertOne({
 [MongoDB Doc - insertMany](https://www.mongodb.com/docs/manual/reference/method/db.collection.insertMany/#mongodb-method-db.collection.insertMany)
 
 ex.
-```json
+```js
 try {
    db.products.insertMany( [
       { item: "card", qty: 15 },
@@ -35,7 +35,7 @@ try {
 ### 2. Read
 
 - db.collection.find()
-```json
+```js
 db.Users.find(
 { age: { $gt:18 }},
 { name:1, address: 1},
@@ -45,7 +45,7 @@ db.Users.find(
 - Query an Array
 
 ex.
-```json
+```js
 await db.collection('inventory').insertMany([
   {
     item: 'journal',
@@ -112,7 +112,7 @@ await db.collection('inventory').updateOne(
 ```
 
 - updateMany()
-```json
+```js
 db.Users.updateMany(            # <- collection
     {  
         age: { $gt: 18 }            # <- update filter
@@ -123,14 +123,14 @@ db.Users.updateMany(            # <- collection
 )
 ```
 
-```json
+```js
 { "_id" : 1, "name" : "Central Perk Cafe", "Borough" : "Manhattan" },
 { "_id" : 2, "name" : "Rock A Feller Bar and Grill", "Borough" : "Queens", "violations" : 2 },
 { "_id" : 3, "name" : "Empire State Pub", "Borough" : "Brooklyn", "violations" : 0 }
 ```
 - replaceOne()
 
-```json
+```js
 try {
    db.restaurant.replaceOne(
       { "name" : "Central Perk Cafe" },
