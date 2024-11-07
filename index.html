@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Example</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            overflow: visible;
+        }
+
+        .cart {
+            display: flex;
+            width: 550px;
+            height: 250px; /* Increased height to accommodate name */
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+        }
+
+        /* Left section with image */
+        .cart-left {
+            position: relative;
+            width: 60%;
+            height: 100%;
+            background-color: #fff;
+            overflow: visible; /* Allow image to overflow */
+            padding-bottom: 40px; /* Create space for name below the image */
+        }
+
+        .cart-left img {
+            position: absolute;
+            top: -25%; /* Align the image slightly above the container */
+            left: 50%; /* Center the image horizontally */
+            transform: translateX(-50%); /* Adjust image to be centered */
+            width: 70%; /* Image takes up 60% of the container's width */
+            height: 100%;
+            max-height: 107%; /* Limit the height of the image */
+            border-radius: 20%; /* Optional: Round the image to create a profile picture effect */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8); /* Optional: Add shadow to the image */
+        }
+
+        /* Name below the image */
+        .cart-left .name {
+            position: absolute;
+            bottom: 10px; /* Place the name at the bottom of the cart-left section */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            white-space: normal; /* Allow text wrapping */
+            word-wrap: break-word; /* Break long words */
+            max-width: 90%; /* Optional: Limit the width of the name text */
+        }
+
+        /* Right section with attributes */
+        .cart-right {
+            width: 40%;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            padding-top: 45px;
+            color: #333;
+        }
+
+        .cart-right h3 {
+            margin-bottom: 20px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        /* Styling for the attributes, making label and value inline */
+        .cart-right .attribute {
+            display: flex; /* Align label and value inline */
+            align-items: center; /* Vertically center the items */
+            margin-bottom: 10px; /* Optional: Add spacing between attributes */
+        }
+
+        .cart-right .attribute label {
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 10px; /* Space between label and value */
+        }
+
+        .cart-right .attribute p {
+            font-size: 0.8em;
+        }
+
+        .cart-right .attribute input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+/* stage 1 */
+@media (max-width: 768px) {
+    .cart {
+        flex-direction: column;
+        width: 90%;
+        height: auto;
+    }
+
+    .cart-left, .cart-right {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .cart-left img {
+        width: 100%; /* Use a responsive width */
+        height: auto; /* Maintain aspect ratio */
+        top: 0; /* Align image properly */
+        position: static; /* Ensure position doesn't cause distortion */
+        transform: none; /* Remove transform to prevent centering issues */
+    }
+
+    .cart-left .name {
+        font-size: 1em;
+        margin-top: 10px; /* Add spacing above the name */
+    }
+
+    .cart-right {
+        padding-top: 20px;
+    }
+
+    .cart-right h3 {
+        font-size: 0.9em;
+    }
+
+    .cart-right .attribute label,
+    .cart-right .attribute p {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    .cart-left img {
+        width: 80%; /* Adjust image size for smaller screens */
+        margin: 0 auto; /* Center image */
+        display: block;
+    }
+
+    .cart-left .name {
+        font-size: 0.9em;
+    }
+
+    .cart-right h3 {
+        font-size: 0.8em;
+    }
+
+    .cart-right .attribute {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cart-right .attribute label {
+        margin-bottom: 5px;
+    }
+
+    .cart-right .attribute p {
+        font-size: 0.75em;
+    }
+}
+/* stage 2 */
+@media (max-width: 768px) {
+    .cart {
+        flex-direction: column;
+        width: 90%;
+        height: auto;
+    }
+
+    .cart-left, .cart-right {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .cart-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .cart-left img {
+        width: 100%; /* Use a responsive width */
+        height: auto; /* Maintain aspect ratio */
+        max-width: 250px; /* Limit the maximum width */
+        border-radius: 20%; /* Optional: Round the image */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.8); /* Add shadow */
+    }
+
+    .cart-left .name {
+        margin-top: 15px; /* Add spacing above the name */
+        font-size: 1em;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        word-wrap: break-word;
+        max-width: 90%; /* Limit the width of the name text */
+    }
+
+    .cart-right {
+        padding-top: 20px;
+    }
+
+    .cart-right h3 {
+        font-size: 0.9em;
+    }
+
+    .cart-right .attribute label,
+    .cart-right .attribute p {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    .cart-left img {
+        width: 80%; /* Adjust image size for smaller screens */
+        margin: 0 auto; /* Center image */
+        display: block;
+    }
+
+    .cart-left .name {
+        font-size: 0.9em;
+    }
+
+    .cart-right h3 {
+        font-size: 0.8em;
+    }
+
+    .cart-right .attribute {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cart-right .attribute label {
+        margin-bottom: 5px;
+    }
+
+    .cart-right .attribute p {
+        font-size: 0.75em;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="cart">
+        <!-- Left Section with Image and Name -->
+        <div class="cart-left">
+            <img src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250" alt="Profile Image">
+            <div class="name"> Ahmad Ahmad Khan </div> <!-- Name below the image -->
+        </div>
+
+        <!-- Right Section with Attributes -->
+        <div class="cart-right">
+            <div class="attribute">
+                <label for="age">Age</label>
+                <p>29</p>
+            </div>
+            <div class="attribute">
+                <label for="email">Email</label>
+                <p>newdelhi@example.com</p>
+            </div>
+            <div class="attribute">
+                <label for="address">Address</label>
+                <p>New Delhi</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

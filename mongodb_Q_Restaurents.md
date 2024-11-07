@@ -377,13 +377,39 @@ db.restaurants.find(
 
 31. Write a MongoDB query to find the restaurant name, borough, longitude and attitude and cuisine for those restaurants which contains 'mon' as three letters somewhere in its name.
 ```js
-
+db.restaurants.find({
+   name:{ $regex:"mon.*", $options: "i" }
+},{
+   'name':1,
+   'borough':1, 
+   'address.coord':1,   
+   'cuisine':1
+})
 ```
+Explanation:
+
+The said query in MongoDB query that searches for a list of all restaurants where the name field starts with "mon" (case-insensitive), along with their respective name, borough, address.coord, and cuisine field values.
+The $regex regular expression that matches any string that starts with "mon" in the name field and the $options: "i" is specifies that the case-insensitive option for the regular expression.
 
 32. Write a MongoDB query to find the restaurant name, borough, longitude and latitude and cuisine for those restaurants which contain 'Mad' as first three letters of its name.
 ```js
+db.restaurants.find(
+                   { name : 
+                     { $regex : /^Mad/i, } 
+                   },
+                       {
+                         "name":1,
+                         "borough":1,
+                         "address.coord":1,
+                         "cuisine" :1
+                        }
+                   );
 
 ```
+Explanation:
+
+The said query in  MongoDB that searches for a list of all restaurants where the name field starts with "Mad" (case-insensitive), along with their respective name, borough, address.coord, and cuisine field values.
+The $regex regular expression works on the name field and here the /^Mad/i pattern, which matches any string that starts with "Mad" (case-insensitive).
 
 33. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5.
 ```js
@@ -643,13 +669,145 @@ db.restaurants.find(
 ```
 
 85. Write a MongoDB query to find the top 5 restaurants with the highest average score for each cuisine type, along with their average scores.
-```js
+To find the top 5 restaurants with the highest average score for each cuisine type, you can use the MongoDB aggregation pipeline to calculate average scores, sort the results, and limit the number of results for each group. Here’s how to write the query:
 
+```javascript
+db.restaurants.aggregate([
+  // Unwind the grades array to work with individual grade entries
+  { $unwind: "$grades" },
+
+  // Group by cuisine and restaurant name to calculate the average score
+  {
+    $group: {
+      _id: {
+        cuisine: "$cuisine",
+        restaurantName: "$name"
+      },
+      averageScore: { $avg: "$grades.score" } // Calculate the average score
+    }
+  },
+
+  // Sort by average score in descending order within each group
+  {
+    $sort: {
+      "_id.cuisine": 1,  // Sort by cuisine for grouping purposes
+      averageScore: -1   // Sort by average score in descending order
+    }
+  },
+
+  // Group by cuisine to create arrays of the top 5 restaurants for each cuisine
+  {
+    $group: {
+      _id: "$_id.cuisine",
+      topRestaurants: { 
+        $push: { 
+          name: "$_id.restaurantName", 
+          averageScore: "$averageScore" 
+        } 
+      }
+    }
+  },
+
+  // Limit each cuisine's array to the top 5 restaurants
+  {
+    $project: {
+      topRestaurants: { $slice: ["$topRestaurants", 5] }
+    }
+  }
+]);
 ```
+
+### Explanation:
+1. **`$unwind`**: Deconstructs the `grades` array so that each grade entry can be processed individually.
+2. **`$group` (first stage)**: Groups by `cuisine` and `restaurantName` to calculate the average score for each restaurant within its cuisine type.
+3. **`$sort`**: Sorts the results by `cuisine` for grouping later and by `averageScore` in descending order to get the highest average scores at the top.
+4. **`$group` (second stage)**: Groups by `cuisine` and accumulates the top restaurants into an array.
+5. **`$project`**: Uses `$slice` to limit the array to the top 5 restaurants for each cuisine type.
+
+This query returns a list of top 5 restaurants for each cuisine type, including the restaurant name and its average score.
 
 86. Write a MongoDB query to find the top 5 restaurants in each borough with the highest number of "A" grades.
-```js
+To find the top 5 restaurants in each borough with the highest number of "A" grades, you can use the MongoDB aggregation pipeline. This requires grouping by borough and restaurant, sorting, and then limiting the results. Here's how you can achieve this:
 
+```javascript
+db.restaurants.aggregate([
+  // Unwind the grades array to work with individual grade entries
+  { $unwind: "$grades" },
+
+  // Match only grade "A"
+  { $match: { "grades.grade": "A" } },
+
+  // Group by borough and restaurant name to count the number of "A" grades
+  {
+    $group: {
+      _id: {
+        borough: "$borough",
+        restaurantName: "$name"
+      },
+      numAGrades: { $sum: 1 } // Count the number of "A" grades
+    }
+  },
+
+  // Sort by the number of "A" grades in descending order within each group
+  {
+    $sort: {
+      "_id.borough": 1,  // Sort by borough (alphabetical order)
+      numAGrades: -1     // Sort by number of "A" grades (descending order)
+    }
+  },
+
+  // Group by borough to create arrays of the top 5 restaurants in each borough
+  {
+    $group: {
+      _id: "$_id.borough",
+      topRestaurants: { $push: { name: "$_id.restaurantName", numAGrades: "$numAGrades" } }
+    }
+  },
+
+  // Limit each borough's array to the top 5 restaurants
+  {
+    $project: {
+      topRestaurants: { $slice: ["$topRestaurants", 5] }
+    }
+  }
+]);
 ```
 
+### Explanation:
+1. **`$unwind`**: Deconstructs the `grades` array so each grade entry can be processed individually.
+2. **`$match`**: Filters only the documents where the `grade` is "A".
+3. **`$group` (first stage)**: Groups by `borough` and `restaurantName` to count how many "A" grades each restaurant has.
+4. **`$sort`**: Sorts the grouped data first by `borough` (for grouping later) and then by `numAGrades` in descending order.
+5. **`$group` (second stage)**: Groups by `borough` and accumulates the top restaurants into an array.
+6. **`$project`**: Limits the array to the top 5 restaurants in each borough using `$slice`.
+
+This query returns an array for each borough, each containing the top 5 restaurants with the most "A" grades.
+
 87. Write a MongoDB query to find the borough with the highest number of restaurants that have a grade of "A" and a score greater than or equal to 90.
+```js
+db.restaurants.aggregate([
+  // Match restaurants with grade "A" and score >= 90
+  {
+    $match: {
+      "grades.grade": "A",
+      "grades.score": { $gte: 90 }
+    }
+  },
+  // Group by borough and count the number of restaurants
+  {
+    $group: {
+      _id: "$borough",
+      totalRestaurants: { $sum: 1 }
+    }
+  },
+  // Sort by totalRestaurants in descending order
+  {
+    $sort: { totalRestaurants: -1 }
+  },
+  // Limit the result to the top entry
+  {
+    $limit: 1
+  }
+]);
+
+```

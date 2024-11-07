@@ -285,3 +285,572 @@ Here:
 Using `$cond` can significantly enhance the versatility of MongoDB aggregation queries by adding logic directly within the database layer.
 
 
+### Group
+[MongoDB - Group(aggregation)](https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/#std-label-ex-agg-group-stage)
+
+
+
+
+
+#### Calculate Count, Sum, and Average
+
+Collection: Sales
+
+```js
+db.sales.insertMany([
+  { "_id" : 1, "item" : "abc", "price" : Decimal128("10"), "quantity" : Int32("2"), "date" : ISODate("2014-03-01T08:00:00Z") },
+  { "_id" : 2, "item" : "jkl", "price" : Decimal128("20"), "quantity" : Int32("1"), "date" : ISODate("2014-03-01T09:00:00Z") },
+  { "_id" : 3, "item" : "xyz", "price" : Decimal128("5"), "quantity" : Int32( "10"), "date" : ISODate("2014-03-15T09:00:00Z") },
+  { "_id" : 4, "item" : "xyz", "price" : Decimal128("5"), "quantity" :  Int32("20") , "date" : ISODate("2014-04-04T11:21:39.736Z") },
+  { "_id" : 5, "item" : "abc", "price" : Decimal128("10"), "quantity" : Int32("10") , "date" : ISODate("2014-04-04T21:23:13.331Z") },
+  { "_id" : 6, "item" : "def", "price" : Decimal128("7.5"), "quantity": Int32("5" ) , "date" : ISODate("2015-06-04T05:08:13Z") },
+  { "_id" : 7, "item" : "def", "price" : Decimal128("7.5"), "quantity": Int32("10") , "date" : ISODate("2015-09-10T08:43:00Z") },
+  { "_id" : 8, "item" : "abc", "price" : Decimal128("10"), "quantity" : Int32("5" ) , "date" : ISODate("2016-02-06T20:20:13Z") },
+])
+```
+
+*** Group by Day of the Year ***
+
+The following pipeline calculates the total sales amount, average sales quantity, and sale count for each day in the year 2014:
+
+```js
+db.sales.aggregate([
+  // First Stage
+  {
+    $match : { "date": { $gte: new ISODate("2014-01-01"), $lt: new ISODate("2015-01-01") } }
+  },
+  // Second Stage
+  {
+    $group : {
+       _id : { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+       totalSaleAmount: { $sum: { $multiply: [ "$price", "$quantity" ] } },
+       averageQuantity: { $avg: "$quantity" },
+       count: { $sum: 1 }
+    }
+  },
+  // Third Stage
+  {
+    $sort : { totalSaleAmount: -1 }
+  }
+ ])
+```
+
+First Stage:
+
+The $match stage filters the documents to only pass documents from the year 2014 to the next stage.
+
+Second Stage:
+
+The $group stage groups the documents by date and calculates the total sale amount, average quantity, and total count of the documents in each group.
+
+Third Stage:
+
+The $sort stage sorts the results by the total sale amount for each group in descending order.
+
+
+The operation returns the following results:
+
+```js
+{
+   "_id" : "2014-04-04",
+   "totalSaleAmount" : Decimal128("200"),
+   "averageQuantity" : 15, "count" : 2
+}
+{
+   "_id" : "2014-03-15",
+   "totalSaleAmount" : Decimal128("50"),
+   "averageQuantity" : 10, "count" : 1
+}
+{
+   "_id" : "2014-03-01",
+   "totalSaleAmount" : Decimal128("40"),
+   "averageQuantity" : 1.5, "count" : 2
+}
+
+```
+This aggregation operation is equivalent to the following SQL statement:
+
+```sql
+SELECT date,
+       Sum(( price * quantity )) AS totalSaleAmount,
+       Avg(quantity)             AS averageQuantity,
+       Count(*)                  AS Count
+FROM   sales
+WHERE  date >= '01/01/2014' AND date < '01/01/2015'
+GROUP  BY date
+ORDER  BY totalSaleAmount DESC
+```
+
+#### show me multiple case of group in mongodb
+
+In MongoDB, you can use the `$group` stage in multiple ways to aggregate data. Below are different use cases demonstrating how to group and perform various operations:
+
+### 1. Count Documents by a Field
+Count how many documents exist for each category:
+```javascript
+db.products.aggregate([
+  {
+    $group: {
+      _id: "$category", // Group by the 'category' field
+      count: { $sum: 1 } // Count the number of documents in each group
+    }
+  }
+]);
+```
+
+### 2. Sum of a Field
+Calculate the total sales amount for each product:
+```javascript
+db.sales.aggregate([
+  {
+    $group: {
+      _id: "$productName", // Group by 'productName'
+      totalSales: { $sum: "$amount" } // Sum the 'amount' field for each product
+    }
+  }
+]);
+```
+
+### 3. Average Calculation
+Find the average score for students in a course:
+```javascript
+db.students.aggregate([
+  {
+    $group: {
+      _id: "$course", // Group by 'course'
+      averageScore: { $avg: "$score" } // Calculate the average score
+    }
+  }
+]);
+```
+
+### 4. Maximum and Minimum Values
+Determine the highest and lowest scores in each subject:
+```javascript
+db.scores.aggregate([
+  {
+    $group: {
+      _id: "$subject", // Group by 'subject'
+      highestScore: { $max: "$score" }, // Find the max score
+      lowestScore: { $min: "$score" }   // Find the min score
+    }
+  }
+]);
+```
+
+### 5. Grouping by Date
+Count how many orders were made each day:
+```javascript
+db.orders.aggregate([
+  {
+    $group: {
+      _id: { $dateToString: { format: "%Y-%m-%d", date: "$orderDate" } }, // Group by formatted date
+      ordersCount: { $sum: 1 } // Count the number of orders for each date
+    }
+  }
+]);
+```
+
+### 6. Grouping with Multiple Accumulators
+Calculate the total and average salaries in each department:
+```javascript
+db.employees.aggregate([
+  {
+    $group: {
+      _id: "$department", // Group by 'department'
+      totalSalary: { $sum: "$salary" }, // Sum of salaries
+      averageSalary: { $avg: "$salary" } // Average of salaries
+    }
+  }
+]);
+```
+
+### 7. Using an Array of Group Keys
+Group by multiple fields (e.g., category and subcategory):
+```javascript
+db.products.aggregate([
+  {
+    $group: {
+      _id: { category: "$category", subCategory: "$subCategory" }, // Group by both category and subCategory
+      totalProducts: { $sum: 1 } // Count the number of products in each group
+    }
+  }
+]);
+```
+
+### 8. Combining `$group` with `$project`
+Group data and project specific fields:
+```javascript
+db.sales.aggregate([
+  {
+    $group: {
+      _id: "$store", // Group by 'store'
+      totalRevenue: { $sum: "$revenue" }
+    }
+  },
+  {
+    $project: {
+      _id: 1,
+      totalRevenue: 1,
+      formattedRevenue: { $concat: ["$", { $toString: "$totalRevenue" }] } // Format the revenue as a string with a dollar sign
+    }
+  }
+]);
+```
+
+These examples showcase the versatility of the `$group` stage in MongoDB's aggregation pipeline, allowing you to perform different types of aggregations to suit a variety of data analysis needs.
+
+
+- $unwind
+- $lookup
+
+## show all use case of $lookup
+
+The `$lookup` stage in MongoDB's aggregation pipeline is used for performing a left outer join to another collection in the same database. Below are various use cases of `$lookup` with explanations and examples:
+
+### 1. **Basic `$lookup` for Simple Joins**
+Join two collections based on a single field.
+
+**Example**: Join a `orders` collection with a `customers` collection using `customerId`.
+```javascript
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",           // Collection to join
+      localField: "customerId",    // Field in 'orders' collection
+      foreignField: "_id",         // Field in 'customers' collection
+      as: "customerDetails"        // Alias for the joined result
+    }
+  }
+]);
+```
+
+### 2. **Unwind the Joined Array**
+If `$lookup` results in an array and you need to flatten it, use `$unwind`.
+
+**Example**: Flatten the `customerDetails` array so that each document has a single customer detail.
+```javascript
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",
+      localField: "customerId",
+      foreignField: "_id",
+      as: "customerDetails"
+    }
+  },
+  { $unwind: "$customerDetails" }
+]);
+```
+
+### 3. **Join Using Multiple Fields**
+Perform a join where the local field is an array and the foreign field matches any value in that array.
+
+**Example**: Match orders with products using an array of `productIds`.
+```javascript
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "products",
+      localField: "productIds",    // 'productIds' is an array
+      foreignField: "_id",
+      as: "productDetails"
+    }
+  }
+]);
+```
+
+ ### 4. **Self-Join Using `$lookup`**
+Join a collection with itself to find related data.
+
+**Example**: Join `employees` with their managers using a `managerId` field.
+```javascript
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "employees",
+      localField: "managerId",
+      foreignField: "_id",
+      as: "managerDetails"
+    }
+  }
+]);
+```
+
+### 5. **Combine `$lookup` with `$project`**
+Select specific fields from the joined collection.
+
+**Example**: Project only the `name` field from `customerDetails` in `orders`.
+```javascript
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",
+      localField: "customerId",
+      foreignField: "_id",
+      as: "customerDetails"
+    }
+  },
+  {
+    $project: {
+      orderId: 1,
+      "customerDetails.name": 1   // Include only the 'name' field
+    }
+  }
+]);
+```
+
+### 6. **Performing Multiple `$lookup` Stages**
+Use multiple `$lookup` stages to join with different collections within the same aggregation.
+
+**Example**: Join `orders` with `customers` and `products`.
+```javascript
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",
+      localField: "customerId",
+      foreignField: "_id",
+      as: "customerDetails"
+    }
+  },
+  {
+    $lookup: {
+      from: "products",
+      localField: "productId",
+      foreignField: "_id",
+      as: "productDetails"
+    }
+  }
+]);
+```
+These examples illustrate various ways `$lookup` can be used in MongoDB to perform simple and complex joins, filter data, and transform documents.
+
+### How can we perform inner join.
+
+To perform an inner join in MongoDB using the `$lookup` stage in the aggregation pipeline, you need to combine `$lookup` with `$match` to filter out documents where the join didn't find a match. While `$lookup` itself is inherently a left outer join, using `$match` after the `$lookup` helps simulate the behavior of an inner join by removing documents that don't have matching results.
+
+### Example: Performing an Inner Join
+Assume you have two collections:
+- `orders`
+- `customers`
+
+You want to join these collections on `customerId` (in `orders`) and `_id` (in `customers`), returning only documents where the join is successful.
+
+**Query to Perform an Inner Join**:
+```javascript
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",           // The collection to join
+      localField: "customerId",    // The field in the 'orders' collection
+      foreignField: "_id",         // The field in the 'customers' collection
+      as: "customerDetails"        // Alias for the joined result
+    }
+  },
+  // Use $match to filter out orders where no customer details were found (inner join behavior)
+  {
+    $match: { "customerDetails": { $ne: [] } }
+  },
+  // Optionally, use $unwind to flatten the array if only one match is expected per order
+  {
+    $unwind: "$customerDetails"
+  }
+]);
+```
+
+### Explanation:
+1. **`$lookup`**: Joins the `orders` collection with the `customers` collection and stores the matching documents in `customerDetails`.
+2. **`$match`**: Filters out documents where `customerDetails` is an empty array, effectively performing an inner join by removing documents without a match.
+3. **`$unwind`**: (Optional) Flattens the `customerDetails` array so that each document only has a single matched customer entry.
+
+### Result:
+Only documents in the `orders` collection that have corresponding matches in the `customers` collection are returned.
+
+
+### What is Ref. How to use it. When to use it?
+
+`Ref` in MongoDB typically refers to the concept of using **references** in a document to establish relationships between documents across different collections. This is similar to foreign keys in relational databases. The `ref` keyword is often associated with Mongoose, an ODM (Object Data Modeling) library for MongoDB and Node.js.
+
+### What is `ref`?
+`ref` is used in Mongoose schema definitions to specify a relationship between collections. It indicates that a particular field references a document from another collection. This helps in creating a link between documents so that you can later populate and retrieve related data easily.
+
+### Use Case of `ref`:
+Suppose you have a `users` collection and a `posts` collection, where each post references the user who created it.
+
+**User Schema**:
+```javascript
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema({
+  name: String,
+  email: String
+});
+
+const User = mongoose.model('User', userSchema);
+```
+
+**Post Schema with `ref`**:
+```javascript
+const postSchema = new Schema({
+  title: String,
+  content: String,
+  author: { 
+    type: Schema.Types.ObjectId,  // Stores the ID of the user
+    ref: 'User'                   // Refers to the 'User' model
+  }
+});
+
+const Post = mongoose.model('Post', postSchema);
+```
+
+## How to Use `ref` in Practice:
+When you have a document in the `posts` collection that has an `author` field referencing the `_id` of a document in the `users` collection, you can use Mongoose's `.populate()` method to automatically replace the `author` field with the complete user document.
+
+**Example of Populating a Reference**:
+```javascript
+Post.find()
+  .populate('author')  // Replaces 'author' with the referenced user document
+  .exec((err, posts) => {
+    if (err) return console.error(err);
+    console.log(posts);  // Each post will include the full user document for 'author'
+  });
+```
+
+### Benefits of Using `ref`:
+1. **Data Normalization**: Keeps data structured in a normalized format, reducing redundancy.
+2. **Ease of Querying**: Mongoose's `.populate()` makes it easy to retrieve related documents.
+3. **Flexibility**: You can keep collections lightweight and modular by referencing related data instead of embedding it.
+
+### When to Use `ref`:
+- When you have related data stored across different collections that need to be linked.
+- When you need to keep collections separate to maintain flexibility and reduce redundancy.
+
+### Example Scenario:
+In a blogging platform, where you have `users` and `posts`:
+- The `posts` collection stores references to the `users` collection using `author` as a reference.
+- When you query for posts, you can populate the `author` field to show detailed user information.
+
+Using `ref` and populating references are common practices when implementing relationships between different collections in MongoDB with Mongoose.
+
+## What is TTL (time to live) - i used it on OTP expiry (after 2 min it delete by itself)
+
+TTL (Time-To-Live) in MongoDB is a feature used to automatically remove documents from a collection after a specified period of time. This is particularly useful for data that is only relevant for a limited duration, such as session information, temporary logs, or cache data.
+
+### Key Points About TTL in MongoDB:
+1. **TTL Index**: To enable TTL, you create a special index called a TTL index on a field that contains a `Date` or `ISODate` value.
+2. **Automatic Deletion**: MongoDB will automatically delete documents once the field's value is older than the TTL setting.
+3. **Background Process**: TTL deletion is handled by a background thread in MongoDB, ensuring minimal performance impact.
+
+### How TTL Works:
+- When you create a TTL index on a field, MongoDB continuously checks that field's value to determine if the document should be deleted based on the expiration time.
+- The field must be of the `Date` type, and the TTL value is specified in seconds.
+
+### Creating a TTL Index:
+To create a TTL index, use the `db.collection.createIndex()` method with the `expireAfterSeconds` option.
+
+**Example**:
+```javascript
+db.sessions.createIndex(
+  { "createdAt": 1 },               // Field to index
+  { expireAfterSeconds: 3600 }       // TTL set to 1 hour (3600 seconds)
+);
+```
+
+**Explanation**:
+- This index will remove documents where the `createdAt` field is older than one hour from the current time.
+
+### Use Cases for TTL:
+1. **Session Management**: Automatically remove expired user sessions after a certain period.
+2. **Temporary Data**: Delete cache entries or temporary data after a specified time.
+3. **Logs and Auditing**: Clear logs or audit records after a set duration to save storage space.
+
+### Important Considerations:
+- **Expiration Precision**: The TTL background task runs approximately every 60 seconds, so documents may not be deleted immediately after they expire.
+- **Impact on Updates**: If the indexed `Date` field is updated to a new value, the expiration time will be reset accordingly.
+- **Single-Field Index**: TTL can only be applied to single-field indexes; compound indexes are not supported.
+
+### Example Scenario:
+You have a `notifications` collection where each notification is relevant only for 24 hours:
+
+```javascript
+db.notifications.createIndex(
+  { "createdAt": 1 },
+  { expireAfterSeconds: 86400 }  // TTL set to 24 hours (86400 seconds)
+);
+```
+
+In this setup, any document with a `createdAt` field older than 24 hours will be automatically deleted by MongoDB.
+
+TTL indexes are an efficient way to manage data lifecycle in MongoDB, simplifying the removal of outdated data without needing manual scripts or additional code.
+
+
+### For OTP
+
+Using TTL indexes on OTP (One-Time Password) collections in MongoDB is a great way to ensure that expired OTPs are automatically removed after a set period, enhancing security and efficiency.
+
+### How to Implement TTL for OTP Expiry:
+Suppose you have a collection that stores OTPs with their creation timestamps. You can create a TTL index on the `createdAt` field to automatically delete expired OTPs after a certain duration (e.g., 5 minutes).
+
+### Step-by-Step Implementation:
+1. **Create an OTP Collection Schema**:
+   Ensure your OTP documents have a `createdAt` field that records the timestamp when the OTP was created.
+
+   ```javascript
+   {
+     _id: ObjectId("..."),
+     otp: "123456",
+     userId: ObjectId("..."),
+     createdAt: new Date()  // Field used for TTL
+   }
+   ```
+
+2. **Create a TTL Index**:
+   Use the `db.collection.createIndex()` method to set up a TTL index on the `createdAt` field.
+
+   ```javascript
+   db.otps.createIndex(
+     { "createdAt": 1 },            // Field to index
+     { expireAfterSeconds: 300 }     // TTL set to 5 minutes (300 seconds)
+   );
+   ```
+
+   **Explanation**:
+   - The `expireAfterSeconds` value specifies how long (in seconds) the document should live after the `createdAt` timestamp.
+   - In this case, OTPs will be deleted automatically 5 minutes after their creation.
+
+### Full Implementation Example in Node.js with Mongoose:
+If you're using Mongoose for your Node.js project, you can define the schema and TTL index as follows:
+
+```javascript
+const mongoose = require('mongoose');
+
+const otpSchema = new mongoose.Schema({
+  otp: { type: String, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+  createdAt: { type: Date, default: Date.now, index: { expires: '5m' } }  // TTL index
+});
+
+// Create the model
+const Otp = mongoose.model('Otp', otpSchema);
+
+// Example: Creating an OTP document
+const newOtp = new Otp({
+  otp: '123456',
+  userId: '605c5adf02c3c72b9c2f4d6b'
+});
+newOtp.save().then(() => console.log('OTP created and will expire in 5 minutes.'));
+```
+
+### How It Works:
+- The `createdAt` field is indexed with a TTL setting of 5 minutes (`expires: '5m'`).
+- MongoDB will automatically delete OTP documents 5 minutes after their `createdAt` timestamp.
+- This ensures that expired OTPs do not stay in the database, improving security and performance.
+
+### Benefits:
+- **Automatic Expiry**: No need to write custom scripts to remove expired OTPs.
+- **Security**: Ensures that OTPs are not valid beyond their intended lifespan.
+- **Performance**: Reduces storage and keeps the collection lean by cleaning up expired documents.
+
+Using TTL for OTPs is a simple and effective way to handle expiration logic directly in the database.
