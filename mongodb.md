@@ -134,7 +134,6 @@ MongoDB's internal architecture is designed to manage large volumes of data, del
    - **Shard Key**: A shard key (a field or combination of fields) determines how data is distributed across shards. Choosing an appropriate shard key is crucial for performance.
    - **Mongos Router**: When a sharded cluster is set up, MongoDB uses `mongos` (router) to route queries to the appropriate shards based on the shard key.
    - **Data Balancing**: MongoDB automatically balances data across shards to avoid data hotspots and ensure even distribution.
-
 ---
 
 ### 9. **Write Concern and Read Concern**

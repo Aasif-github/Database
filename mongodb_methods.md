@@ -854,3 +854,118 @@ newOtp.save().then(() => console.log('OTP created and will expire in 5 minutes.'
 - **Performance**: Reduces storage and keeps the collection lean by cleaning up expired documents.
 
 Using TTL for OTPs is a simple and effective way to handle expiration logic directly in the database.
+
+
+## What is $$ROOT, How to use it, When to use it?
+
+Absolutely, let's dive deeper into the details and usage of the `$root` operator in MongoDB's aggregation framework.
+
+### The `$root` Operator
+The `$root` operator is used in the context of `$project`, `$replaceRoot`, and other stages within the aggregation pipeline to reference the entire document at its current stage of the aggregation process. This is especially useful when you want to transform or reshape the document structure in the aggregation output.
+
+Here are some more detailed examples to illustrate its usage:
+
+### Example 1: Using `$project` with `$$ROOT`
+Suppose you have a collection of documents where you want to keep the original document and add a new field. The `$$ROOT` system variable represents the entire document, allowing you to easily reference and include it in the transformation.
+
+```javascript
+db.collection.aggregate([
+    {
+        $project: {
+            fullDocument: "$$ROOT",
+            newField: "some value"
+        }
+    }
+]);
+```
+
+In this case, the output document includes the entire original document under the `fullDocument` field and adds a new field `newField` with the specified value.
+
+### Example 2: Using `$replaceRoot` to Promote a Nested Document
+Imagine you have documents with a nested field, and you want to promote this nested document to the top level. The `$replaceRoot` stage can replace the root document with a specified subdocument.
+
+```javascript
+db.collection.aggregate([
+    {
+        $replaceRoot: { newRoot: "$nestedDocument" }
+    }
+]);
+```
+
+Here, the `nestedDocument` within each document is promoted to the root level, effectively making it the entire document in the output.
+
+### Example 3: Combining `$lookup` with `$replaceRoot`
+When you join data from another collection using `$lookup`, you often end up with an array of joined documents. If you want to replace the root document with the first element of this joined array, you can combine `$unwind` and `$replaceRoot`.
+
+```javascript
+db.collection.aggregate([
+    {
+        $lookup: {
+            from: "otherCollection",
+            localField: "foreignKey",
+            foreignField: "_id",
+            as: "joinedDoc"
+        }
+    },
+    {
+        $unwind: "$joinedDoc"
+    },
+    {
+        $replaceRoot: { newRoot: "$joinedDoc" }
+    }
+]);
+```
+
+In this example, `joinedDoc` becomes the new root document for each entry after the `$unwind` stage, effectively flattening the structure and promoting the joined document.
+
+### Example 4: Advanced Usage with `$group`
+You can also use `$$ROOT` within the `$group` stage to include the entire document in the grouping operation.
+
+```javascript
+db.collection.aggregate([
+    {
+        $group: {
+            _id: "$category",
+            documents: { $push: "$$ROOT" }
+        }
+    }
+]);
+```
+
+This groups documents by the `category` field and includes the entire original document in the `documents` array for each group.
+
+### Detailed Breakdown of the Aggregation Pipeline
+Let's consider a more complex example where you use multiple stages and `$$ROOT` to transform the document structure:
+
+```javascript
+db.collection.aggregate([
+    {
+        $match: { status: "active" }
+    },
+    {
+        $group: {
+            _id: "$category",
+            count: { $sum: 1 },
+            averageScore: { $avg: "$score" },
+            documents: { $push: "$$ROOT" }
+        }
+    },
+    {
+        $project: {
+            _id: 1,
+            count: 1,
+            averageScore: 1,
+            firstDocument: { $arrayElemAt: ["$documents", 0] }
+        }
+    }
+]);
+```
+
+- **$match**: Filters documents where `status` is "active".
+- **$group**: Groups documents by `category`, calculates the count and average score, and includes the entire documents in the `documents` array.
+- **$project**: Projects the group `_id`, `count`, `averageScore`, and the first document from the `documents` array.
+
+### Summary
+The `$$ROOT` operator is a powerful tool within MongoDB’s aggregation framework, allowing you to reference the entire document and perform complex transformations. Whether you're reshaping the document structure, promoting nested documents, or combining data from different collections, `$$ROOT` provides flexibility and control over the output format.
+
+I hope these detailed examples help! If you have more specific scenarios or further questions, feel free to ask.
