@@ -147,6 +147,14 @@ In summary, **replication in MongoDB** is crucial for building robust, fault-tol
 
 ## 2. Why we choose MongoDB?
 
+MongoDB is built on a scale-out architecture that has become popular with developers of all kinds for developing scalable applications with evolving data schemas.
+
+As a document database, MongoDB makes it easy for developers to store structured or unstructured data. It uses a JSON-like format to store documents. This format directly maps to native objects in most modern programming languages, making it a natural choice for developers, as they don’t need to think about normalizing data. MongoDB can also handle high volume and can scale both vertically or horizontally to accommodate large data loads.
+
+MongoDB was built for people building internet and business applications who need to evolve quickly and scale elegantly. Companies and development teams of all sizes use MongoDB for a wide variety of reasons.
+
+
+
 [Reference Link](https://www.mongodb.com/resources/products/fundamentals/why-use-mongodb#:~:text=MongoDB%20is%20built%20on%20a,like%20format%20to%20store%20documents.)
 
 [Ref: Mongodb working](https://www.techtarget.com/searchdatamanagement/definition/MongoDB#:~:text=MongoDB%20is%20used%20for%20high,JavaScript%20execution%20and%20other%20features.)
@@ -497,6 +505,27 @@ db.sessions.dropIndex({ createdAt: 1 })
 
 ### Summary:
 A **TTL index** is an efficient way to manage data expiration in MongoDB. By setting up a TTL index on a field, MongoDB can automatically remove documents once they reach their specified age, simplifying data lifecycle management.
+
+### Real-life example
+```js
+const OTPSchema = new schema({
+    email: {
+        type: String,
+        required: true
+    },
+    otp: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        expires: 60 * 2,  // This document will be automatically deleted after 2 minutes of its creation time
+
+    }
+});
+```
+Note: Here, createdAt is TTL index.
 
 ## 9. What is storage engine.
 A **storage engine** is the underlying software component that a database management system (DBMS) uses to store, retrieve, manage, and write data to disk or memory. It determines how data is structured, accessed, and managed in terms of performance, transactions, and other characteristics.
