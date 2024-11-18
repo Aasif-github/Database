@@ -6,7 +6,7 @@
       - [Sharding](#sharding)
       - [Replication](#replication)
 
-- [2. Why do we choose MongoDB?](#2-why-do-we-choose-mongodb)
+- [2. Why we choose MongoDB?](#2-why-do-we-choose-mongodb)
 - [3. What is BSON?](#3-what-is-bson)
 - [4. What is ObjectID?](#4-what-is-objectid)
 - [5. What is Indexing? How to create an index in MongoDB?](#5-what-is-indexing-how-to-create-an-index-in-mongodb)
@@ -666,7 +666,7 @@ output:
 - **`ref`** in a Mongoose schema allows you to create a reference to another collection by storing an object ID.
 - This enables the use of **Mongoose's `populate()` method** to fetch related documents, simplifying the process of managing relationships between collections.
 
-## 11. In Mongodb, how can we join two collection?
+## 11. In Mongodb, how we can join two collection?
 
 In MongoDB, you can **join** two collections using the **`$lookup`** aggregation stage. The `$lookup` stage allows you to perform a left outer join to another collection within the same database, making it possible to combine documents based on a shared field.
 
