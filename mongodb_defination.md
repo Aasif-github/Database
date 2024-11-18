@@ -626,6 +626,32 @@ Post.find()
         }
     });
 ```
+output:
+```json
+[
+    {
+        "_id": "postId123",
+        "title": "Understanding Mongoose Populate",
+        "content": "This post explains how to use Mongoose's populate method.",
+        "author": {
+            "_id": "userId456",
+            "name": "John Doe",
+            "email": "john.doe@example.com"
+        }
+    },
+    {
+        "_id": "postId124",
+        "title": "Learning Node.js",
+        "content": "This post covers the basics of Node.js.",
+        "author": {
+            "_id": "userId789",
+            "name": "Jane Smith",
+            "email": "jane.smith@example.com"
+        }
+    }
+]
+
+```
 
 ### Benefits of Using `ref`:
 - **Simplifies Joins**: Even though MongoDB is a NoSQL database, using `ref` and `populate()` allows for simple join-like functionality.
