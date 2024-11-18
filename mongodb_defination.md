@@ -15,6 +15,9 @@
 - [8. What is a TTL (Time-to-Live) Index?](#8-what-is-a-ttl-time-to-live-index)
 - [9. What is a Storage Engine? Which storage engine does MongoDB use?](#9-what-is-a-storage-engine-which-storage-engine-does-mongodb-use)
 
+- [10. What is Ref in MongoDB schema?](#10-What-is-ref-in-mongodb-schema)
+
+- [11. In Mongodb, how can we join two collection?](#11-In-Mongodb-how-can-we-join-two-collection?)
 
 ## 1. What is MongoDB?
 
@@ -565,12 +568,187 @@ WiredTiger is favored for its balance of speed, data compression, and support fo
 
 
 
+## 10. What is `ref` in mongodb schema?
 
+In MongoDB, when defining a schema using **Mongoose** (a popular ODM for MongoDB in Node.js), the `ref` option is used to create **references between documents in different collections**. This helps model **relationships** similar to foreign key constraints in relational databases.
 
+### What Does `ref` Do?
+The `ref` option in Mongoose allows you to establish a connection between documents in one collection and documents in another collection by referencing their unique IDs. This is known as **population**.
 
+### Why Use `ref`?
+- **To Create Relationships**: Helps link related data between collections. For example, a user document can refer to posts that they have authored.
+- **Data Association**: Ensures that you can easily navigate and retrieve related data through Mongoose's built-in population feature.
 
+### Example of Using `ref` in Mongoose Schema:
+Suppose you have a collection for users and another collection for posts. Each post should reference the user who created it.
 
+#### 1. **User Schema**:
+```javascript
+const mongoose = require('mongoose');
 
+const userSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true }
+});
+
+const User = mongoose.model('User', userSchema);
+```
+
+#### 2. **Post Schema**:
+```javascript
+const postSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    author: { 
+        type: mongoose.Schema.Types.ObjectId, // Reference type should be ObjectId
+        ref: 'User' // 'User' refers to the name of the User model
+    }
+});
+
+const Post = mongoose.model('Post', postSchema);
+```
+
+### Explanation:
+- **`mongoose.Schema.Types.ObjectId`**: Specifies that the `author` field is an object ID, which is used to store references to documents in another collection.
+- **`ref: 'User'`**: Tells Mongoose that the `author` field is referencing the `User` model. This allows Mongoose to perform a lookup to fetch the related user document when needed.
+
+### How to Use `ref` with Population:
+To retrieve a post and populate its author field with user details, you can use Mongoose's `populate()` method:
+
+```javascript
+Post.find()
+    .populate('author') // Populates the author field with corresponding user data
+    .exec((err, posts) => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log(posts); // Prints posts with author details included
+        }
+    });
+```
+
+### Benefits of Using `ref`:
+- **Simplifies Joins**: Even though MongoDB is a NoSQL database, using `ref` and `populate()` allows for simple join-like functionality.
+- **Clear Data Relationships**: Establishes a clear way of associating documents between collections.
+- **Easy Querying**: Makes querying for related data simpler and more maintainable in code.
+
+### When to Avoid `ref`:
+- **Embedding vs. Referencing**: If you need fast access to related data or have a 1:1 or 1:few relationship, embedding documents within a document (denormalization) might be more efficient than using `ref`.
+- **Performance Considerations**: Population can add extra queries to the database, which might impact performance if used extensively with large datasets.
+
+### Summary:
+- **`ref`** in a Mongoose schema allows you to create a reference to another collection by storing an object ID.
+- This enables the use of **Mongoose's `populate()` method** to fetch related documents, simplifying the process of managing relationships between collections.
+
+## 11. In Mongodb, how can we join two collection?
+
+In MongoDB, you can **join** two collections using the **`$lookup`** aggregation stage. The `$lookup` stage allows you to perform a left outer join to another collection within the same database, making it possible to combine documents based on a shared field.
+
+### Syntax of `$lookup`:
+Here's the general syntax for using `$lookup` in an aggregation pipeline:
+
+```javascript
+db.collection.aggregate([
+    {
+        $lookup: {
+            from: 'otherCollection', // Name of the other collection to join
+            localField: 'fieldInThisCollection', // Field from the current collection
+            foreignField: 'fieldInOtherCollection', // Field from the other collection
+            as: 'joinedData' // Name of the array field to store the joined data
+        }
+    }
+]);
+```
+
+### Example Scenario:
+Suppose you have two collections: `orders` and `customers`.
+
+#### `orders` Collection:
+```json
+{
+    "_id": 1,
+    "orderNumber": "1001",
+    "customerId": 101,
+    "amount": 250
+}
+```
+
+#### `customers` Collection:
+```json
+{
+    "_id": 101,
+    "name": "John Doe",
+    "email": "john.doe@example.com"
+}
+```
+
+### Using `$lookup` to Join:
+To join the `orders` collection with the `customers` collection based on `customerId`, you can use the following aggregation pipeline:
+
+```javascript
+db.orders.aggregate([
+    {
+        $lookup: {
+            from: 'customers', // The collection to join
+            localField: 'customerId', // Field in 'orders'
+            foreignField: '_id', // Field in 'customers'
+            as: 'customerDetails' // The result will be stored in 'customerDetails'
+        }
+    }
+]);
+```
+
+### Result:
+The result of the aggregation will look like this:
+
+```json
+[
+    {
+        "_id": 1,
+        "orderNumber": "1001",
+        "customerId": 101,
+        "amount": 250,
+        "customerDetails": [
+            {
+                "_id": 101,
+                "name": "John Doe",
+                "email": "john.doe@example.com"
+            }
+        ]
+    }
+]
+```
+
+### Explanation:
+- **`$lookup`** performs a left outer join, meaning that if a matching document in the `from` collection is found, it will be embedded as an array in the result.
+- The `as` field specifies the name of the array that holds the joined documents.
+- If no matching documents are found in the `from` collection, the `joinedData` array will be empty.
+
+### Additional Options for `$lookup`:
+MongoDB 3.6+ and newer versions introduced more advanced capabilities for `$lookup`, such as:
+- **`pipeline`**: Instead of a direct field match, you can use an aggregation pipeline within `$lookup` for more complex conditions.
+- **Unwinding Results**: Use `$unwind` after `$lookup` if you want to deconstruct the joined array so each element becomes a separate document.
+
+### Example with Pipeline:
+```javascript
+db.orders.aggregate([
+    {
+        $lookup: {
+            from: 'customers',
+            let: { customerId: '$customerId' },
+            pipeline: [
+                { $match: { $expr: { $eq: ['$_id', '$$customerId'] } } },
+                { $project: { name: 1, email: 1 } }
+            ],
+            as: 'customerDetails'
+        }
+    }
+]);
+```
+
+### Summary:
+- **`$lookup`** is the main tool for joining collections in MongoDB.
+- Joins using `$lookup` can be as simple or as complex as needed, supporting conditions, projections, and pipeline stages for advanced use cases.
 
 # More Interview Questions on MongoDB based on Turing.com
 [Click here to visit website - Interview questions on mongodb](https://www.turing.com/interview-questions/mongodb)

@@ -669,7 +669,7 @@ The $regex regular expression works on the name field and here the /^Mad/i patte
 ```
 
 85. Write a MongoDB query to find the top 5 restaurants with the highest average score for each cuisine type, along with their average scores.
-To find the top 5 restaurants with the highest average score for each cuisine type, you can use the MongoDB aggregation pipeline to calculate average scores, sort the results, and limit the number of results for each group. Here’s how to write the query:
+To find the top 5 restaurants with the highest average score for each cuisine type, you can use the MongoDB aggregation pipeline to calculate average scores, sort the results, and limit the number of results for ```each group. Here’s how to write the query:
 
 ```javascript
 db.restaurants.aggregate([
