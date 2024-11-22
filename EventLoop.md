@@ -1503,3 +1503,58 @@ Internally, Node.js handles network requests using a combination of:
 - **Asynchronous Callbacks**: To process requests and generate responses without blocking the main thread.
 
 This architecture allows Node.js to efficiently manage high volumes of network traffic with minimal latency. If you have more questions or need further details, feel free to ask!
+
+# is event queue and task queue is same?
+In the context of JavaScript and Node.js, the terms **event queue** and **task queue** are often used interchangeably to refer to the same concept, but let's clarify their roles to avoid any confusion.
+
+### Task Queue (Callback Queue)
+- **Role**: The task queue (or callback queue) holds messages (tasks) that are ready to be processed by the event loop.
+- **Types of Tasks**: Includes I/O tasks, timers (`setTimeout`, `setInterval`), and other callbacks like those from the `setImmediate` function.
+- **Processing Order**: Tasks are processed in a first-in, first-out (FIFO) order.
+
+### Event Queue
+- **Role**: Another term commonly used to refer to the task queue. It emphasizes that events (or tasks) are queued up to be processed by the event loop.
+- **Function**: Holds events that are waiting to be handled.
+
+### Microtask Queue
+- **Role**: A special queue for microtasks that need to be processed before the next task in the task queue.
+- **Types of Microtasks**: Includes Promise callbacks (`then`, `catch`), and `process.nextTick` in Node.js.
+- **Priority**: Microtasks have a higher priority than tasks in the task queue and are processed immediately after the currently executing script, but before moving on to the next event loop phase.
+
+### Example
+To illustrate the difference between the task queue and microtask queue, let’s look at an example:
+
+```javascript
+console.log('Start');
+
+setTimeout(() => {
+    console.log('setTimeout');
+}, 0);
+
+Promise.resolve().then(() => {
+    console.log('Promise');
+});
+
+console.log('End');
+```
+
+**Output**:
+```
+Start
+End
+Promise
+setTimeout
+```
+
+**Explanation**:
+1. **Synchronous Code**: Executes first (`Start` and `End`).
+2. **Microtask Queue**: Promise resolution (`Promise`) is processed next.
+3. **Task Queue**: `setTimeout` callback (`setTimeout`) is processed last.
+
+### Summary
+- **Task Queue**: Also known as the event queue or callback queue, it holds tasks (or events) that are ready to be processed by the event loop.
+- **Microtask Queue**: A special queue for high-priority tasks like Promises and `process.nextTick`.
+
+The event loop processes tasks from the task queue and microtask queue to ensure efficient execution of asynchronous operations in JavaScript and Node.js. If you have any more questions or need further clarification, feel free to ask!
+
+[Event loop - Doc](https://docs.google.com/document/d/10qDh-NGjSTjvW5aBmsnRGgSdL0aAG2Jjmvo1NciuBWo/edit?tab=t.0)
