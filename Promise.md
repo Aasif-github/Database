@@ -153,29 +153,9 @@ Promise.any([promiseA, promiseB])
 
 Promises in JavaScript provide a robust way to handle asynchronous operations, allowing you to write clean, readable, and maintainable code. By understanding and leveraging the various methods and features of Promises, you can effectively manage asynchronous tasks and improve the overall flow of your application.
 
-## Real time scenario of using Promise.race(), Promise.all(), Promise.any(), Promise.allSettled().
+## Real time scenario of using Promise.all(), Promise.race(), Promise.any(), Promise.allSettled().
 
-Let's explore real-time scenarios for using `Promise.race()`, `Promise.all()`, `Promise.any()`, and `Promise.allSettled()`.
-
-### `Promise.race()`
-
-**Scenario: Loading Resources**
-
-Imagine a web application that needs to load data from multiple sources (CDN servers) and display the data as soon as possible. You want to show the data from whichever server responds first.
-
-```javascript
-const loadFromCDN1 = fetch('https://cdn1.example.com/resource');
-const loadFromCDN2 = fetch('https://cdn2.example.com/resource');
-
-Promise.race([loadFromCDN1, loadFromCDN2])
-    .then(response => response.json())
-    .then(data => {
-        console.log('Data loaded from the fastest CDN:', data);
-    })
-    .catch(error => {
-        console.error('Failed to load from both CDNs:', error);
-    });
-```
+Let's explore real-time scenarios for using `Promise.all()`, `Promise.race()`, `Promise.any()`, and `Promise.allSettled()`.
 
 ### `Promise.all()`
 
@@ -198,6 +178,26 @@ Promise.all([getUserData, getOrdersData, getProductsData])
     })
     .catch(error => {
         console.error('Failed to fetch all data:', error);
+    });
+```
+
+### `Promise.race()`
+
+**Scenario: Loading Resources**
+
+Imagine a web application that needs to load data from multiple sources (CDN servers) and display the data as soon as possible. You want to show the data from whichever server responds first.
+
+```javascript
+const loadFromCDN1 = fetch('https://cdn1.example.com/resource');
+const loadFromCDN2 = fetch('https://cdn2.example.com/resource');
+
+Promise.race([loadFromCDN1, loadFromCDN2])
+    .then(response => response.json())
+    .then(data => {
+        console.log('Data loaded from the fastest CDN:', data);
+    })
+    .catch(error => {
+        console.error('Failed to load from both CDNs:', error);
     });
 ```
 
