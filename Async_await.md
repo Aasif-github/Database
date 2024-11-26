@@ -119,4 +119,40 @@ fetchInParallel();
 - **Error Handling**: Use `try...catch` blocks to handle errors in `async` functions.
 - **Sequential vs. Parallel**: Use `await` for sequential operations and `Promise.all` for parallel operations.
 
-Using `async` and `await` improves the readability and maintainability of asynchronous code by making it look and behave more like synchronous code. If you have more questions or need further details, feel free to ask!
+Using `async` and `await` improves the readability and maintainability of asynchronous code by making it look and behave more like synchronous code. 
+
+Guess output
+```js
+async function test(){
+    console.log('A')
+    let task1 = await setTimeout(()=>{
+        console.log('task 1')
+    }, 2000);
+    console.log('B')
+    let task2 = await setTimeout(()=>{
+        console.log('task 2')
+    }, 1000);
+    console.log('C')
+}
+
+test().then(()=>{
+    setTimeout(()=>{
+        console.log('task A1')
+    }, 2000);
+}).then(()=>{
+     setTimeout(()=>{
+        console.log('task A2')
+    }, 1000);
+})
+```
+output:
+```js
+A
+B
+C
+task 2
+task A2
+task 1
+task A1
+
+```
