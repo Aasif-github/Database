@@ -3,12 +3,14 @@ So, we need to write our code in Asynchronous fashion so that it doen't block ou
 
 This is why we need Callback, Promise, async & await.
 
-What is callback?
+# What is callback?
+
 A callback is a function passed as a argument to another function and executed later.
+
 Callbacks are a way to handle asynchronous operations like network requests, file reading, or user interactions in JavaScript.
 
 
-Error Handling in Callbacks
+### Error Handling in Callbacks
 
 Error handling in callbacks often uses the "error-first" pattern. The first argument in the callback is reserved for an error object (if any), followed by the result.
 
@@ -66,12 +68,13 @@ function processPayment(flightId, callback) { /* ... */ }
 function sendConfirmation(flightId, callback) { /* ... */ }
 ```
 
+
 In some cases callback it good approch like for error handling,If we have multiple asychronous function then we should avoid writing callback as it lead to callback hell.
 To handle this situation(callback hell) we need Promise, Async & await.
 
 
-This is example of **callback hell**, as it involves deeply nested callbacks for a sequence of asynchronous operations (checking flight availability, reserving a seat, processing payment, and sending confirmation). Refactoring this code using **Promises** or **async/await** will improve its readability and maintainability.
----
+This is example of ***callback hell***, as it involves deeply nested callbacks for a sequence of asynchronous operations (checking flight availability, reserving a seat, processing payment, and sending confirmation). Refactoring this code using ***Promises*** or ***async/await*** will improve its readability and maintainability.
+
 
 ### **Refactoring Using Promises**
 

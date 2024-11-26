@@ -56,7 +56,6 @@ async function getData() {
 
 getData();
 ```
-
 ### Detailed Steps
 
 1. **Define an `async` Function**: The `getData` function is defined as `async`, allowing the use of `await` within it.
