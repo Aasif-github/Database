@@ -5,7 +5,7 @@ This is why we need Callback, Promise, async & await.
 
 # What is callback?
 
-A callback is a function passed as a argument to another function and executed later.
+A callback is a function passed as an argument to another function and executed later.
 
 Callbacks are a way to handle asynchronous operations like network requests, file reading, or user interactions in JavaScript.
 
