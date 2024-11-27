@@ -180,8 +180,11 @@ Body(raw):{
 
 ```js
 route.post('/add-permission', auth, onlyAdminAccess, permissionValidator, permissonController.addPermission);
+
 route.get('/get-permission', auth, onlyAdminAccess, permissionValidator, permissonController.getPermission);
+
 route.post('/update-permission', auth, onlyAdminAccess, permissionValidator, permissonController.updatePermission);
+
 route.post('/delete-permission', auth, onlyAdminAccess, permissionValidator, permissonController.deletePermission);
 ```
 #### Add Middleware - Middleware/adminMiddleware.js
