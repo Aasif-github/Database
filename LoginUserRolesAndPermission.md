@@ -1,4 +1,5 @@
 
+# Users - Roles & Permission
 ### Models/UserPermissionModel.js - This model is used when permission is assign to users
 
 ```js
@@ -71,7 +72,7 @@ sample:
 ]
 ```
 
-#### routes/adminRoutes.js
+### Routes/adminRoutes.js
 ```js
 const { permissionAddValidator } = require('../helper/adminValidator');
 
@@ -142,13 +143,25 @@ const updatePermission = (req, res) => {
     // if empty return error
 
     // 2. isExists - is Id(Permission) exist
-    
-    // 3. isNameAssigned
-    const isNameAssigned = await Permission.findOne({
+    const isExists = await Permission.findOne({
         _id:{
             $ne: _id
         },
-        permission_name
+        permission_name:{
+            $regex: permisson_name,
+            $options: i
+        }
+    });
+
+    // 3. isNameAssigned
+    const isNameAssigned = await Permission.findOne({
+        _id:{
+            $ne: id
+        },
+        permission_name:{
+            $regex: permisson_name,
+            $options: 'i'
+        }
     });
 
     // 4. update Permission - findByIdAndUpdate    
@@ -159,5 +172,32 @@ POST | http://............./admin/update-permission
 Body(raw):{
     'id':'67333a82dbeec2eefa34d2eb',
     'permission_name':'Comment'
+}
+```
+
+### Only admin can access Admin-Permission
+#### Route/adminRoute.js
+
+```js
+route.post('/add-permission', auth, onlyAdminAccess, permissionValidator, permissonController.addPermission);
+route.get('/get-permission', auth, onlyAdminAccess, permissionValidator, permissonController.getPermission);
+route.post('/update-permission', auth, onlyAdminAccess, permissionValidator, permissonController.updatePermission);
+route.post('/delete-permission', auth, onlyAdminAccess, permissionValidator, permissonController.deletePermission);
+```
+#### Add Middleware - Middleware/adminMiddleware.js
+```js
+const onlyAdminAccess = async(req, res, next) => {
+    try{
+        //check roles - Not equal to admin ie 1
+        if(req.user.role != 1){
+            return res.send(400).json({
+                success:false,
+                message:'You have not permission to access this route!'
+            })
+        }
+
+    }catch(){
+
+    }
 }
 ```
