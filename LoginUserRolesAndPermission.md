@@ -1,6 +1,18 @@
 
 # Users - Roles & Permission
 
+### Collections - users-roles-perm
+
+- categories
+- comments
+- likes
+- permissions
+- posts
+- roles
+- routerpermissions
+- userpermissions
+- users
+
 ### Models/UserPermissionModel.js - This model is used when permission is assign to users
 
 ```js
@@ -36,7 +48,7 @@ sample:
 }
 
 ``` 
-### Models/PermissionModel.js - This model is for Admin to create Permission.
+### Models/PermissionModel.js - This model is for Admin to   Permission.
 
 ```js
 const PermissionModel = new Mongoose.Schema({
@@ -47,7 +59,7 @@ const PermissionModel = new Mongoose.Schema({
     },
     is_Default:{
         type:Number,
-        default:0  // 0-> Not-Default, 1-> Default
+        default:0  // 0-> Not-Default[False], 1-> Default [True]
     }
 });
 
@@ -69,6 +81,11 @@ sample:
         "_id": "60d21b4667d0d8992e610c88",
         "permission_name": "execute",
         "is_Default": 0
+    },
+    {
+        "_id": "60d21b4667d0d8992e610c78",
+        "permission_name": "comment",
+        "is_Default": 1
     }
 ]
 ```
@@ -209,6 +226,73 @@ const onlyAdminAccess = async(req, res, next) => {
 
 ### Add Permissions in GET & CREATE USER api.
 
+#### Controllers/UserController.js
+
+```js
+    const createUser = async(req, res) => {
+        const {name, email} = req.body;
+
+        const isExist = await User.findOne({email});
+
+        if(isExist){
+            return res.status(400).json({
+                success:false,
+                message:'Email already exist'
+            })
+        }
+
+        const password = randomstring.generate(6);
+        const hashPassword = await bcrypt.hash(password, 10);
+        
+        let obj = {
+            name,
+            email,
+            password: hashpassword
+        }
+        
+        if(req.body.role && req.body.role == 1){
+            return res.status(401).json({
+                success:false,
+                message:'You can`t create ADMIN'
+            })
+        }else if(req.body.role){
+            obj.role = req.body.role;  // assign role to new user
+        }
+    
+        const user = new User(obj);
+
+        const userData = await user.save();
+
+        //add permission to user if comming in request
+        if(req.body.permission != undefined && req.body.permissions.length > 0){
+            
+            const addPermission = req.body.permissions;
+
+            const permissionArray = [];
+        
+            await Permission.all(addPermission.map(async (permission)=>{
+            
+                const permissionData = await Permission.findOne({ _id:permission.id});
+                
+                permissionArray.push({
+                    permission_name:permissionData.permission_name,
+                    permission_value:permission.value
+                    })
+                })
+            );
+        }
+
+        //if admin is created User - send Mail to User with there user name and password 
+        const userEmailTemplate = `<h3>Hi,${userData.name} your password:${userData.password}</h3>`;
+        
+        const userPermission = new UserPermission({
+            user._id = userData._id,
+            permission: permissionArray
+        });
+
+        await userPermission.save();
+    }
+```
 ```js
 // create user
 // Senario-1: User is create By admin
@@ -216,14 +300,15 @@ const onlyAdminAccess = async(req, res, next) => {
 
 POST | http://..................../api/create-user
 Body : {
-    name:"",
-    email:"",
+    name:"new editor",
+    email:"newEditor@gmail.com",
     role: 3,
     permission: [
         {
-            "id":"657Hyad............Kn90",
-            "value": [0,1,3]
-        }
+            "id":"65123.............fnb", // Only permission-id is added from permission-Collection This user able to Comment Only
+            "value": [0,1,3]  // 0-Create 1-Read 3-Delete ie. This user can create-comment, Read-Comments and delete-comment(his/her comment only) [selected By Checkbox - clientSide]
+            
+        }   
     ]
 }
 
@@ -257,3 +342,112 @@ Body: {
     ]
 }
 ```
+## Similer to below Screensort
+![EVENT-Loop](./2.png)
+
+![USER_ROLE_EDITOR](./USER_ROLE_EDITOR.png)
+
+### Create Router Permission Model
+
+#### Model/routerPermissionModel.js
+```js
+const routePermissionSchema = new Mongoose.Schema({
+
+    router_endpoint:{        
+        type:String, 
+        required: true,        
+    },
+    roles:{ // clientSide dropdown - with roleId
+      //type:mongoose.Schema.Types.ObjectId, - (optinal)
+        type:Number, // 0-admin, 1-subadmin, 2-editor, 3-User
+        required:true
+    },
+    permission:{
+        type:Number, //0-read 1-write, 2-update, 3-delete
+        required:true
+    }
+})
+
+module.exports = mongoose.model('RoutePermission', routePermissionSchema);
+```
+POSTMAN
+```js
+GET_ROUTES_BY_ADMIN
+
+GET | http://.........../api/admin/all-routes
+```
+
+```js
+routes/AdminRoute.js
+
+const express = require('express');
+const router = express.Router(); //must added if we want all routes of that module, we have to do same for commonRoute.
+
+index.js
+app.get('/api/admin/all-routes', auth, onlyAdminAccess, routeController.getAllRoutes);
+```
+```js
+Controller/routeController.js
+
+const getAllRoutes = async() => {
+    
+    try{
+        const routes = [];
+        const stack = req.app._router.stack;
+
+        stack.forEach((data)=>{
+            if(data.name === 'router' && data.handle.stack){
+                data.handle.stack.forEach((handler)=>{
+                    routes.push({
+                        path: handler.route.path,
+                        methods: handler.route.methods
+                    });
+                })
+            }            
+        })
+    }catch(){
+
+    }
+    
+}
+
+Response:
+{
+    success: true,
+    message:'All Routes',
+    data: [
+        {
+            'path':'/add-permission',
+            'methods':{
+                'post':true
+            }
+        },
+        {
+            'path':'/get-permissions',
+            'methods':{
+                'get':true
+            }
+        }
+    ]
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Referance:
+[User-Roles & Permission](https://www.youtube.com/playlist?list=PLQDioScEMUhl3n7ibx-sl-Y_d__dFrTSr)
