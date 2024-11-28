@@ -1,5 +1,6 @@
 
 # Users - Roles & Permission
+
 ### Models/UserPermissionModel.js - This model is used when permission is assign to users
 
 ```js
@@ -202,5 +203,57 @@ const onlyAdminAccess = async(req, res, next) => {
     }catch(){
 
     }
+}
+```
+
+
+### Add Permissions in GET & CREATE USER api.
+
+```js
+// create user
+// Senario-1: User is create By admin
+// Senario-2: User is create By Registration/SignUp (itself)
+
+POST | http://..................../api/create-user
+Body : {
+    name:"",
+    email:"",
+    role: 3,
+    permission: [
+        {
+            "id":"657Hyad............Kn90",
+            "value": [0,1,3]
+        }
+    ]
+}
+
+How `permission` is added in above document
+// access by only admin.
+GET | POST | http://..................../api/get-permission 
+Body: {
+    "sucess":true,
+    "message":"Fetch Successfully",
+    "data":[
+        {
+            "_id":"65123.............fn4",
+            "permission_name":"user",
+            "is_default": 0
+        },
+        {
+            "_id":"65123.............fnd",
+            "permission_name":"post",
+            "is_default": 0
+        },
+        {
+            "_id":"65123.............fnb",
+            "permission_name":"comment",
+            "is_default": 1
+        },
+        {
+            "_id":"65123.............fna",
+            "permission_name":"like",
+            "is_default": 1
+        },
+    ]
 }
 ```
