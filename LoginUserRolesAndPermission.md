@@ -25,7 +25,7 @@ const UserPermissionModel = new Mongoose.Schema({
     },
     permissions:[{
         permission_name: String,
-        permission_value: [number]  // 0-create, 1-read, 2-edit, 3-delete
+        permission_value: [number]  // 0-create, 1-read, 2-edit, 3-delete [0,1]
     }]
 })
 
@@ -64,8 +64,39 @@ const PermissionModel = new Mongoose.Schema({
 });
 
 module.exports = mongoose.model('Permission', UserPermissionModel);
+```
+### What `is_Default` Means
+
+`is_Default` is a flag used to specify whether a particular permission is automatically included for a role when it is created or initialized.
+
+It uses a numeric value to represent a boolean state:
+
+- `0` → **Not Default**: This permission is optional and not automatically assigned to the role.
+- `1` → **Default**: This permission is mandatory or pre-assigned to the role by default.
+
+---
+
+### Role of `is_Default` in Permission Management
+
+#### 1. **Predefined Role Setup**
+When creating or initializing roles, you can use `is_Default` to auto-assign certain permissions to a role without manual configuration.
+
+**Example:**
+- For a `user` role, permissions like `viewProfile` might be set as default (`is_Default: 1`).
+- Permissions like `deleteUser` might be non-default (`is_Default: 0`).
+
+#### 2. **Customizable Roles**
+By marking some permissions as **non-default**, administrators or developers can customize roles by adding or removing specific permissions based on requirements.
+
+**For example:**
+- An `admin` role might include both default and non-default permissions.
+- A `user` role might only include default permissions.
+
+#### 3. **Efficiency in Role Initialization**
+During role creation, you can filter for permissions with `is_Default: 1` to auto-assign them without needing to specify them explicitly.
 
 sample:
+```json
 [
     {
         "_id": "60d21b4667d0d8992e610c86",
@@ -222,7 +253,67 @@ const onlyAdminAccess = async(req, res, next) => {
     }
 }
 ```
+### Add Role in Admin Panel
+```js
+Model/roleModel.js
 
+rolesSchema = new mongoose.Schema({
+	role_name : { type: String, required:true },
+    Value: { type:Number, required:true }
+});
+
+Controller/RoleController.js
+
+Const storeRole = () => {}
+Const getRole = () => {}
+
+Routes/AdminRoutes.js
+route.post('/store-role, auth, onlyAdminAccess, permissionValidator, roleController.storeRole);
+
+route.get('/get-role', auth, onlyAdminAccess, permissionValidator, roleController.getRoles);
+```
+17. When a user is registered then a default permission is set to that user. So users can only access to write comments on posts and only Do likes. But When user is create By admin
+Then the admin can set permission to that user.
+
+
+18.Create Query to get Permission in Login API.
+```js
+In $project: {
+_id:0
+name:0 // only _id can be zero other than that it gives an ERROR.
+}
+```
+
+19. Add Permissions in Get and Create User API
+ So we need to add Permission in user document(in database) 
+First open user controller and getUsers()  
+
+```js
+GET | http://localhost:3000/api/
+
+Const getUser = () => {
+	Const user = await User.aggregate([
+{	
+$match:{
+	_id:{
+	$ne: new mongoose.type.ObjectId(req.user._id)
+}	
+ 	},
+},{
+$lookup:{
+	from:”userpermission”,
+	localField:”_id”,
+    foreignField:”user_id”,
+    as:”permissions”
+}
+},
+{
+	$project:{
+		_id:0
+}
+}
+])}
+```
 
 ### Add Permissions in GET & CREATE USER api.
 
@@ -293,10 +384,11 @@ const onlyAdminAccess = async(req, res, next) => {
         await userPermission.save();
     }
 ```
+## User Model will look like this - create user
 ```js
 // create user
 // Senario-1: User is create By admin
-// Senario-2: User is create By Registration/SignUp (itself)
+// Senario-2: User is create By Registration/SignUp (self)
 
 POST | http://..................../api/create-user
 Body : {
@@ -378,7 +470,7 @@ GET | http://.........../api/admin/all-routes
 ```
 
 ```js
-routes/AdminRoute.js
+Routes/AdminRoute.js
 
 const express = require('express');
 const router = express.Router(); //must added if we want all routes of that module, we have to do same for commonRoute.
@@ -387,7 +479,7 @@ index.js
 app.get('/api/admin/all-routes', auth, onlyAdminAccess, routeController.getAllRoutes);
 ```
 ```js
-Controller/routeController.js
+Controller/RouteController.js
 
 const getAllRoutes = async() => {
     
@@ -434,7 +526,67 @@ Response:
 
 
 
+```js
+helper/helper.js
 
+const getRouterPermissions = async() => {
+
+    try{
+        const routerPermission =  await RoutePermission.findOne({
+            router_endpoint:router,  // /add-category
+            role                     //  2-editor
+        }).populate('permission_id');
+
+        return routerPermission;
+    }catch(error){
+        console.log(error);
+    }   
+}
+
+Middleware/CheckPermission.js
+
+
+// only admin can access all routes, apart from admin, other users can't access    
+const CheckPermission = (req, res, next) => {
+
+    try{
+        //check roles - Not equal to admin ie 1
+        if(req.user.role != 1){
+
+            const routerPermission = await helper.getRouterPermissions(req.path, req.user.role);
+            const userpermissions = await helper.getUserPermission(req.user._id);    // parmissions:{} or {parmissions:[1,2,3]}
+
+            if(!userpermissions.parmissions.parmissions == undefined || !routerPermission){
+                return res.send(400).json({
+                    success:false,
+                    message:'You have not permission to access this route!'
+                })
+            }
+
+        const permission_name = routerPermission.permission_id.permission_name;
+        const permission_value = routerPermission.parmissions; // [1]
+       
+        let hasPermission = userpermissions.permissions.permissions.some((permission)=>{
+
+                permission.parmission_name == permission_name && 
+                permission.parmission_value.some((value)=> permission_value.includes(value))
+        });
+
+        if(!hasPermission){
+            return res.send(400).json({
+                success:false,
+                message:'You have not permission to access this route!' 
+            });
+        }
+       
+        return next(); // only for admin 
+        }
+    }catch(error){
+        console.log(error);
+    }
+}
+
+```
 
 
 
