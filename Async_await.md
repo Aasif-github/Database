@@ -156,3 +156,51 @@ task 1
 task A1
 
 ```
+## In `async` and `await` functions, the `await` keyword is used to pause the execution of the function until the Promise returned by the function is resolved.
+
+NO,
+```js
+async function test(){
+    console.log('A')
+    let task1 = await setTimeout(()=>{
+        console.log('task 1')
+    }, 2000);
+    console.log('B')
+    let task2 = await setTimeout(()=>{
+        console.log('task 2')
+    }, 1000);
+    console.log('C')
+}
+
+test().then(()=>{
+    setTimeout(()=>{
+        console.log('task A1')
+    }, 2000);
+}).then(()=>{
+     setTimeout(()=>{
+        console.log('task A2')
+    }, 1000);
+})
+
+
+async function monitor(){
+console.log('start')
+await task1()
+console.log('end')    
+}
+
+
+function task1(){
+    return setTimeout(() => {
+        console.log('task 1 - done')
+    }, 5000);
+}
+
+monitor()
+```
+output:
+```js       
+start
+end
+task 1 - done
+```

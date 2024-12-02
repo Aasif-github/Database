@@ -253,3 +253,99 @@ Promise.allSettled([fetchData1, fetchData2, fetchData3])
 - **`Promise.allSettled()`**: Great for logging or handling multiple results, whether they succeed or fail.
 
 If you have more questions or need further details, feel free to ask!
+
+
+## Mistakes
+```js
+console.log('start');
+
+setTimeout(() => {
+    console.log('from settimeout');
+}, 2000);
+
+const task1 = () => {
+    return new Promise((resolve, reject) => {
+        console.log('Task 1');
+    });
+};
+
+task1();
+
+console.log('end');
+```
+
+Let's break down the execution of your code step by step:
+
+### The Code:
+```javascript
+console.log('start');
+
+setTimeout(() => {
+    console.log('from settimeout');
+}, 2000);
+
+const task1 = () => {
+    return new Promise((resolve, reject) => {
+        console.log('Task 1');
+    });
+};
+
+task1();
+
+console.log('end');
+```
+
+### Execution Flow:
+1. **`console.log('start')`**:  
+   The first line is executed immediately, so it prints:
+   ```
+   start
+   ```
+
+2. **`setTimeout`**:  
+   The `setTimeout` function schedules its callback to be executed **after 2000ms**.  
+   However, the scheduling happens immediately, and the function moves on without waiting for 2000ms. The callback (`console.log('from settimeout')`) is placed in the **event queue** to be executed later, after the delay.
+
+3. **`task1` Function**:
+   - The `task1` function is called. Inside it, a new Promise is created.
+   - The code inside the Promise's executor function runs **synchronously**.  
+     Hence, `console.log('Task 1')` is executed immediately, and you see:
+     ```
+     Task 1
+     ```
+
+   - However, neither `resolve` nor `reject` is called within the Promise executor.  
+     This means the Promise remains in a **pending state**, and no further action is triggered.
+
+4. **`console.log('end')`**:
+   - The next line of synchronous code is executed, printing:
+     ```
+     end
+     ```
+
+5. **`setTimeout` Callback**:  
+   - After the 2000ms delay, the `setTimeout` callback is executed.  
+     It logs:
+     ```
+     from settimeout
+     ```
+
+### Final Output:
+The output appears in this order:
+```
+start
+Task 1
+end
+from settimeout
+```
+
+### Why Does the Promise Execute Before `console.log('end')`?
+The key reason is **how Promises are designed in JavaScript**:
+- The executor function of a Promise (the code inside `new Promise((resolve, reject) => { ... })`) executes **synchronously** when the Promise is created.
+- Only the `resolve` or `reject` handlers (or `.then()` and `.catch()` callbacks) are deferred to a later time.
+
+In your code:
+- The `console.log('Task 1')` inside the Promise's executor runs synchronously as soon as `task1()` is invoked.
+- This happens **before** the interpreter reaches `console.log('end')`, which is why `Task 1` is logged first.
+
+If you had attached a `.then()` handler to the Promise or resolved/rejected it, that code would execute asynchronously after the synchronous part completes.

@@ -10,7 +10,7 @@ The event loop is a fundamental concept in Node.js that allows it to handle asyn
 The event loop is a mechanism that enables Node.js to perform non-blocking I/O operations by offloading tasks to the system kernel whenever possible. This allows Node.js to handle multiple operations concurrently without blocking the execution of other code.
 
 
-![EVENT-Loop](./EventLoop_raw_main.png)
+![EVENT-Loop](./new_eventLoop.drawio.png)
 
 
 Explanation:
