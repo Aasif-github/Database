@@ -11,7 +11,7 @@ The event loop is a mechanism that enables Node.js to perform non-blocking I/O o
 
 
 ![EVENT-Loop](./new_eventLoop.drawio.png)
-
+Note: Event Queue is also known as the Task Queue in Node.js.
 
 Explanation:
 
@@ -58,36 +58,84 @@ In Node.js, I/O events refer to Input/Output operations, which are fundamental i
 Each phase has a FIFO (First In, First Out) queue of callbacks to execute. When the event loop enters a phase, it performs operations specific to that phase and executes callbacks in the queue until the queue is exhausted or a limit is reached. Then, it moves to the next phase.
 
 ### **Example**
-Here's a simple example to illustrate the event loop:
+Here's an improved explanation of your code, focusing on clarity, grammar, and accurate terminology:
 
+---
+
+### Code:
 ```javascript
-console.log('Start');
+console.log('start');
 
 setTimeout(() => {
-  console.log('Timeout');
-}, 0);
+    console.log('from settimeout');
+}, 2000);
 
-Promise.resolve().then(() => {
-  console.log('Promise');
+Promise.resolve('from promise').then((value) => {
+    console.log(value);
 });
 
-console.log('End');
+console.log('end');
 ```
 
-**Output:**
+---
+
+### Execution Breakdown:
+When you run `node index.js`, the following steps occur:
+
+1. **Node.js Process Creation**:  
+   Node.js starts the process and spawns a main thread to execute the code. The **V8 engine** (JavaScript engine) begins parsing and executing the script line by line.
+
+2. **Synchronous Code Execution**:  
+   The first line, `console.log('start')`, is **synchronous** and executed immediately in the call stack by the main thread. This outputs:
+   ```
+   start
+   ```
+
+3. **`setTimeout` Registration**:  
+   When `setTimeout` is encountered, the callback function (inside `setTimeout`) is registered in the **timer phase** of Node.js. The timer is set for 2 seconds, and the callback is moved to the **macrotask queue** to be executed later. The script proceeds without waiting for the timeout.
+
+4. **`Promise.resolve` Handling**:  
+   The `Promise.resolve('from promise')` creates a resolved Promise. The `.then()` callback is immediately queued in the **microtask queue**. Microtasks have **higher priority** than macrotasks, so they will execute before `setTimeout` once the current synchronous code is complete.
+
+5. **Next Synchronous Code**:  
+   The `console.log('end')` is synchronous and executed immediately in the call stack by the main thread. This outputs:
+   ```
+   end
+   ```
+
+6. **Event Loop Starts Processing Queues**:  
+   After the synchronous code finishes, the **event loop** checks the queues:
+   - **Microtask Queue**: The `.then()` callback from the Promise is executed first, outputting:
+     ```
+     from promise
+     ```
+   - **Macrotask Queue**: Finally, the `setTimeout` callback is executed, outputting:
+     ```
+     from settimeout
+     ```
+
+---
+
+### Final Output:
+The output appears in this order:
 ```
-Start
-End
-Promise
-Timeout
+start
+end
+from promise
+from settimeout
 ```
 
-In this example:
-- `console.log('Start')` and `console.log('End')` are synchronous and execute immediately.
-- `setTimeout` schedules a callback to be executed after the current event loop iteration.
-- `Promise.resolve().then` schedules a microtask to be executed after the current synchronous code but before the next event loop iteration.
+---
 
-The event loop ensures that asynchronous operations like `setTimeout` and promises are handled efficiently, allowing Node.js to remain responsive and performant¹²³.
+### Improved Explanation:
+1. The script is executed line by line using the V8 engine. Synchronous code is handled immediately in the call stack by the main thread.
+2. When the `setTimeout` is encountered, its callback is registered in the **macrotask queue**, and the timer starts counting down (2 seconds).
+3. The `Promise.resolve` is handled asynchronously, and its `.then()` callback is queued in the **microtask queue**, which has **higher priority** than the macrotask queue.
+4. Once the synchronous code (`console.log('end')`) finishes, the event loop processes the **microtask queue** first, executing the `.then()` callback.
+5. Finally, after the microtasks are cleared, the event loop moves to the **macrotask queue**, where it executes the `setTimeout` callback.
+
+This priority handling between microtasks and macrotasks ensures that `from promise` is logged before `from settimeout`.
+
 
 # where does all the blocking code of node js execute??
 
@@ -1652,4 +1700,73 @@ I can't create detailed diagrams myself, but I can provide a descriptive breakdo
 This should give you a clear idea of how to visualize the interactions between these components in Node.js. Feel free to ask if you need more details or further explanation!
 
 
+## What is Thread?
+A **thread** is the smallest unit of execution within a process. It represents a sequence of instructions that a CPU can execute independently. Threads enable a program to perform multiple tasks concurrently, such as handling user input, performing computations, or interacting with the filesystem.
+
+---
+
+### Characteristics of a Thread:
+1. **Part of a Process**:
+   - A thread exists within the context of a process. A single process can contain multiple threads, all sharing the same memory and resources.
+
+2. **Independent Execution**:
+   - Threads can run independently, making them useful for executing tasks simultaneously.
+
+3. **Shared Resources**:
+   - Threads within the same process share memory, file descriptors, and other process-level resources, which allows for efficient communication between threads. However, this also requires careful synchronization to avoid conflicts.
+
+4. **Lightweight**:
+   - Compared to processes, threads are lightweight because creating and switching between threads is less resource-intensive.
+
+---
+
+### Types of Threads:
+1. **User-Level Threads**:
+   - Managed by the user-level application without kernel involvement.
+   - Faster to create and manage but limited in functionality.
+
+2. **Kernel-Level Threads**:
+   - Managed directly by the operating system kernel.
+   - More powerful and capable of leveraging multicore processors but are more resource-intensive.
+
+---
+
+### Threads in JavaScript (Node.js):
+In JavaScript (powered by the V8 engine), threads work differently due to its **single-threaded** nature. 
+
+1. **Main Thread**:
+   - JavaScript uses a single main thread for executing code, often referred to as the **event loop**.
+   - It handles synchronous and asynchronous operations.
+
+2. **Worker Threads**:
+   - Introduced in Node.js to allow multi-threading for CPU-intensive tasks.
+   - Each worker thread runs in its own V8 instance and can communicate with the main thread via messages.
+
+   Example:
+   ```javascript
+   const { Worker } = require('worker_threads');
+
+   const worker = new Worker(`
+     const { parentPort } = require('worker_threads');
+     parentPort.postMessage('Hello from worker');
+   `, { eval: true });
+
+   worker.on('message', (msg) => {
+       console.log(msg); // Logs: Hello from worker
+   });
+   ```
+
+---
+
+### Threads vs. Processes:
+| **Aspect**        | **Thread**                    | **Process**                  |
+|--------------------|-------------------------------|------------------------------|
+| **Memory**         | Shares memory with parent     | Independent memory space     |
+| **Creation**       | Lightweight, faster           | Heavyweight, slower          |
+| **Communication**  | Easier (shared memory)        | Harder (inter-process communication) |
+| **Failure Impact** | Can crash the whole process   | Limited to the process itself|
+
+---
+
+Threads are fundamental in modern computing, allowing programs to run efficiently and concurrently. Understanding threads is crucial when designing applications requiring performance optimization and parallel execution.
 [Event loop - Doc](https://docs.google.com/document/d/10qDh-NGjSTjvW5aBmsnRGgSdL0aAG2Jjmvo1NciuBWo/edit?tab=t.0)
