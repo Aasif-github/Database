@@ -204,3 +204,75 @@ start
 end
 task 1 - done
 ```
+
+## Suppose we have multiple async task and we want use task1 output in task2 and task 2 output in task3. what should we use , `Promise` or `async- await`.
+
+For a situation where you have multiple asynchronous tasks, and each task's output is used as input to the next, you should use **`async/await`** because it allows you to write code that is easier to read and reason about compared to chaining multiple Promises.
+
+### Why Use `async/await`?
+
+1. **Sequential Execution**: `async/await` naturally handles sequential tasks where the output of one task is required by the next.
+2. **Improved Readability**: The code structure with `async/await` resembles synchronous code, making it easier to follow the logic.
+3. **Error Handling**: You can use `try...catch` blocks to handle errors in a more straightforward manner than with `.catch` in Promises.
+
+### Example: Using `async/await`
+
+```javascript
+async function task1() {
+    console.log("Running Task 1");
+    return new Promise((resolve) => setTimeout(() => resolve(10), 1000));
+}
+
+async function task2(input) {
+    console.log(`Running Task 2 with input: ${input}`);
+    return new Promise((resolve) => setTimeout(() => resolve(input * 2), 1000));
+}
+
+async function task3(input) {
+    console.log(`Running Task 3 with input: ${input}`);
+    return new Promise((resolve) => setTimeout(() => resolve(input + 5), 1000));
+}
+
+async function executeTasks() {
+    try {
+        const result1 = await task1();
+        const result2 = await task2(result1);
+        const result3 = await task3(result2);
+        console.log(`Final Result: ${result3}`);
+    } catch (error) {
+        console.error("An error occurred:", error);
+    }
+}
+
+executeTasks();
+```
+
+### Why Not Just Promises?
+
+Using Promises involves chaining `.then` calls, which can become cumbersome and less readable when dependencies increase:
+
+```javascript
+task1()
+    .then((result1) => task2(result1))
+    .then((result2) => task3(result2))
+    .then((result3) => {
+        console.log(`Final Result: ${result3}`);
+    })
+    .catch((error) => {
+        console.error("An error occurred:", error);
+    });
+```
+
+While this works, it's harder to read and maintain, especially when adding error handling or additional logic.
+
+### Summary
+
+- **Use `async/await`** for tasks requiring sequential execution with dependencies between tasks.
+- **Use Promises** when tasks are independent and can be executed in parallel.
+
+**Suggestions for further exploration:**
+**a.** Add a scenario where one of the tasks fails and explore the error handling.  
+**b.** Refactor the example to execute independent tasks in parallel using `Promise.all`.  
+
+
+

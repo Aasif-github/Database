@@ -341,7 +341,7 @@ By using views, you streamline your queries, ensure consistency, and can manage 
 # what if we delete some data in main table does it reflect on views
 Yes, if you delete some data from the main table, it will reflect on the views that are based on that table. Since views are virtual tables that dynamically fetch data from the underlying base tables whenever they are queried, any changes (including deletions) in the base table will automatically be reflected in the view.
 
-# does view in mysql take memory?
+# Does view in mysql take memory?
 In MySQL, a view is a virtual table based on the result set of an SQL query. Here’s a detailed explanation of how views affect memory and storage:
 
 ### Memory Usage

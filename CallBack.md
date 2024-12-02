@@ -40,6 +40,44 @@ fetchData((error, data) => {
 
 # Callback Hell
 
+### Example of Callback Hell Using `setTimeout`
+
+```javascript
+console.log("Start");
+
+setTimeout(() => {
+    console.log("Task 1");
+    setTimeout(() => {
+        console.log("Task 2");
+        setTimeout(() => {
+            console.log("Task 3");
+            setTimeout(() => {
+                console.log("Task 4");
+                console.log("All tasks completed");
+            }, 1000);
+        }, 1000);
+    }, 1000);
+}, 1000);
+```
+
+### Explanation:
+
+1. **Nested Callbacks**: Each `setTimeout` is nested inside the previous one, forming a pyramid-like structure.
+2. **Difficult to Read and Maintain**: As the number of tasks grows, the nesting increases, making the code harder to manage.
+
+### Output:
+```
+Start
+Task 1 (after 1 second)
+Task 2 (after 2 seconds)
+Task 3 (after 3 seconds)
+Task 4 (after 4 seconds)
+All tasks completed
+```
+
+### Solution to Avoid Callback Hell:
+- Use **Promises** or **async/await** to flatten the structure and improve readability.  
+
 ```js
 function bookFlight(flightId, callback) {
   checkFlightAvailability(flightId, (err, flightAvailable) => {
