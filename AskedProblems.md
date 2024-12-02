@@ -1,4 +1,5 @@
 ### Create a function that returns a promise and handles it with async/await    
+
 ```js
 let task1 = () => {
     return new Promise((resolve, reject)=>{
@@ -21,7 +22,8 @@ const taskHandler = async() => {
 taskHandler()
 ```
 
-### Promsie.all()
+### Promsie.all() - The Promise.all() method returns a Promise that resolves if all of the input Promises resolve, or rejects if any of the input Promises reject.
+
 ```js
 let task1 = () => {
     return new Promise((resolve, reject)=>{
@@ -78,7 +80,8 @@ Output:[ 'Task-1 Done', 'Task-2 Done', 'Task-3 Done' ];
 - case 1: if task-2 failed, 
 - output: Err: Task-2 Failed (catch block will be executed)
 
-### Promsie.any()
+### Promsie.any() - The Promise.any() method returns a Promise that resolves or rejects as soon as one of the input Promises resolves or rejects.
+
 ```js
 let task1 = () => {
     return new Promise((resolve, reject)=>{
@@ -133,6 +136,7 @@ output: Task-3 Done
 ```
 
 ### Promsie.race() - The Promise.race() method returns a Promise that resolves or rejects as soon as one of the input Promises resolves or rejects
+
 ```js
 let task1 = () => {
     return new Promise((resolve, reject)=>{
