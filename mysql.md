@@ -954,3 +954,62 @@ In SQL, `DROP`, `DELETE`, and `TRUNCATE` are commands used to remove data from a
    - `TRUNCATE`: When you need to remove all rows from a table quickly and reset the table for new data.
 
 By understanding these differences, you can choose the appropriate command based on your specific needs and the context of your database operations.
+
+
+# Find the Diff between two Dates in MySQL
+ 
+ To calculate the difference in **days, years, and months** in MySQL, you can use the following approach:
+
+### **Days Difference in MySQL**
+For days only, you can use `DATEDIFF()` or `TIMESTAMPDIFF()`.
+
+#### Example:
+```sql
+SELECT 
+    DATEDIFF('2024-12-01', '2022-10-01') AS day_difference;
+```
+
+**Result:**
+```
+day_difference
+--------------
+792
+```
+
+---
+
+### **Calculating Years, Months, and Days**
+To get the difference broken down into years, months, and remaining days:
+
+#### Query:
+```sql
+SELECT 
+    TIMESTAMPDIFF(YEAR, '2022-10-01', '2024-12-01') AS year_difference,
+    TIMESTAMPDIFF(MONTH, '2022-10-01', '2024-12-01') % 12 AS month_difference,
+    DATEDIFF('2024-12-01', DATE_ADD('2022-10-01', 
+              INTERVAL TIMESTAMPDIFF(YEAR, '2022-10-01', '2024-12-01') YEAR + 
+                      TIMESTAMPDIFF(MONTH, '2022-10-01', '2024-12-01') % 12 MONTH)) AS day_difference;
+```
+
+---
+
+### **Explanation**
+1. **`TIMESTAMPDIFF(YEAR, date1, date2)`**:
+   - Gets the difference in full years.
+2. **`TIMESTAMPDIFF(MONTH, date1, date2) % 12`**:
+   - Calculates the remaining months after accounting for full years.
+3. **`DATEDIFF(date2, DATE_ADD(...))`**:
+   - Subtracts the computed years and months from the start date to calculate remaining days.
+
+---
+
+### **Example Result**
+For `2022-10-01` and `2024-12-01`, the output would be:
+
+| year_difference | month_difference | day_difference |
+|------------------|------------------|----------------|
+| 2                | 2                | 0              |
+
+Would you like the query formatted further or need more examples?
+
+[MORE DATE AND TIME FUNCTIONS](https://www.w3resource.com/mysql/date-and-time-functions/date-and-time-functions.php)
