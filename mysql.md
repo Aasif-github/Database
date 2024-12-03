@@ -277,6 +277,7 @@ When you perform a query:
 
 So, indexes reside on disk but are often cached in RAM during runtime for efficiency.
 
+# Joins
 
 In MySQL, *joins* are used to combine data from two or more tables based on related columns. Here are the main types of joins in MySQL:
 
@@ -384,11 +385,11 @@ In MySQL, *joins* are used to combine data from two or more tables based on rela
 
 These joins help in combining and analyzing data across multiple related tables in a relational database efficiently.
 
-
-
-# how to remove duplicate records in mysql?
+# How to remove duplicate records in mysql? (using method 3)
 
 Removing duplicate records in MySQL involves a few steps. The exact method depends on whether you want to keep one of the duplicate rows or remove all of them. Here, I'll explain how to keep one of the duplicate rows and remove the rest.
+
+## Method 1: (Temporary Table and Group By)
 
 ### Step-by-Step Guide to Removing Duplicates
 
@@ -446,29 +447,29 @@ DROP TABLE temp_table;
 Here’s a full example assuming your table is named `my_table` and you’re identifying duplicates based on columns `column1` and `column2`.
 
 ```sql
--- Step 1: Identify duplicates (for your reference, not executed as part of the process)
+Step 1: Identify duplicates (for your reference, not executed as part of the process)
 SELECT column1, column2, COUNT(*)
 FROM my_table
 GROUP BY column1, column2
 HAVING COUNT(*) > 1;
 
--- Step 2: Create a temporary table with unique records
+Step 2: Create a temporary table with unique records
 CREATE TABLE temp_table AS
 SELECT * FROM my_table
 GROUP BY column1, column2;
 
--- Step 3: Delete all records from the original table
+Step 3: Delete all records from the original table
 DELETE FROM my_table;
 
--- Step 4: Insert unique records back into the original table
+Step 4: Insert unique records back into the original table
 INSERT INTO my_table
 SELECT * FROM temp_table;
 
--- Step 5: Drop the temporary table
+Step 5: Drop the temporary table
 DROP TABLE temp_table;
 ```
 
-### Alternative Method Using a Subquery
+## Method:2 (Alternative Method Using a Subquery)
 
 You can also use a subquery to delete duplicates directly if you have a primary key or unique identifier (e.g., `id`) in your table.
 
@@ -519,7 +520,7 @@ If you want to keep the row with the highest id value:
 
 DELETE n1 FROM names n1, names n2 WHERE n1.id < n2.id AND n1.name = n2.name
 
-
+## Method 3: Using JOIN
 Another effective way to remove duplicate records in MySQL involves using a subquery with a self-join to identify and delete duplicates while keeping one instance of each unique record. This method can be particularly useful if you do not want to use a CTE or if your MySQL version does not support CTEs.
 
 ### Method Using a Subquery with a Self-Join
@@ -572,98 +573,26 @@ ON t1.column1 = t2.column1
 AND t1.column2 = t2.column2
 AND t1.id > t2.id;
 ```
-
-### Another Alternative: Using Temporary Table
-
-Alternatively, you can use a temporary table to remove duplicates:
-
-#### Step 1: Create a Temporary Table with Unique Records
-
-Create a temporary table to store unique records based on the lowest `id` for each group of duplicates.
-
-```sql
-CREATE TEMPORARY TABLE temp_table AS
-SELECT * FROM my_table
-GROUP BY column1, column2;
-```
-
-#### Step 2: Truncate the Original Table
-
-Truncate the original table to remove all records.
-
-```sql
-TRUNCATE TABLE my_table;
-```
-
-#### Step 3: Insert Unique Records Back into the Original Table
-
-Insert the unique records from the temporary table back into the original table.
-
-```sql
-INSERT INTO my_table
-SELECT * FROM temp_table;
-```
-
-#### Step 4: Drop the Temporary Table
-
-Drop the temporary table as it is no longer needed.
-
-```sql
-DROP TEMPORARY TABLE temp_table;
-```
-
-### Full Process
-
-Combining the steps, the full process looks like this:
-
-```sql
--- Step 1: Create a temporary table with unique records
-CREATE TEMPORARY TABLE temp_table AS
-SELECT * FROM my_table
-GROUP BY column1, column2;
-
--- Step 2: Truncate the original table
-TRUNCATE TABLE my_table;
-
--- Step 3: Insert unique records back into the original table
-INSERT INTO my_table
-SELECT * FROM temp_table;
-
--- Step 4: Drop the temporary table
-DROP TEMPORARY TABLE temp_table;
-```
-
-### Summary
-
-These methods provide alternative ways to remove duplicate records in MySQL:
-
-1. **Subquery with Self-Join**: This method uses a self-join to delete duplicate rows while keeping the row with the lowest `id` for each group.
-2. **Temporary Table**: This method involves creating a temporary table to store unique records, truncating the original table, and then re-inserting the unique records.
-
-Both methods ensure that duplicates are removed while retaining one instance of each unique record based on specified criteria.
-
-====================================
-
+### Example: Remove Duplicates Using a Self-Join (Best Practices)
 For run mysql - 
 https://onecompiler.com/mysql/42h9nu3vc
 
 
 ```sql
--- create
+create
 CREATE TABLE EMPLOYEE (
   empId INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
   dept TEXT NOT NULL
 );
 
--- insert
+insert
 INSERT INTO EMPLOYEE VALUES (0001, 'Clark', 'Sales');
 INSERT INTO EMPLOYEE VALUES (0002, 'Dave', 'Accounting');
 INSERT INTO EMPLOYEE VALUES (0003, 'Ava', 'Sales');
 INSERT INTO EMPLOYEE VALUES (0004, 'Dave', 'Accounting');
--- fetch 
+fetch 
 SELECT * FROM EMPLOYEE;
-
 
 – using self join –
 
@@ -674,6 +603,51 @@ t1.dept = t2.dept and
 t1.empId > t2.empId;
 
 SELECT * FROM EMPLOYEE;
+```
+## Project example - Real world
+| autoID | InsertedDate | UserId |
+|--------|--------------|--------|
+|      1 | 2022-02-11   | abc02  |
+|      2 | 2022-02-11   | abc02  |
+|      3 | 2022-02-11   | abc02  |
+|      4 | 2022-02-12   | abc04  |
+|      5 | 2022-02-12   | abc04  |
+|      6 | 2022-01-19   | abc02  |
+
+
+### Delete all duplicate record whose InsertedDate and UserId are same except whose autoId is smallest.
+```sql
+CREATE TABLE 
+Sample (autoID INT AUTO_INCREMENT PRIMARY KEY, 
+        InsertedDate DATE, 
+        UserId VARCHAR(10) NOT NULL
+);
+    
+
+Insert Into Sample (autoID, InsertedDate, UserId) Values (001, '2022-02-11', 'abc02');
+Insert Into Sample (autoID, InsertedDate, UserId) Values (002, '2022-02-11', 'abc02');
+Insert Into Sample (autoID, InsertedDate, UserId) Values (003, '2022-02-11', 'abc02');
+Insert Into Sample (autoID, InsertedDate, UserId) Values (004, '2022-02-12', 'abc04');
+Insert Into Sample (autoID, InsertedDate, UserId) Values (005, '2022-02-12', 'abc04');
+Insert Into Sample (autoID, InsertedDate, UserId) Values (006, '2022-01-19', 'abc02');
+
+Drop table Sample;
+    
+DELETE s1 
+FROM Sample s1 
+INNER JOIN Sample t2 
+ON s1.InsertedDate = t2.InsertedDate 
+AND s1.UserId = t2.UserId 
+WHERE s1.autoId > t2.autoId;
+
+-- Duplicate records 
+
+Select s1.* 
+FROM Sample s1 
+INNER JOIN Sample t2 
+ON s1.InsertedDate = t2.InsertedDate 
+AND s1.UserId = t2.UserId 
+WHERE s1.autoId > t2.autoId;
 ```
 ## What is different Between `WHERE` and `GROUP BY` clauses in SQL.
 
@@ -939,7 +913,7 @@ In SQL, `DROP`, `DELETE`, and `TRUNCATE` are commands used to remove data from a
 
   ```sql
   DELETE FROM Employees WHERE EmployeeID = 1;
-  DELETE FROM Employees; -- Deletes all rows but retains the table structure
+  DELETE FROM Employees; Deletes all rows but retains the table structure
   ```
 
 - **Impact**: Only the data is deleted; the table structure and its associated metadata (indexes, constraints) remain intact. `DELETE` is a DML (Data Manipulation Language) operation and can be slower for large datasets due to logging and transaction management.
