@@ -1,50 +1,6 @@
-# In MySQL, Where Index is Store ?
-In MySQL, **indexes are primarily stored in disk storage (main memory)** as part of the database files. However, they can also be **loaded into RAM (cache)** for faster access during query execution. Let's clarify the distinction:
-
----
-
-### **1. Indexes on Disk (Main Memory)**
-- By default, indexes are stored on disk along with table data, as part of the database's physical storage.
-- For the **InnoDB** storage engine:
-  - The data and clustered index are stored together in the `*.ibd` file (or in the shared `ibdata` file in older setups).
-  - Secondary indexes are also stored on disk but separately from the table's clustered index.
-- For **MyISAM**:
-  - Indexes are stored in `.MYI` files on disk.
-
-Indexes persist on disk to ensure they are durable and can survive server restarts.
-
----
-
-### **2. Indexes in RAM**
-- Indexes are **loaded into RAM** when they are frequently accessed during query execution. MySQL uses caching mechanisms to optimize this process:
-  - **InnoDB Buffer Pool**:
-    - A portion of the RAM is allocated as a buffer pool to cache frequently accessed data and indexes.
-    - When a query accesses an index, the relevant portion of the index tree is loaded into the buffer pool for faster access.
-    - If the buffer pool cannot hold all the indexes, less frequently used portions remain on disk.
-  - **Key Cache (MyISAM)**:
-    - For the MyISAM engine, the **key cache** stores index blocks in memory to speed up access.
-
-#### Example:
-When you perform a query:
-1. MySQL checks the buffer pool (RAM) to see if the relevant part of the index is already loaded.
-2. If it’s not in memory, it reads the index from disk and caches it in RAM.
-
----
-
-### **3. Memory Storage Engine**
-- For tables using the **Memory** storage engine, all indexes and data are stored entirely in RAM. This makes it extremely fast but non-persistent (data is lost on restart).
-
----
-
-### **Summary**
-- **Disk Storage (Main Memory)**:
-  - Indexes are permanently stored on disk to ensure persistence.
-- **RAM (Cache)**:
-  - Indexes are dynamically loaded into RAM when accessed, improving query performance.
-  - MySQL uses caching mechanisms like the **InnoDB Buffer Pool** and **Key Cache** to manage this.
-
-So, indexes reside on disk but are often cached in RAM during runtime for efficiency.
-
+- Indexing
+- Where index is store?
+- Joins
 
 # what is indexing in mysql
 
@@ -273,6 +229,54 @@ CREATE INDEX idx_name ON employees(name);
 1. Columns used frequently in `WHERE`, `JOIN`, `GROUP BY`, or `ORDER BY` clauses.
 2. Columns with high selectivity (e.g., unique values).
 3. Avoid indexing columns with low cardinality (e.g., boolean columns).
+
+# In MySQL, Where Index is Store ?
+In MySQL, **indexes are primarily stored in disk storage (main memory)** as part of the database files. However, they can also be **loaded into RAM (cache)** for faster access during query execution. Let's clarify the distinction:
+
+---
+
+### **1. Indexes on Disk (Main Memory)**
+- By default, indexes are stored on disk along with table data, as part of the database's physical storage.
+- For the **InnoDB** storage engine:
+  - The data and clustered index are stored together in the `*.ibd` file (or in the shared `ibdata` file in older setups).
+  - Secondary indexes are also stored on disk but separately from the table's clustered index.
+- For **MyISAM**:
+  - Indexes are stored in `.MYI` files on disk.
+
+Indexes persist on disk to ensure they are durable and can survive server restarts.
+
+---
+
+### **2. Indexes in RAM**
+- Indexes are **loaded into RAM** when they are frequently accessed during query execution. MySQL uses caching mechanisms to optimize this process:
+  - **InnoDB Buffer Pool**:
+    - A portion of the RAM is allocated as a buffer pool to cache frequently accessed data and indexes.
+    - When a query accesses an index, the relevant portion of the index tree is loaded into the buffer pool for faster access.
+    - If the buffer pool cannot hold all the indexes, less frequently used portions remain on disk.
+  - **Key Cache (MyISAM)**:
+    - For the MyISAM engine, the **key cache** stores index blocks in memory to speed up access.
+
+#### Example:
+When you perform a query:
+1. MySQL checks the buffer pool (RAM) to see if the relevant part of the index is already loaded.
+2. If it’s not in memory, it reads the index from disk and caches it in RAM.
+
+---
+
+### **3. Memory Storage Engine**
+- For tables using the **Memory** storage engine, all indexes and data are stored entirely in RAM. This makes it extremely fast but non-persistent (data is lost on restart).
+
+---
+
+### **Summary**
+- **Disk Storage (Main Memory)**:
+  - Indexes are permanently stored on disk to ensure persistence.
+- **RAM (Cache)**:
+  - Indexes are dynamically loaded into RAM when accessed, improving query performance.
+  - MySQL uses caching mechanisms like the **InnoDB Buffer Pool** and **Key Cache** to manage this.
+
+So, indexes reside on disk but are often cached in RAM during runtime for efficiency.
+
 
 In MySQL, *joins* are used to combine data from two or more tables based on related columns. Here are the main types of joins in MySQL:
 
