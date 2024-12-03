@@ -33,6 +33,11 @@ Instead of storing data in tables of rows or columns like SQL databases, each re
 - What is a Horizontal scale-out architecture.
 - The horizontal scaling approach, sometimes referred to as "scaling out," entails adding more machines to further distribute the load of the database and increase overall storage and/or processing power. There are two common ways to perform horizontal scaling — they include `sharding`, which increases the overall capacity of the system, and `replication`, which increases the availability and reliability of the system.
 
+### MongoDB Official Documentation - Sharding
+![Logo](./sh1.png)
+![Logo](./sh2.png)
+![Logo](./sh3.png)
+
 ## Explain Sharding in detail.
 **Sharding** in MongoDB is a method for distributing data across multiple servers or nodes, enabling the database to handle large datasets and high-traffic loads efficiently. It is an essential feature for scaling horizontally and ensuring that performance remains high as the amount of data grows. Here's a detailed explanation:
 
