@@ -82,7 +82,7 @@ MongoDB's internal architecture is designed to manage large volumes of data, del
 
 ### 3. **Indexing**
 
-   - MongoDB uses B-Tree indexes to efficiently search and retrieve data, similar to many relational databases.
+   - MongoDB uses B-Tree ([Balanced Tree](https://www.geeksforgeeks.org/introduction-of-b-tree-2/)) indexes to efficiently search and retrieve data, similar to many relational databases.
    - Indexes store a portion of the data in a separate data structure, allowing MongoDB to locate documents without scanning the entire collection.
    - **Types of Indexes**:
      - **Single Field Index**: An index on a single field, improving search operations on that specific field.

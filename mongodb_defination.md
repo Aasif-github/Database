@@ -197,7 +197,7 @@ BSON is designed to be a superset of JSON, providing additional data types and b
      - `Object`
      - `Null`
 
-3. **Efficiency**:
+3. **Efficiency**: (How it is faster)
    - **BSON**: More efficient for encoding and decoding due to its binary nature. It includes length prefixes for strings and arrays, allowing quick size calculations and direct access to elements.
    - **JSON**: Less efficient due to its text nature. Parsing JSON requires reading and interpreting the entire structure.
 

@@ -110,3 +110,27 @@ console.log(generateFibonacciRecursive(n));
    - Use recursion to append the sum of the last two terms until the desired number of terms is reached.
 
 Both approaches handle edge cases (e.g., `n <= 0`) gracefully and generate the correct Fibonacci series. Let me know if you'd like additional variations or optimizations!
+
+# Find All Duplicates in an Array
+```js
+function findDuplicates(nums) {
+    const count = {};
+    const result = [];
+
+    for (const num of nums) {
+        count[num] = (count[num] || 0) + 1;
+    }
+
+    for (const [num, freq] of Object.entries(count)) {
+        if (freq > 1) {
+            result.push(Number(num));
+        }
+    }
+
+    return result;
+}
+
+const nums = [4, 3, 2, 7, 8, 2, 3, 1];
+console.log(findDuplicates(nums)); 
+// Output: [2, 3]
+```
