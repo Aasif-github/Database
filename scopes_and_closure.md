@@ -606,3 +606,6 @@ for (var i = 1; i <= 3; i++) {
 - They enable **data encapsulation**, **state preservation**, and **context capture**.
 - Proper use of closures leads to cleaner and more modular code.
 - Be mindful of **memory management** to avoid leaks and ensure optimal performance.
+
+
+[Geeks for Geeks - Closure](https://www.geeksforgeeks.org/closure-in-javascript/)

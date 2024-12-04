@@ -579,14 +579,14 @@ https://onecompiler.com/mysql/42h9nu3vc
 
 
 ```sql
-create
+-- create
 CREATE TABLE EMPLOYEE (
   empId INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
   dept TEXT NOT NULL
 );
 
-insert
+-- insert
 INSERT INTO EMPLOYEE VALUES (0001, 'Clark', 'Sales');
 INSERT INTO EMPLOYEE VALUES (0002, 'Dave', 'Accounting');
 INSERT INTO EMPLOYEE VALUES (0003, 'Ava', 'Sales');
@@ -594,7 +594,7 @@ INSERT INTO EMPLOYEE VALUES (0004, 'Dave', 'Accounting');
 fetch 
 SELECT * FROM EMPLOYEE;
 
-– using self join –
+-- – using self join –
 
 delete t1 FROM EMPLOYEE t1
 join EMPLOYEE t2
@@ -956,7 +956,7 @@ In SQL, `DROP`, `DELETE`, and `TRUNCATE` are commands used to remove data from a
 By understanding these differences, you can choose the appropriate command based on your specific needs and the context of your database operations.
 
 
-# best approch to find difference btw to dates in mysql?
+# Best approch to find difference btw two dates in mysql?
 To find the difference between two dates in MySQL, the `DATEDIFF` function is one of the simplest and most effective approaches. This function calculates the number of days between two dates. Here's a basic example of how you can use it:
 
 ```sql

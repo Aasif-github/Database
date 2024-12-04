@@ -1,7 +1,110 @@
+- What is differenece between SQL and MYSQL.
 - Trigger
 - View
 - Procedure
 - What is the key difference between group by and having clause in mysql.
+
+# What is the difference  between SQL and MYSQL
+SQL (Structured Query Language) and MySQL are related but fundamentally different concepts. Here’s a detailed explanation of their differences:
+
+### SQL (Structured Query Language)
+
+1. **Definition**:
+   - SQL is a standard programming language specifically designed for managing and manipulating relational databases.
+   - It is used to perform various operations on data stored in a database, such as querying, updating, inserting, and deleting data.
+
+2. **Standard**:
+   - SQL is an ANSI (American National Standards Institute) and ISO (International Organization for Standardization) standard language.
+   - Various database systems implement SQL, but there can be variations and extensions specific to each system.
+
+3. **Operations**:
+   - **Data Querying**: `SELECT`
+   - **Data Manipulation**: `INSERT`, `UPDATE`, `DELETE`
+   - **Data Definition**: `CREATE`, `ALTER`, `DROP`
+   - **Data Control**: `GRANT`, `REVOKE`
+   - **Transaction Control**: `BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK`
+
+4. **Usage**:
+   - SQL is used across various database management systems (DBMS) like MySQL, PostgreSQL, SQL Server, Oracle, and SQLite.
+
+### MySQL
+
+1. **Definition**:
+   - MySQL is an open-source relational database management system (RDBMS) that uses SQL as its query language.
+   - It is developed, distributed, and supported by Oracle Corporation.
+
+2. **Implementation**:
+   - MySQL implements the SQL standard but also includes its own extensions and features.
+   - It provides a database server that manages databases and allows multiple users to create, read, update, and delete data.
+
+3. **Features**:
+   - **High Performance**: Known for its speed and reliability in handling large databases.
+   - **Scalability**: Can handle small to large applications.
+   - **Security**: Provides robust security features for managing user access and privileges.
+   - **Flexibility**: Supports multiple storage engines like InnoDB, MyISAM, and more.
+   - **Replication**: Supports replication for high availability and load balancing.
+   - **Community and Enterprise Editions**: Available as both open-source and commercial versions with additional features and support.
+
+4. **Usage**:
+   - Widely used in web applications and for enterprise-level applications.
+   - Integral part of the LAMP stack (Linux, Apache, MySQL, PHP/Perl/Python).
+
+### Key Differences
+
+1. **Nature**:
+   - **SQL**: A language used for managing databases.
+   - **MySQL**: A database management system that uses SQL.
+
+2. **Scope**:
+   - **SQL**: Can be used with various DBMSs (e.g., MySQL, PostgreSQL, SQL Server, Oracle).
+   - **MySQL**: Specific to the MySQL RDBMS.
+
+3. **Functionality**:
+   - **SQL**: Provides the syntax and commands for database operations.
+   - **MySQL**: Provides the environment to execute SQL commands, manage database files, and perform administrative tasks.
+
+4. **Standardization vs. Implementation**:
+   - **SQL**: A standardized language with variations in implementation across different database systems.
+   - **MySQL**: An implementation that supports SQL but may have its own proprietary features and extensions.
+
+### Example
+
+Using SQL in MySQL:
+
+- **Creating a Database**:
+  ```sql
+  CREATE DATABASE mydatabase;
+  ```
+
+- **Creating a Table**:
+  ```sql
+  USE mydatabase;
+  
+  CREATE TABLE Employees (
+      EmployeeID INT PRIMARY KEY,
+      FirstName VARCHAR(50),
+      LastName VARCHAR(50),
+      Department VARCHAR(50),
+      Salary DECIMAL(10, 2)
+  );
+  ```
+
+- **Inserting Data**:
+  ```sql
+  INSERT INTO Employees (EmployeeID, FirstName, LastName, Department, Salary)
+  VALUES (1, 'John', 'Doe', 'Sales', 60000.00);
+  ```
+
+- **Querying Data**:
+  ```sql
+  SELECT * FROM Employees;
+  ```
+
+### Conclusion
+
+- **SQL** is the language used to interact with databases.
+- **MySQL** is a specific database management system that uses SQL to manage and manipulate its data.
+- Understanding the difference helps in recognizing that SQL is the toolset for querying, while MySQL is the environment where these queries are executed.
 
 # What is Trigger in mysql.
 ### What is a Trigger in SQL?
@@ -523,110 +626,7 @@ CHECK - Ensures that the values in a column satisfies a specific condition
 DEFAULT - Sets a default value for a column if no value is specified
 CREATE INDEX - Used to create and retrieve data from the database very quickly
 
-
-# Diff between SQL and MYSQL
-SQL (Structured Query Language) and MySQL are related but fundamentally different concepts. Here’s a detailed explanation of their differences:
-
-### SQL (Structured Query Language)
-
-1. **Definition**:
-   - SQL is a standard programming language specifically designed for managing and manipulating relational databases.
-   - It is used to perform various operations on data stored in a database, such as querying, updating, inserting, and deleting data.
-
-2. **Standard**:
-   - SQL is an ANSI (American National Standards Institute) and ISO (International Organization for Standardization) standard language.
-   - Various database systems implement SQL, but there can be variations and extensions specific to each system.
-
-3. **Operations**:
-   - **Data Querying**: `SELECT`
-   - **Data Manipulation**: `INSERT`, `UPDATE`, `DELETE`
-   - **Data Definition**: `CREATE`, `ALTER`, `DROP`
-   - **Data Control**: `GRANT`, `REVOKE`
-   - **Transaction Control**: `BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK`
-
-4. **Usage**:
-   - SQL is used across various database management systems (DBMS) like MySQL, PostgreSQL, SQL Server, Oracle, and SQLite.
-
-### MySQL
-
-1. **Definition**:
-   - MySQL is an open-source relational database management system (RDBMS) that uses SQL as its query language.
-   - It is developed, distributed, and supported by Oracle Corporation.
-
-2. **Implementation**:
-   - MySQL implements the SQL standard but also includes its own extensions and features.
-   - It provides a database server that manages databases and allows multiple users to create, read, update, and delete data.
-
-3. **Features**:
-   - **High Performance**: Known for its speed and reliability in handling large databases.
-   - **Scalability**: Can handle small to large applications.
-   - **Security**: Provides robust security features for managing user access and privileges.
-   - **Flexibility**: Supports multiple storage engines like InnoDB, MyISAM, and more.
-   - **Replication**: Supports replication for high availability and load balancing.
-   - **Community and Enterprise Editions**: Available as both open-source and commercial versions with additional features and support.
-
-4. **Usage**:
-   - Widely used in web applications and for enterprise-level applications.
-   - Integral part of the LAMP stack (Linux, Apache, MySQL, PHP/Perl/Python).
-
-### Key Differences
-
-1. **Nature**:
-   - **SQL**: A language used for managing databases.
-   - **MySQL**: A database management system that uses SQL.
-
-2. **Scope**:
-   - **SQL**: Can be used with various DBMSs (e.g., MySQL, PostgreSQL, SQL Server, Oracle).
-   - **MySQL**: Specific to the MySQL RDBMS.
-
-3. **Functionality**:
-   - **SQL**: Provides the syntax and commands for database operations.
-   - **MySQL**: Provides the environment to execute SQL commands, manage database files, and perform administrative tasks.
-
-4. **Standardization vs. Implementation**:
-   - **SQL**: A standardized language with variations in implementation across different database systems.
-   - **MySQL**: An implementation that supports SQL but may have its own proprietary features and extensions.
-
-### Example
-
-Using SQL in MySQL:
-
-- **Creating a Database**:
-  ```sql
-  CREATE DATABASE mydatabase;
-  ```
-
-- **Creating a Table**:
-  ```sql
-  USE mydatabase;
-  
-  CREATE TABLE Employees (
-      EmployeeID INT PRIMARY KEY,
-      FirstName VARCHAR(50),
-      LastName VARCHAR(50),
-      Department VARCHAR(50),
-      Salary DECIMAL(10, 2)
-  );
-  ```
-
-- **Inserting Data**:
-  ```sql
-  INSERT INTO Employees (EmployeeID, FirstName, LastName, Department, Salary)
-  VALUES (1, 'John', 'Doe', 'Sales', 60000.00);
-  ```
-
-- **Querying Data**:
-  ```sql
-  SELECT * FROM Employees;
-  ```
-
-### Conclusion
-
-- **SQL** is the language used to interact with databases.
-- **MySQL** is a specific database management system that uses SQL to manage and manipulate its data.
-- Understanding the difference helps in recognizing that SQL is the toolset for querying, while MySQL is the environment where these queries are executed.
-
-### Events in MySQL
+# Events in MySQL
 
 In MySQL, events are a way to schedule and automate tasks to be run at specific times or intervals. The Event Scheduler in MySQL allows you to execute SQL commands at specified times, making it possible to perform repetitive tasks without manual intervention.
 
