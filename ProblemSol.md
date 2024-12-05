@@ -134,3 +134,26 @@ const nums = [4, 3, 2, 7, 8, 2, 3, 1];
 console.log(findDuplicates(nums)); 
 // Output: [2, 3]
 ```
+
+
+# Sorting
+
+```js
+function bubbleSort(arr) {
+  
+}
+```
+# Make the array empty
+
+```js
+let arr = [4, 3, 2, 7, 8, 2, 3, 1];
+arr.length = 0;
+console.log(arr); // Output: []
+```
+
+# Reverse the array of strings 1. reverse each word 2. uperCase the first letter of each word
+
+```js 
+let arr = ["aasif", "iqbal and"];
+//output = ["fisaA", "labqI dnA"];
+```

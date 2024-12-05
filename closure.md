@@ -72,3 +72,4 @@ processUserData(apiURL);
 In this example, closures help manage asynchronous operations by ensuring that the data fetched asynchronously is accessible when needed. This pattern is often used in real-world applications to handle data fetching, event handling, and more.
 
 
+
