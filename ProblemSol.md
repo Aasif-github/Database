@@ -151,9 +151,132 @@ arr.length = 0;
 console.log(arr); // Output: []
 ```
 
-# Reverse the array of strings 1. reverse each word 2. uperCase the first letter of each word
+# Reverse the array of strings 
+- 1. Reverse each word 
+- 2. UperCase the first letter of each word
+- 3. UpperCase the last letter of each word
 
 ```js 
-let arr = ["aasif", "iqbal and"];
-//output = ["fisaA", "labqI dnA"];
+function reverseAndCapitalize(arr) {
+    return arr.map(str => {
+        let reversed = "";
+        for (let i = str.length - 1; i >= 0; i--) {
+            reversed += str[i];
+        }
+        return reversed.charAt(0).toUpperCase() + reversed.slice(1);
+    });
+}
+
+let arr = ["aasif", "iqbal"];
+let result = reverseAndCapitalize(arr);
+
+console.log(result);
+```
+output
+
+```js   
+['Fisaa', 'Labqi']
+```
+```js
+function reverseAndCapitalize(arr) {
+    return arr.map(str => {
+        let updatedStr="";
+        let reversed = "";
+         
+        updatedStr = str.charAt(0).toUpperCase() + str.slice(1);
+        
+        for (let i = str.length - 1; i >= 0; i--) {
+            reversed += i == 0 ? str[i].toUpperCase() : str[i];
+        }
+        return reversed;
+    });
+    
+}
+
+let arr = ["aasif", "iqbal"];
+let result = reverseAndCapitalize(arr);
+
+console.log(result);
+
+// [ 'fisaA', 'labqI' ]
+```
+
+# Swapping
+```js
+let arr = [1, 2];
+
+// Swapping using a for loop and a temporary variable
+for (let i = 0; i < Math.floor(arr.length / 2); i++) {
+    let temp = arr[i];
+    arr[i] = arr[arr.length - 1 - i];
+    arr[arr.length - 1 - i] = temp;
+}
+
+console.log(arr);
+// Output: [2, 1]
+```
+
+# Bubble Sort
+```js
+function bubbleSort(arr) {
+  function bubbleSort(arr) {
+    let n = arr.length;
+    for (let i = 0; i < n - 1; i++) {
+        // Flag to optimize the algorithm when the array becomes sorted
+        let swapped = false;
+        for (let j = 0; j < n - 1 - i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap arr[j] and arr[j+1]
+                let temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = true;
+            }
+        }
+        // If no two elements were swapped in the inner loop, the array is sorted
+        if (!swapped) break;
+    }
+    return arr;
+}
+
+// Example usage
+let array = [64, 34, 25, 12, 22, 11, 90];
+console.log("Unsorted Array:", array);
+
+let sortedArray = bubbleSort(array);
+console.log("Sorted Array:", sortedArray);
+// Output: [11, 12, 22, 25, 34, 64, 90]
+}
+```
+# Binary Search
+```js
+function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+
+        if (arr[mid] === target) {
+            return mid; // Target found
+        } else if (arr[mid] < target) {
+            left = mid + 1; // Search the right half
+        } else {
+            right = mid - 1; // Search the left half
+        }
+    }
+    return -1; // Target not found
+}
+
+// Example usage
+let sortedArray = [2, 3, 4, 10, 40];
+let target = 10;
+
+let result = binarySearch(sortedArray, target);
+if (result !== -1) {
+    console.log(`Element found at index: ${result}`);
+} else {
+    console.log("Element not found");
+}
+// Output: Element found at index: 3
 ```
