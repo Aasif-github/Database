@@ -217,37 +217,38 @@ console.log(arr);
 ```
 
 # Bubble Sort
-```js
+```javascript
 function bubbleSort(arr) {
-  function bubbleSort(arr) {
-    let n = arr.length;
-    for (let i = 0; i < n - 1; i++) {
-        // Flag to optimize the algorithm when the array becomes sorted
-        let swapped = false;
-        for (let j = 0; j < n - 1 - i; j++) {
-            if (arr[j] > arr[j + 1]) {
-                // Swap arr[j] and arr[j+1]
-                let temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-                swapped = true;
-            }
-        }
-        // If no two elements were swapped in the inner loop, the array is sorted
-        if (!swapped) break;
+  let n = arr.length;
+
+  // Outer loop for passes
+  for (let i = 0; i < n - 1; i++) {
+    // Inner loop for comparisons
+    for (let j = 0; j < n - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        // Swap elements using a temporary variable
+        let temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
     }
-    return arr;
+  }
+
+  return arr;
 }
 
-// Example usage
-let array = [64, 34, 25, 12, 22, 11, 90];
-console.log("Unsorted Array:", array);
-
-let sortedArray = bubbleSort(array);
-console.log("Sorted Array:", sortedArray);
-// Output: [11, 12, 22, 25, 34, 64, 90]
-}
+// Example usage:
+const numbers = [64, 34, 25, 12, 22, 11, 90];
+console.log(bubbleSort(numbers)); // Output: [11, 12, 22, 25, 34, 64, 90]
 ```
+
+### Explanation:
+1. **Outer Loop:** Runs for `n - 1` iterations (where `n` is the length of the array).
+2. **Inner Loop:** Compares each element with the next up to the unsorted portion (`n - i - 1`).
+3. **Swapping:** Uses a temporary variable (`temp`) to swap elements.
+
+This method is slightly more traditional and avoids modern syntax like destructuring, making it easier to understand for beginners.
+
 # Binary Search
 ```js
 function binarySearch(arr, target) {
@@ -279,4 +280,44 @@ if (result !== -1) {
     console.log("Element not found");
 }
 // Output: Element found at index: 3
+```
+# Sort each fruit by length
+
+```js
+const str = ['apple', 'banana', 'kiwi', 'jackfruit', 'mango'];
+
+function countWord(str){
+  
+  let imap = new Map();
+  
+  str.map((value)=>{
+    imap.set(value, value.split('').length)  
+  })
+  
+  let sortArr = [...imap];
+  return sortArr.sort((a,b)=> a[0].length - b[0].length );
+}
+
+let output = (countWord(str))
+console.log(output)
+```
+```js
+[
+  [ 'kiwi', 4 ],
+  [ 'apple', 5 ],
+  [ 'mango', 5 ],
+  [ 'banana', 6 ],
+  [ 'jackfruit', 9 ]
+]
+
+//convert array to object
+
+Object.fromEntries(output)
+{
+  kiwi: 4,
+  apple: 5,
+  mango: 5,
+  banana: 6,
+  jackfruit: 9
+}
 ```
