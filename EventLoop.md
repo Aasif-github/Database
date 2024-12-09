@@ -248,7 +248,7 @@ The event loop operates in several phases, each handling different types of task
 
 Based On event-loop - 
 Do it on OneCompiler.com - https://onecompiler.com/nodejs/42k7d24sc
-
+```javascript
 const fs = require('fs');
 
 setTimeout(()=> { console.log('1')}, 0);
@@ -291,9 +291,9 @@ process.nextTick
 4
 3
 close callback
-========================================================================
+```
 
-
+```javascript
 console.log('hi')
 
 
@@ -348,6 +348,7 @@ ringing... ringing...
 ringing... ringing...
 ringing... ringing...
 
+```
 
 # 1 this is my header
 
