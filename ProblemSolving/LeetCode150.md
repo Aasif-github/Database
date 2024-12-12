@@ -128,3 +128,91 @@ function findSmallestMissing(nums) {
 // console.log(findSmallestMissing([1, 2, 3, 2, 5])); // Output: 6
 console.log(findSmallestMissing([3, 4, 5, 1, 12, 14, 13])); // Output: 15
 ```
+# 121. Best Time to Buy and Sell Stock
+```markdown 
+12Dec24
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
+
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+ 
+
+Example 1:
+
+Input: prices = [7,1,5,3,6,4]
+Output: 5
+Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+Example 2:
+
+Input: prices = [7,6,4,3,1]
+Output: 0
+Explanation: In this case, no transactions are done and the max profit = 0.
+ 
+
+Constraints:
+
+1 <= prices.length <= 105
+0 <= prices[i] <= 104
+```
+```js
+// let prices = [7,6,4,3,1];
+let prices = [7,1,5,3,6,4]
+
+function maxStockProfit(prices){
+  
+/**
+ * @param {number[]} prices
+ * @return {number}
+*/
+
+  let profit = 0
+  let tempArr = 0;
+  let result = [];  
+  for(let i=0; i <= prices.length-1; i++){ 
+    for(let j=i; j <= prices.length-1; j++){                  
+      if(prices[i] <  prices[j]){        
+        profit = prices[j] - prices[i];         
+        result.push(profit);
+      }       
+    }  
+  }  
+  tempArr = result.sort((a,b) => a - b);
+  return result.length == 0 ? 0 : tempArr.at(-1);
+};
+
+let profit = maxStockProfit(prices)
+console.log(profit)
+```
+!NOTE: The error FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory occurs when your Node.js application runs out of memory. This often happens when the application attempts to allocate more memory than the allowed heap size for the Node.js process.
+
+```js
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
+  let minPrice = Infinity; // Track the minimum price encountered so far
+  let maxProfit = 0; // Track the maximum profit
+
+  for (let i = 0; i < prices.length; i++) {
+    // Update the minimum price if the current price is lower
+    if (prices[i] < minPrice) {
+        
+      minPrice = prices[i];
+    } else {
+      // Calculate the profit if we sell at the current price
+      let profit = prices[i] - minPrice;
+      // Update the maximum profit
+      maxProfit = Math.max(maxProfit, profit);
+    }
+  }
+
+  return maxProfit;
+};
+console.log('profit',maxProfit([7, 1, 5, 3, 6, 4])); // Output: 5 (Buy at 1, Sell at 6)
+// console.log(maxProfit([7, 6, 4, 3, 1])); // Output: 0 (No profit possible)
+
+```

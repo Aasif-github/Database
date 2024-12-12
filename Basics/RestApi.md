@@ -1,5 +1,19 @@
 # What is REST API?
 
+- REST is the most used API architecture for modern web services. They use URIs to find resources (both data and functionalities) and standard HTTP methods to get to them.
+
+- GET, POST, PUT, DELETE correspond to read, create, update, and delete operations. They typically use JSON for data formatting, though XML is also supported.
+
+
+- A key feature of REST APIs is stateless communication. Each request contains all the information it needs and servers don't have to keep session information between calls.
+
+- This makes REST APIs very flexible and scalable. In addition, it makes caching work better, and the whole creation process more straightforward.
+
+- However, REST is not without limitations. It has limited support for complex queries and operations, which can make it need many requests and get too much or too little data. Also, it does not always handle errors or exceptions consistently as it uses HTTP status codes, which are not always clear or correct.
+
+- Despite these drawbacks, REST remains the most common choice for public APIs and web services that prioritize simplicity and efficiency.
+---
+
 A **REST API** (Representational State Transfer Application Programming Interface) is a way for applications to communicate over the internet by following specific rules and conventions. It uses **HTTP** (the same protocol your browser uses) to let different systems exchange data in a predictable and structured way.
 
 ---
