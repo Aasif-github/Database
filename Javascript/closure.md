@@ -3,20 +3,81 @@
 Closures in JavaScript are functions that retain access to variables from their containing scope even after the parent function has finished executing. They’re useful for maintaining private data, creating modular code, and implementing callback functions with persistent state.
 
 What is a Closure?
+
 A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). When you create a closure, you gain access to an outer function’s scope from an inner function. Closures are automatically created every time a function is defined in JavaScript.
 
 Lexical Scoping
+
 Lexical scoping refers to how a parser resolves variable names when functions are nested. The location where a variable is declared within the source code determines where that variable is available. Nested functions have access to variables declared in their outer scope. Consider the following example:
 
 Example: This example shows the basic use of closure.
 
 https://www.geeksforgeeks.org/closure-in-javascript/
 
+### is Lexical scope and Lexical enviroment is same or different?
+**Lexical Scope** and **Lexical Environment** are related concepts but are not the same. Here's a concise distinction:
 
-### Closures are essential for handling callbacks and asynchronous operations SHow me real world example
+---
+
+### **Lexical Scope**
+- **Definition**: Refers to the region in the code where a variable is accessible, determined by where it is defined (i.e., the static structure of the code).
+- **Key Idea**: The "rules" about variable accessibility based on the code's structure.
+
+---
+
+### **Lexical Environment**
+- **Definition**: A runtime construct (or data structure) that contains variable bindings (names and values) for a specific execution context.
+- **Key Idea**: It is created when a function or block is executed and includes:
+  - Local variables defined in the function or block.
+  - References to the outer environment (parent scope) to maintain the hierarchy.
+
+---
+
+### Example to Show the Relationship:
+
+```javascript
+function outer() {
+    let outerVar = "Outer";
+
+    function inner() {
+        console.log(outerVar); // Access via Lexical Scope
+    }
+
+    inner();
+}
+
+outer();
+```
+
+- **Lexical Scope**: Determines that `inner` can access `outerVar` because `inner` is defined inside `outer`.
+- **Lexical Environment**: At runtime, when `outer` executes, a Lexical Environment is created that contains `outerVar`. The `inner` function’s Lexical Environment also links to the `outer` Lexical Environment.
+
+---
+
+### Summary
+- **Lexical Scope** is a **concept**.
+- **Lexical Environment** is a **runtime construct** that implements the concept of Lexical Scope.
+
+
+## Closures are essential for handling callbacks and asynchronous operations. ***Show me real world example***
 
 Absolutely, closures are indeed crucial for managing callbacks and asynchronous operations in JavaScript. Here's a real-world example where closures are used to handle asynchronous data fetching, such as making an API call and then processing the data once it's available.
 
+### Custom Logger with Closures
+```js
+
+function Logger(prefix:String){
+  
+  return (message:String)=>{
+    console.log(`[${prefix}]`,`${message}`)
+  }  
+}
+
+let ErrorMsg = Logger('ERROR');
+ErrorMsg('404 not found');
+
+output:[ERROR] 404 not found
+```
 ### Example: Fetching Data from an API
 
 Imagine you want to fetch user data from an API and then process it to display the user's name and email.
