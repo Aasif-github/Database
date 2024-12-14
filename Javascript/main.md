@@ -1,6 +1,6 @@
 - Closure
     - Lexical Environment
-- Hoisting
+-   Hoisting
     - Variable Hoisting
     - Temporal Dead Zone
     - Function Hoisting
@@ -133,3 +133,5 @@ var myFuncExpression = function() {
     return "Hi, there!";
 };
 ```
+
+Explanation: Function declarations are hoisted, while function expressions are not. This means that you can call a function before it is defined, but you cannot call a function expression before it is defined. 
