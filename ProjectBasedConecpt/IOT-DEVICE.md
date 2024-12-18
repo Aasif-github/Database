@@ -1,2 +1,0 @@
-- Tikka toy
-
