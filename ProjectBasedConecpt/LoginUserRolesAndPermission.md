@@ -603,3 +603,7 @@ const CheckPermission = (req, res, next) => {
 
 Referance:
 [User-Roles & Permission](https://www.youtube.com/playlist?list=PLQDioScEMUhl3n7ibx-sl-Y_d__dFrTSr)
+
+
+## User Interface
+https://knowledgebase.webengage.com/docs/role-based-access-control
