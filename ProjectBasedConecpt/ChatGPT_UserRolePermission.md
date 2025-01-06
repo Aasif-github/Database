@@ -195,3 +195,145 @@ You might store a `permissions` key in the user document if:
 ---
 
 Would you like a MongoDB query to demonstrate how to sync permissions into a user document? Or should I provide examples for caching computed permissions for faster access?
+
+
+
+## What will be the Permission for My Application?
+
+To design a permission system using the `PermissionDocument` interface for RBAC, we can structure permissions, roles, and mappings to align with your application's needs. Here's how the system could look:
+
+---
+
+### **`PermissionDocument` Interface Breakdown**
+```typescript
+interface PermissionDocument extends Document {
+  permission_name: string; // Name of the permission
+  permissions: number[];   // Numeric codes for specific actions
+  description: string;     // Description of what the permission allows
+  is_default: number;      // Whether this is a default permission (0 or 1)
+  createdAt: Date;         // Creation timestamp
+  updatedAt: Date;         // Last update timestamp
+}
+```
+
+This interface represents a single permission entity. You can use it to define individual permissions for actions like creating posts, commenting, or managing users.
+
+---
+
+### **Permissions Examples**
+Define a list of permissions to cover the actions in your application:
+
+| **Permission Name**     | **Permissions (Codes)** | **Description**                                | **is_default** |
+|--------------------------|--------------------------|------------------------------------------------|----------------|
+| `Manage Posts`           | `[101, 102, 103, 104]`  | Allows creating, editing, deleting posts       | 0              |
+| `View Posts`             | `[105]`                 | Allows viewing posts                          | 1              |
+| `Manage Categories`      | `[201, 202, 203]`       | Allows creating, editing, deleting categories | 0              |
+| `Comment on Posts`       | `[301, 302, 303]`       | Allows adding, editing, deleting comments     | 0              |
+| `Like/Unlike Posts`      | `[401]`                 | Allows liking or unliking posts               | 1              |
+| `Manage Users`           | `[501, 502, 503]`       | Allows adding, editing, deleting users        | 0              |
+
+---
+
+### **Role-Permission Mapping**
+Roles can be associated with groups of permissions. You can store these mappings in a separate `RoleDocument` schema:
+
+```typescript
+interface RoleDocument extends Document {
+  role_name: string;         // Name of the role (e.g., Admin, Moderator)
+  permissions: string[];     // Array of permission IDs or names
+  is_default: number;        // Whether this role is assigned by default
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+#### Example:
+| **Role Name**  | **Permissions**                     | **Description**                  |
+|----------------|-------------------------------------|----------------------------------|
+| Admin          | `["Manage Posts", "Manage Users"]`  | Full access to the application  |
+| Moderator      | `["View Posts", "Comment on Posts"]`| Moderate content                |
+| Author         | `["Manage Posts", "Comment on Posts", "Like/Unlike Posts"]` | Create and manage content |
+| User           | `["View Posts", "Comment on Posts", "Like/Unlike Posts"]` | Interact with content       |
+| Guest          | `["View Posts"]`                   | View-only access                |
+
+---
+
+### **Implementing in Mongoose**
+#### **Permission Schema**
+```typescript
+import mongoose, { Schema, Document } from 'mongoose';
+
+const PermissionSchema: Schema = new Schema({
+  permission_name: { type: String, required: true, unique: true },
+  permissions: { type: [Number], required: true },
+  description: { type: String, required: true },
+  is_default: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+export const Permission = mongoose.model<PermissionDocument>('Permission', PermissionSchema);
+```
+
+#### **Role Schema**
+```typescript
+const RoleSchema: Schema = new Schema({
+  role_name: { type: String, required: true, unique: true },
+  permissions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Permission' }],
+  is_default: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+export const Role = mongoose.model<RoleDocument>('Role', RoleSchema);
+```
+
+---
+
+### **Assigning Permissions and Roles**
+- **Admin Role Example:**
+  ```json
+  {
+    "role_name": "Admin",
+    "permissions": [
+      "Manage Posts",
+      "Manage Categories",
+      "Manage Users"
+    ],
+    "is_default": 0
+  }
+  ```
+
+- **Permission Example:**
+  ```json
+  {
+    "permission_name": "Manage Posts",
+    "permissions": [101, 102, 103, 104],
+    "description": "Allows creating, editing, deleting posts",
+    "is_default": 0
+  }
+  ```
+
+---
+
+### **Middleware for Authorization**
+You can implement middleware to check if a user has the required permission before performing an action:
+
+```typescript
+function checkPermission(permission: string) {
+  return (req, res, next) => {
+    const userPermissions = req.user.permissions; // Assume permissions are stored in req.user
+    if (userPermissions.includes(permission)) {
+      return next();
+    }
+    return res.status(403).json({ message: 'Access Denied' });
+  };
+}
+
+// Example usage
+app.post('/posts', checkPermission('Manage Posts'), createPostHandler);
+```
+
+---
+
+This RBAC design ties `PermissionDocument` to roles effectively and provides fine-grained control over access. Let me know if you need further details! 
