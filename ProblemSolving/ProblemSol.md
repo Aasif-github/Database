@@ -321,3 +321,39 @@ Object.fromEntries(output)
   jackfruit: 9
 }
 ```
+
+## Only duplicates element
+
+```js
+let arr = [22, 33, 33, 22, 2, 8]; should be output = [ 22, 22, 33, 33 ]
+let countMap = new Map();
+let result = [];
+let seen = new Set();
+
+// Count occurrences using Map
+for (let i = 0; i < arr.length; i++) {
+    const num = arr[i];
+    countMap.set(num, (countMap.get(num) || 0) + 1);
+}
+
+// Populate the result array with numbers that appear more than once
+for (let i = 0; i < arr.length; i++) {
+    const num = arr[i];
+    
+    // Only add the number to the result if it appears more than once
+    // and if it hasn't been added to the result yet (to maintain first occurrence order)
+    //console.log(countMap.get(22))
+    // let arr = [22, 33, 33, 22, 2, 8];
+    console.log('seen',!seen.has(num))
+    if (countMap.get(num) > 1 && !seen.has(num)) {
+        console.log('IN',!seen.has(num))
+        for (let j = 0; j < countMap.get(num); j++) {
+            result.push(num);
+        }
+        // console.log(seen)
+        seen.add(num); // Mark the number as seen
+    }
+}
+
+console.log(result); // Output: [22, 22, 2, 2, 11, 11, 11]
+```
