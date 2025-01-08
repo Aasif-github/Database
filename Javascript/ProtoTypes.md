@@ -2,108 +2,136 @@
 
 ## JavaScript Prototypes
 
-In JavaScript, prototypes are a fundamental concept behind inheritance and a core aspect of how objects are created and interact.
+In JavaScript, a **prototype** is an object that serves as a blueprint for other objects. 
 
-### Concept:
-- Every object in JavaScript has a hidden property called its prototype.
-- The prototype itself is another object that can hold properties and methods.
-- When you try to access a property on an object:
-  - JavaScript first checks the object itself for the property.
-  - If not found directly, JavaScript looks in the object's prototype.
-  - This chaining process continues up the prototype chain until:
-    - A property with a matching name is found, or
-    - The end of the chain is reached (`null`).
+It allows objects to inherit properties and methods from other objects, enabling reusability and efficient memory usage.
 
-### Benefits:
-1. **Code Reusability**: 
-   - Methods and properties in the prototype can be shared among all objects created using the same constructor function.
-2. **Inheritance**:
-   - Objects can inherit properties and methods from their prototypes, enabling specialized objects based on generic ones.
+---
 
-### Example:
+### **Key Points About Prototypes**
+1. **Every Object Has a Prototype**
+   - When you create an object, it has an internal property called `[[Prototype]]` that refers to another object (its prototype).
+   - In JavaScript, the prototype chain determines how properties and methods are resolved when accessed on an object.
+
+2. **Prototype Chain**
+   - If a property or method is not found directly on the object, JavaScript looks for it in the object's prototype.
+   - This continues up the chain until the property/method is found or the chain ends with `null`.
+
+---
+
+### **Examples**
+
+#### 1. Prototype of Objects
 ```javascript
-function Person(name) {
-  this.name = name;
-}
+const obj = { name: "Alice" };
+console.log(obj.toString()); // [object Object]
 
-Person.prototype.greet = function() {
-  console.log("Hi, my name is " + this.name);
-};
-
-const person1 = new Person("Alice");
-const person2 = new Person("Bob");
-
-person1.greet(); // Outputs: "Hi, my name is Alice"
-person2.greet(); // Outputs: "Hi, my name is Bob"
+// `toString` is not defined in `obj` but is found in its prototype.
+console.log(Object.getPrototypeOf(obj)); // {constructor: ƒ, toString: ƒ, ...}
 ```
 
-- In this example:
-  - The `greet` method is defined in `Person.prototype`.
-  - When `person1.greet()` or `person2.greet()` is called:
-    - JavaScript checks `person1` and `person2` objects respectively.
-    - Since the `greet` method is not found directly on the objects, it looks up the prototype chain and finds it in `Person.prototype`.
-    - Both objects share the functionality.
+#### 2. Using Constructor Functions and Prototypes
+   - Constructor functions allow you to define shared properties and methods using prototypes.
+
+```javascript
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+// Adding methods to the prototype
+Person.prototype.greet = function () {
+    return `Hi, my name is ${this.name} and I am ${this.age} years old.`;
+};
+
+const alice = new Person("Alice", 25);
+const bob = new Person("Bob", 30);
+
+console.log(alice.greet()); // Hi, my name is Alice and I am 25 years old.
+console.log(bob.greet());   // Hi, my name is Bob and I am 30 years old.
+
+// Prototype chain
+console.log(alice.__proto__ === Person.prototype); // true
+console.log(Person.prototype.constructor === Person); // true
+```
+
+#### 3. Prototype Inheritance
+   - Objects can inherit from other objects using prototypes.
+
+```javascript
+const animal = {
+    speak: function () {
+        return `${this.name} makes a sound.`;
+    },
+};
+
+const dog = Object.create(animal); // `dog` inherits from `animal`
+dog.name = "Buddy";
+dog.bark = function () {
+    return `${this.name} barks.`;
+};
+
+console.log(dog.speak()); // Buddy makes a sound.
+console.log(dog.bark());  // Buddy barks.
+```
+
+---
+
+### **Prototype Chain Visualization**
+```plaintext
+dog ---> animal ---> Object.prototype ---> null
+```
+
+---
+
+### **Class Syntax and Prototypes**
+   - ES6 `class` syntax is syntactic sugar over prototypes.
+
+```javascript
+class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    greet() {
+        return `Hi, my name is ${this.name} and I am ${this.age} years old.`;
+    }
+}
+
+const charlie = new Person("Charlie", 35);
+console.log(charlie.greet()); // Hi, my name is Charlie and I am 35 years old.
+```
+
+---
+
+### **Benefits of Using Prototypes**
+1. **Memory Efficiency**: Methods shared across objects do not need to be recreated for every instance.
+2. **Inheritance**: Enables sharing and extending functionality between objects.
+3. **Dynamic Addition**: You can add methods or properties to prototypes even after objects are created.
+
+---
+
+### **Prototype vs `__proto__` vs `prototype`**
+- `prototype`: A property of constructor functions used to define properties/methods that will be shared by all instances.
+- `__proto__`: Refers to the internal `[[Prototype]]` link of an object. It points to the prototype object.
+- `Object.getPrototypeOf(obj)`: Recommended way to access an object's prototype.
+
+---
+
+### **Common Misunderstandings**
+- Prototypes do not copy methods or properties; objects reference them through the prototype chain.
+- `class` is just a cleaner way to work with prototypes, not a separate system.
+
+Let me know if you'd like examples or further clarifications!
+
 
 For a deeper understanding, explore the [MDN documentation on JavaScript prototypes](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes).
 
 ---
 
-## How JS Engine Reacts to Strict Mode
-
-When you enable strict mode in JavaScript using `"use strict";`, the JavaScript engine enters a more restricted execution environment.
-
-### Key Reactions:
-1. **Parsing and Syntax Checks**:
-   - Enforces stricter syntax rules.
-   - Reserved keywords as variable names will throw errors.
-
-2. **Error Handling**:
-   - Actions that silently continue in sloppy mode throw errors in strict mode (e.g., using undeclared variables, assigning to read-only properties).
-
-3. **Code Analysis and Optimization**:
-   - Strict mode allows clearer analysis, enabling better performance optimizations.
-
-4. **Global Scope Management**:
-   - Prevents accidental creation of global variables by throwing reference errors for undeclared variables.
-
-5. **Function Behavior**:
-   - **Arguments Object**: Modifications to the `arguments` object won't affect function parameters, and vice versa.
-   - **`this` Keyword**: Stricter handling of `this`, improving clarity and reducing ambiguity.
-
-6. **Security Considerations**:
-   - Restricts insecure features like `eval` and `with`.
-
-### Overall Impact:
-- Strict mode catches errors earlier, enforces best practices, and may optimize performance. 
-- While implementation details vary across engines, the principles of stricter parsing, error handling, and code optimization remain consistent.
-
-### Additional Resources:
-For more details on strict mode, check out this [guide on JavaScript strict mode](https://codingtorque.com/tic-tac-toe-game-using-javascript/).
-```
-
-```
-## sequence to study
-
-1. **Object**
-2. **Prototype**
-3. **Class and Constructor**
-4. **This - Keyword**
-5. **Delegation** (Refer: *You Don’t Know JS Yet* - Book)
-
-## Asynchronous Programming
-
-1. **Hoisting**
-2. **Scopes**
-3. **Closure**
-4. **Callback**
-5. **Promise**
-6. **Async - Await**
-
-For more details on prototypes, refer to this [JavaScript prototype inheritance](https://javascript.info/prototype-inheritance).
-
----
 # ProtoTypes and Inheritance in detail
-``` 
+
 ### What is Prototype in JavaScript?
 
 In JavaScript, **prototype** is a core concept in its object-oriented programming model. It is the mechanism through which objects in JavaScript inherit features from one another. Every JavaScript object has a hidden property called `[[Prototype]]`, which points to another object (or `null`). This other object is called the **prototype**.
