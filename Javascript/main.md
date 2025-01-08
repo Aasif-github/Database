@@ -1,3 +1,4 @@
+- ProtoTypes
 - Closure
     - Lexical Environment
 -   Hoisting
@@ -5,8 +6,43 @@
     - Temporal Dead Zone
     - Function Hoisting
 
+## What is ProtoTypes?
+
+In JavaScript, a **prototype** is an object that serves as a blueprint for other objects. 
+
+It allows objects to inherit properties and methods from other objects, enabling reusability and efficient memory usage.
+
+we can add properties and methods to the prototype of an object using `prototype` keyword, which will be shared by all instances of that object.
+
+### Example: Prototypes in Action
+
+```javascript
+// Step 1: Create a constructor function
+function Person(name, age) {
+    this.name = name; // Instance property
+    this.age = age;   // Instance property
+}
+
+// Step 2: Add a method to the prototype
+Person.prototype.greet = function() {
+    console.log(`Hello, my name is ${this.name} and I am ${this.age} years old.`);
+};
+
+// Step 3: Create instances
+const person1 = new Person("Alice", 30);
+const person2 = new Person("Bob", 25);
+
+// Both instances can access the prototype method
+person1.greet(); // Output: Hello, my name is Alice and I am 30 years old.
+person2.greet(); // Output: Hello, my name is Bob and I am 25 years old.
+
+// Step 4: Check the prototype chain
+console.log(person1.__proto__ === Person.prototype); // true
+console.log(Object.getPrototypeOf(person1) === Person.prototype); // true
+```
 
 ## What is Closure?
+
 A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). When you create a closure, you gain access to an outer function’s scope from an inner function. Closures are automatically created every time a function is defined in JavaScript.
 
 ```js

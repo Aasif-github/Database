@@ -10,6 +10,7 @@
 2. **Prototype**
 3. **Class and Constructor**
 4. **This - Keyword**
+        - Call, Apply and Bind         
 5. **Delegation** (Refer: *You Don’t Know JS Yet* - Book)
 
 
