@@ -120,8 +120,9 @@ fetchInParallel();
 - **Sequential vs. Parallel**: Use `await` for sequential operations and `Promise.all` for parallel operations.
 
 Using `async` and `await` improves the readability and maintainability of asynchronous code by making it look and behave more like synchronous code. 
+---
 
-Guess output
+### Guess output
 ```js
 async function test(){
     console.log('A')
@@ -156,33 +157,103 @@ task 1
 task A1
 
 ```
-## In `async` and `await` functions, the `await` keyword is used to pause the execution of the function until the Promise returned by the function is resolved.
+---
+## ***In `async` and `await` functions, Does `await` keyword is used to pause the execution of the function until the Promise returned by the function is resolved.***
 
-NO,
-```js
-async function monitor(){
-console.log('start')
-await task1()
-console.log('end')    
+## Answer: YES,
+
+Yes, the `await` keyword in `async` functions is used to pause the execution of the function until the **Promise** it is waiting for is resolved (or rejected). However, it doesn't block the entire program; it only pauses the **async function** in which it is used, allowing the rest of the program to continue executing.
+
+---
+
+### **How Does `await` Work?**
+1. When `await` is encountered:
+   - The **async function** pauses at that point.
+   - It waits for the promise to be **resolved** or **rejected**.
+2. Once the promise is settled:
+   - If resolved, the value of the promise is returned.
+   - If rejected, an error is thrown that can be caught with `try-catch`.
+
+---
+
+### **Example**
+```javascript
+function fetchData() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("Data received");
+    }, 2000); // Simulates a 2-second delay
+  });
 }
 
-
-function task1(){
-    return setTimeout(() => {
-        console.log('task 1 - done')
-    }, 5000);
+async function getData() {
+  console.log("Fetching data...");
+  
+  const data = await fetchData(); // Pauses here until the promise resolves
+  console.log(data); // Logs "Data received"
+  
+  console.log("Task completed");
 }
 
-monitor()
-```
-output:
-```js       
-start
-end
-task 1 - done
+getData();
+console.log("Program continues executing...");
 ```
 
-## Suppose we have multiple async task and we want use task1 output in task2 and task 2 output in task3. what should we use , `Promise` or `async- await`.
+---
+
+### **Output**
+```plaintext
+Fetching data...
+Program continues executing...
+Data received
+Task completed
+```
+
+### **Explanation**
+1. `await fetchData()` pauses the `getData` function until `fetchData()` resolves.
+2. Meanwhile, `"Program continues executing..."` is logged, showing that the rest of the program is not blocked.
+3. Once `fetchData` resolves, `"Data received"` is logged.
+
+---
+
+### **Key Points About `await`**
+1. **Pauses Only the Async Function**:
+   - The `await` keyword pauses only the `async` function, not the entire JavaScript program.
+
+2. **Error Handling**:
+   - If the promise rejects, the error is thrown and can be handled using `try-catch`:
+     ```javascript
+     async function getData() {
+       try {
+         const data = await fetchData(); // May throw an error if the promise rejects
+         console.log(data);
+       } catch (error) {
+         console.error("Error:", error);
+       }
+     }
+     ```
+
+3. **Used Only in Async Functions**:
+   - You cannot use `await` outside an `async` function.
+
+4. **Improves Readability**:
+   - Makes asynchronous code look synchronous, improving readability and maintainability.
+
+---
+
+### **Behind the Scenes**
+Internally, `await` is syntactic sugar over `Promise.then()`. The above example with `await` is equivalent to:
+
+```javascript
+fetchData().then((data) => {
+  console.log(data);
+});
+```
+
+However, `await` makes the code easier to follow, especially when dealing with multiple asynchronous operations.
+
+
+## ***Suppose we have multiple async task and we want use task1 output in task2 and task 2 output in task3. what should we use , `Promise` or `async- await`***.
 
 For a situation where you have multiple asynchronous tasks, and each task's output is used as input to the next, you should use **`async/await`** because it allows you to write code that is easier to read and reason about compared to chaining multiple Promises.
 

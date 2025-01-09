@@ -620,3 +620,110 @@ promise.catch((error) => {
 - Use `Promise.any()` when you care about the **first success**, ignoring failures.
 
 ## Async-Await
+
+`async` and `await` are syntactic sugar built on top of Promises. They simplify writing and reading asynchronous code, making it look more like synchronous code.
+
+---
+
+### **What is `async`?**
+- The `async` keyword is used to define a function that always returns a **Promise**.
+- It makes it easier to work with promises.
+- Inside an `async` function, you can use the `await` keyword.
+
+#### Example:
+```javascript
+async function greet() {
+  return "Hello, World!";
+}
+
+greet().then((message) => {
+  console.log(message); // "Hello, World!"
+});
+```
+Even though the function `greet()` looks like it's returning a value, it actually returns a promise.
+
+---
+
+### **What is `await`?**
+- The `await` keyword can only be used inside `async` functions.
+- It pauses the execution of the `async` function until the promise is resolved (or rejected).
+- Once the promise resolves, `await` gives you the resolved value of that promise.
+
+#### Example:
+```javascript
+async function fetchData() {
+  const data = await Promise.resolve("Data received");
+  console.log(data); // "Data received"
+}
+
+fetchData();
+```
+
+---
+
+### **How Async and Await Work Together**
+They simplify the process of chaining promises and handling asynchronous operations.
+
+#### Real-World Example:
+Suppose you want to:
+1. Fetch user details.
+2. Fetch the user's orders based on the user details.
+3. Process those orders.
+
+Here's how it works with `async` and `await`:
+
+```javascript
+function fetchUser() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve("User Details"), 1000);
+  });
+}
+
+function fetchOrders(user) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(`Orders for ${user}`), 1000);
+  });
+}
+
+async function processOrders() {
+  console.log("Fetching user...");
+  const user = await fetchUser(); // Pauses here until resolved
+  console.log(user);
+
+  console.log("Fetching orders...");
+  const orders = await fetchOrders(user); // Pauses here until resolved
+  console.log(orders);
+
+  console.log("All tasks completed!");
+}
+
+processOrders();
+```
+
+---
+
+### **Output**
+```plaintext
+Fetching user...
+User Details
+Fetching orders...
+Orders for User Details
+All tasks completed!
+```
+
+---
+
+### **Key Points**
+1. **Async functions return a promise**:
+   - You can use `.then()` on them if you want.
+2. **Await pauses execution**:
+   - It stops the `async` function at that point until the promise resolves.
+3. **Error handling is easier**:
+   - Use `try-catch` to handle errors in async/await.
+
+---
+
+### **Why Use Async/Await?**
+- Makes code easier to read and maintain.
+- Avoids deeply nested `.then()` and `.catch()` blocks (i.e., callback hell).
+- Clean error handling with `try-catch`.
