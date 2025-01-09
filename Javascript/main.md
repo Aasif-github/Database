@@ -1,10 +1,10 @@
--   Hoisting *
+-   [Hoisting](#hoisting) *
     - Variable Hoisting
     - Temporal Dead Zone
     - Function Hoisting 
   
 - Objects
-- ProtoTypes *
+- [ProtoTypes](#prototypes) *
   - Prototype Chaining
 - class and constructor
 - This Keyword *
@@ -28,8 +28,9 @@
     - Promise Api's
 - [Async-Await](#async-await) *
 
+## Hoisting
   
-## What is ProtoTypes?
+## ProtoTypes
 
 In JavaScript, a **prototype** is an object that serves as a blueprint for other objects. 
 
