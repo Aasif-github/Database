@@ -349,3 +349,102 @@ In your code:
 - This happens **before** the interpreter reaches `console.log('end')`, which is why `Task 1` is logged first.
 
 If you had attached a `.then()` handler to the Promise or resolved/rejected it, that code would execute asynchronously after the synchronous part completes.
+
+
+## If our task1,task2 and task3 are depending with each other.best way to handle it? [Asked*]
+If **Task 1**, **Task 2**, and **Task 3** are dependent on each other (e.g., Task 2 requires the result of Task 1, and Task 3 requires the result of Task 2), the **best way to handle this is to use Promise chaining or `async/await`**. These methods ensure tasks are executed sequentially while keeping the code clean and readable.
+
+---
+
+### **Using Promise Chaining**
+
+#### Example:
+Imagine:
+1. **Task 1**: Fetch user details.
+2. **Task 2**: Fetch orders based on the user.
+3. **Task 3**: Send a confirmation message based on the orders.
+
+```javascript
+function task1() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve("User Details"), 1000); // Simulates an API call
+  });
+}
+
+function task2(userDetails) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(`Orders for ${userDetails}`), 1000); // Depends on Task 1
+  });
+}
+
+function task3(orders) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(`Confirmation sent for ${orders}`), 1000); // Depends on Task 2
+  });
+}
+
+// Chaining Promises
+task1()
+  .then((userDetails) => {
+    console.log(userDetails); // Task 1 completed
+    return task2(userDetails); // Pass result to Task 2
+  })
+  .then((orders) => {
+    console.log(orders); // Task 2 completed
+    return task3(orders); // Pass result to Task 3
+  })
+  .then((confirmation) => {
+    console.log(confirmation); // Task 3 completed
+  })
+  .catch((error) => {
+    console.error("Error:", error); // Handle any errors
+  });
+```
+
+---
+
+### **Using `async/await`**
+
+#### Example:
+The same scenario can be written more cleanly with `async/await`:
+
+```javascript
+async function handleTasks() {
+  try {
+    const userDetails = await task1(); // Wait for Task 1
+    console.log(userDetails);
+
+    const orders = await task2(userDetails); // Wait for Task 2
+    console.log(orders);
+
+    const confirmation = await task3(orders); // Wait for Task 3
+    console.log(confirmation);
+  } catch (error) {
+    console.error("Error:", error); // Handle errors
+  }
+}
+
+handleTasks();
+```
+
+---
+
+### **Which One is Better?**
+
+1. **Use Promise Chaining**:
+   - When you’re comfortable with chaining syntax.
+   - For simpler, less nested tasks.
+   
+2. **Use `async/await`**:
+   - For more readable, linear code.
+   - When the tasks are heavily dependent on each other and need clear error handling.
+
+---
+
+### **Why Async/Await is Recommended for Dependencies**
+- It makes the code **look synchronous** even though it’s asynchronous.
+- Easier to debug and maintain.
+- Handles errors more cleanly with a `try-catch` block.
+
+---
+

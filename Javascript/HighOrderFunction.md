@@ -1,4 +1,4 @@
-### What is HOD or Higher Order Function?
+### Higher Order Function?
 
 - A higher-order function is a function that accepts a function as an argument 
 - or returns a function as a result.

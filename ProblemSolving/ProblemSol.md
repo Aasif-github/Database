@@ -357,3 +357,137 @@ for (let i = 0; i < arr.length; i++) {
 
 console.log(result); // Output: [22, 22, 2, 2, 11, 11, 11]
 ```
+
+
+## Create custom map function (high order function)
+
+To create a custom implementation of the `map()` function in JavaScript, you can define a function that takes an array and a callback as arguments. It should apply the callback to each element of the array and return a new array with the transformed values.
+
+Here’s how you can implement it:
+
+```javascript
+// Custom map function
+function customMap(array, callback) {
+  const result = [];
+  for (let i = 0; i < array.length; i++) {
+    result.push(callback(array[i], i, array)); // Pass element, index, and array
+  }
+  return result;
+}
+
+// Example usage
+const numbers = [1, 2, 3, 4, 5];
+const squaredNumbers = customMap(numbers, (num) => num * num);
+
+console.log(squaredNumbers); // Output: [1, 4, 9, 16, 25]
+```
+
+### **Explanation**
+1. **Parameters**:
+   - `array`: The input array.
+   - `callback`: A function that will be executed for each element in the array. It receives three arguments:
+     - The current element (`array[i]`).
+     - The current index (`i`).
+     - The original array (`array`).
+
+2. **Process**:
+   - Create an empty array `result` to store the transformed elements.
+   - Loop through each element of the input array.
+   - Call the `callback` function with the element, index, and original array as arguments.
+   - Push the result of the callback into the `result` array.
+
+3. **Return**:
+   - Return the new array (`result`) after all elements are processed.
+
+### **Benefits of Custom Map**
+- Mimics the behavior of the native `Array.prototype.map` method.
+- Provides insight into how higher-order functions work internally.
+
+### Mimics the behavior of the native Array.prototype.map
+
+To mimic the behavior of the native `Array.prototype.map()` more accurately, we need to ensure our custom implementation:
+
+1. Supports **array-like objects**.
+2. Validates inputs (throws an error if the callback is not a function).
+3. Uses the same `this` context as the native `map()` when applicable.
+
+Here’s an improved version:
+
+### **Custom `map` Implementation**
+```javascript
+// Custom implementation of Array.prototype.map
+function customMap(callback, thisArg) {
+  // Ensure 'this' is an array-like object
+  if (this == null) {
+    throw new TypeError("Cannot read properties of null or undefined");
+  }
+
+  if (typeof callback !== "function") {
+    throw new TypeError(callback + " is not a function");
+  }
+
+  // Convert 'this' to an object (for array-like objects)
+  const array = Object(this);
+  const length = array.length >>> 0; // Ensure length is a non-negative integer
+  const result = new Array(length);
+
+  for (let i = 0; i < length; i++) {
+    if (i in array) {
+      // Call the callback with the provided thisArg and appropriate arguments
+      result[i] = callback.call(thisArg, array[i], i, array);
+    }
+  }
+
+  return result;
+}
+
+// Attach to Array.prototype (optional)
+Array.prototype.customMap = customMap;
+
+// Example Usage
+const numbers = [1, 2, 3, 4];
+const squares = numbers.customMap(function (num) {
+  return num * num;
+});
+
+console.log(squares); // Output: [1, 4, 9, 16]
+
+// With `thisArg`
+const multiplier = { factor: 2 };
+const doubled = numbers.customMap(function (num) {
+  return num * this.factor;
+}, multiplier);
+
+console.log(doubled); // Output: [2, 4, 6, 8]
+```
+
+---
+
+### **Explanation**
+1. **Input Validation**:
+   - Throws an error if `callback` is not a function.
+   - Throws an error if `this` is `null` or `undefined` (to mimic `map`'s behavior).
+
+2. **Handling `thisArg`**:
+   - The `callback.call(thisArg, ...)` ensures the `callback` is executed with the specified `this` context.
+
+3. **Support for Sparse Arrays**:
+   - The `if (i in array)` check ensures that only elements with defined indices in sparse arrays are processed.
+
+4. **Array-Like Objects**:
+   - By using `Object(this)` and `length >>> 0`, the function supports objects with a `length` property.
+
+5. **Result Initialization**:
+   - `new Array(length)` pre-allocates the result array to the same length as the input.
+
+---
+
+### **Comparison with Native `map()`**
+The custom implementation works almost identically to the native `Array.prototype.map()`. It handles:
+- Sparse arrays.
+- `thisArg` for context binding.
+- Array-like objects, e.g., `{ 0: 'a', 1: 'b', length: 2 }`.
+
+This makes it a robust replacement for the native `map()` function.
+
+Let me know if you'd like further details!

@@ -1,11 +1,34 @@
-- ProtoTypes
-- Closure
-    - Lexical Environment
--   Hoisting
+-   Hoisting *
     - Variable Hoisting
     - Temporal Dead Zone
-    - Function Hoisting
+    - Function Hoisting 
+  
+- Objects
+- ProtoTypes *
+  - Prototype Chaining
+- class and constructor
+- This Keyword *
+  - Call, Apply and Bind *
 
+
+- Pure Function
+- First Class Function
+
+- [Higher-Order Functions](#higher-order-functions) *
+
+    
+- Closure *
+    - Lexical Environment    
+
+- [CallBack Functions](#callback-functions) * 
+- [Promises](#promises) *
+    - Promise state: pending, fulfilled, rejected
+    - How it works
+    - Promise chaining
+    - Promise Api's
+- [Async-Await](#async-await) *
+
+  
 ## What is ProtoTypes?
 
 In JavaScript, a **prototype** is an object that serves as a blueprint for other objects. 
@@ -40,10 +63,63 @@ person2.greet(); // Output: Hello, my name is Bob and I am 25 years old.
 console.log(person1.__proto__ === Person.prototype); // true
 console.log(Object.getPrototypeOf(person1) === Person.prototype); // true
 ```
+### Prototype Chaining
+- If a property or method is not found directly on the object, JavaScript looks for it in the object's prototype.
+  
+- This continues up the chain until the property/method is found or the chain ends with `null`.
+
+## Higher-Order Functions
+
+- A higher-order function is a function that takes a function as an argument 
+- or returns a function as a result.
+
+1. Takes one or more functions as arguments
+   ```js
+   function calculate(operation, a, b) {
+     return operation(a, b);
+   }
+
+   function add(a, b) {
+     return a + b;
+   }
+
+   const result = calculate(add, 3, 4);
+
+   console.log(result); // 7
+   ```
+2. Returns a function as its result
+```js
+function createMultiplier(multiplier) {
+  return function (num) {
+    return num * multiplier;
+  }
+}
+
+const double = createMultiplier(2);
+const triple = createMultiplier(3);
+
+console.log(double(5)); // Output: 10
+console.log(triple(5)); // Output: 15
+```
+#### Built-in Higher-Order Functions
+
+- `map()`
+- `filter()`
+- `reduce()`
+- `forEach()`
+- `find()`
+- `findIndex()`
+- `some()`
+- `every()`
+- `sort()`    
 
 ## What is Closure?
 
-A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). When you create a closure, you gain access to an outer function’s scope from an inner function. Closures are automatically created every time a function is defined in JavaScript.
+A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). 
+
+When we create a closure, we gain access to an outer function’s scope from an inner function. 
+
+Closures are created automatically every time a when we create a function in JavaScript.
 
 ```js
 function makeCounter() {
@@ -171,3 +247,376 @@ var myFuncExpression = function() {
 ```
 
 Explanation: Function declarations are hoisted, while function expressions are not. This means that you can call a function before it is defined, but you cannot call a function expression before it is defined. 
+
+
+## CallBack Functions
+A callback is a function passed as an argument to another function and executed later.
+
+Callbacks are a way to handle asynchronous operations/tasks like 
+- Network requests, 
+- File operations like read and write, 
+- Database queries, or 
+- User interactions in JavaScript.
+
+scenario:`Greeting user`
+
+```js
+function greet(name, callback) {
+  console.log(`Hello, ${name}!`);
+  callback();
+}
+
+function sayThanks() {
+  console.log('Thank you for visiting again!');
+}
+
+greet('Alice', sayThanks);
+// Output: Hello, Alice!
+//        Thank you for visiting again!
+
+```
+
+`Real use case of callback`
+
+```js
+function fetchData(url, callback) {
+  console.log(`Fetching data from ${url}`);
+
+  setTimeout(() => {
+    const data = {
+      name: 'John',
+      age: 30
+    };
+    
+    console.log(`Data fetched: ${data}`);
+
+    if (callback) {
+      callback(data); 
+    }   
+  })
+}
+
+fetchData('https://api.example.com/data', (data) => {
+  console.log('Data received:', data);
+});
+
+  
+```
+
+### **What is Callback Hell?**  
+
+Callback hell happens when we use many nested callbacks in asynchronous code, making it difficult to read, understand, and maintain. It often looks like a pyramid or staircase of functions.
+
+---
+
+### **Example of Callback Hell**  
+Imagine we need to do 3 tasks in order:
+1. Get user details.
+2. Fetch their orders.
+3. Send them a confirmation email.
+
+In **callback hell**, it looks like this:
+
+```javascript
+getUserDetails("userID", (user) => {
+  fetchOrders(user, (orders) => {
+    sendConfirmation(orders, (message) => {
+      console.log(message);
+    });
+  });
+});
+```
+
+---
+
+### **Problem with Callback Hell**
+- **Hard to Read**: Too many layers of nested functions.
+- **Hard to Fix**: Debugging or changing the code is confusing.
+
+---
+
+### **How to Fix It?**
+Use **Promises** or **Async/Await** to make the code cleaner.
+
+#### **Using Promises**
+```javascript
+getUserDetails("userID")
+  .then((user) => fetchOrders(user))
+  .then((orders) => sendConfirmation(orders))
+  .then((message) => console.log(message))
+  .catch((error) => console.error(error));
+```
+
+#### **Using Async/Await**
+```javascript
+async function handleTasks() {
+  try {
+    const user = await getUserDetails("userID");
+    const orders = await fetchOrders(user);
+    const message = await sendConfirmation(orders);
+    console.log(message);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+handleTasks();
+```
+
+---
+
+### **Simple Analogy**  
+Callback hell is like writing instructions in a messy way. Fixing it with Promises or Async/Await is like organizing those instructions step by step, so they’re easy to follow.
+
+## Promises
+
+A **Promise** is an object representing the eventual completion (or failure) of an asynchronous operation and its resulting value. 
+
+It provides a clean way to write asynchronous code, avoiding the pitfalls of callback hell by chaining asynchronous operations.
+
+Terms:
+Eventual Completion:
+
+- Instead of getting the result right away, the result of the task will be available at some point in the future. The exact time of completion is unknown when the task is started.
+
+- Once the task completes (either successfully or with an error), the Promise will be settled, and you can handle the result.
+
+States of a Promise :
+- **Pending**: The task is still running.
+- **Resolved** (Fulfilled): The task completed successfully.
+- **Rejected**: Something went wrong, and the task failed.
+
+How it Works:
+
+1. Creating a Promise:
+   - You create a promise by using new Promise(). It takes a function with two parameters: resolve (for success) and reject (for failure).
+
+2. Using the Promise:
+   - You can use .then() for when it’s resolved and .catch() for when it’s rejected.
+
+***Create a Promise:***
+```javascript
+const task = new Promise((resolve, reject) => {
+    // Simulate an asynchronous operation
+    setTimeout(() => {
+        const success = true; // Simulate success or failure
+        if (success) {
+            resolve('Operation was successful!');
+        } else {
+            reject('Operation failed!');
+        }
+    }, 1000);
+});
+```
+***Using the Promise:***
+```javascript
+task
+  .then(result => {
+        console.log(result); // 'Operation was successful!'
+    })
+    .catch(error => {
+        console.error(error); // 'Operation failed!'
+    })
+    .finally(() => {
+        console.log('Promise has been settled.');
+    });
+```
+
+### Promise Chaining
+
+Promise chaining is a technique in JavaScript where we connect multiple `.then()` handlers together to handle the results of asynchronous tasks sequentially. Each `.then()` passes its resolved value to the next `.then()` in the chain, creating a smooth flow of execution.
+
+### **Why Use Promise Chaining?**  
+1. To handle multiple asynchronous operations in sequence.
+2. To avoid **callback hell**.
+3. To manage dependencies between operations cleanly.
+
+---
+
+### **How Promise Chaining Works**  
+1. Each `.then()` returns a new promise.
+2. The result of one `.then()` is passed as input to the next `.then()`.
+
+---
+
+### **Example: Fetching Data in Steps**
+Imagine you:
+1. Get user details.
+2. Fetch their orders.
+3. Send a thank-you message.
+
+Here’s how you can chain these tasks:
+
+```javascript
+getUserDetails("userID")
+  .then((user) => {
+    console.log("User Details:", user);
+    return fetchOrders(user); // Pass the user data to the next task
+  })
+  .then((orders) => {
+    console.log("User Orders:", orders);
+    return sendThankYou(orders); // Pass the orders to the next task
+  })
+  .then((message) => {
+    console.log(message); // Final output
+  })
+  .catch((error) => {
+    console.error("Error:", error); // Handle any errors in the chain
+  });
+```
+---
+
+### **Detailed Analogy**  
+Think of it as passing a task down a production line:  
+- **Step 1**: Get raw materials (user details).  
+- **Step 2**: Process the materials (fetch orders).  
+- **Step 3**: Finalize the product (send a thank-you).  
+- If any step fails, the error stops the process, and `catch()` handles it.
+
+---
+Note: If our task1, task2 and task3 are depending with each other.Best way to handle it - Promise Chaining or Async/Await(Recommended)
+
+### Promise Api's
+
+- Promise.all()
+- Promise.allSettled()
+- Promise.race()
+- Promise.any()
+- Promise.resolve()
+- Promise.reject()
+
+
+The **Promise API** in JavaScript provides various methods to work with promises effectively. These methods allow you to combine, resolve, or reject promises in different ways based on your use case.
+
+---
+
+### **1. Promise.all()**
+- Waits for **all promises** in an array to resolve.
+- If any promise is rejected, the entire method is rejected.
+- Used when you want all tasks to complete before proceeding.
+
+#### Example:
+```javascript
+const promise1 = Promise.resolve(10);
+const promise2 = Promise.resolve(20);
+const promise3 = Promise.resolve(30);
+
+Promise.all([promise1, promise2, promise3])
+  .then((results) => {
+    console.log(results); // [10, 20, 30]
+  })
+  .catch((error) => {
+    console.error("One of the promises failed:", error);
+  });
+```
+
+---
+
+### **2. Promise.allSettled()**
+- Waits for **all promises** to either resolve or reject.
+- Returns an array with the status (`fulfilled` or `rejected`) and value for each promise.
+- Used when you want to know the result of each promise regardless of failure.
+
+#### Example:
+```javascript
+const promise1 = Promise.resolve("Success");
+const promise2 = Promise.reject("Error");
+const promise3 = Promise.resolve("Another Success");
+
+Promise.allSettled([promise1, promise2, promise3]).then((results) => {
+  console.log(results);
+  // [
+  //   { status: "fulfilled", value: "Success" },
+  //   { status: "rejected", reason: "Error" },
+  //   { status: "fulfilled", value: "Another Success" }
+  // ]
+});
+```
+
+---
+
+### **3. Promise.race()**
+- Returns the result of the **first promise** that resolves or rejects.
+- Used when you want the fastest result.
+
+#### Example:
+```javascript
+const promise1 = new Promise((resolve) => setTimeout(() => resolve("First"), 1000));
+const promise2 = new Promise((resolve) => setTimeout(() => resolve("Second"), 500));
+
+Promise.race([promise1, promise2]).then((result) => {
+  console.log(result); // "Second" (whichever resolves first)
+});
+```
+
+---
+
+### **4. Promise.any()**
+- Returns the result of the **first promise that resolves**.
+- If all promises reject, it throws an `AggregateError`.
+
+#### Example:
+```javascript
+const promise1 = Promise.reject("Error 1");
+const promise2 = Promise.reject("Error 2");
+const promise3 = Promise.resolve("Success");
+
+Promise.any([promise1, promise2, promise3])
+  .then((result) => {
+    console.log(result); // "Success"
+  })
+  .catch((error) => {
+    console.error(error); // If all promises reject
+  });
+```
+
+---
+
+### **5. Promise.resolve()**
+- Creates a promise that is **already resolved** with a given value.
+
+#### Example:
+```javascript
+const promise = Promise.resolve(42);
+
+promise.then((value) => {
+  console.log(value); // 42
+});
+```
+
+---
+
+### **6. Promise.reject()**
+- Creates a promise that is **already rejected** with a given reason.
+
+#### Example:
+```javascript
+const promise = Promise.reject("Error occurred");
+
+promise.catch((error) => {
+  console.error(error); // "Error occurred"
+});
+```
+
+---
+
+### **Summary Table**
+
+| Method             | Description                                                                     |
+|--------------------|---------------------------------------------------------------------------------|
+| `Promise.all()`     | Resolves when all promises resolve, rejects if any promise rejects.            |
+| `Promise.allSettled()` | Resolves with results of all promises, regardless of resolve/reject.         |
+| `Promise.race()`    | Resolves or rejects with the first promise to complete.                        |
+| `Promise.any()`     | Resolves with the first promise to resolve, rejects only if all promises reject.|
+| `Promise.resolve()` | Returns a promise that is already resolved.                                    |
+| `Promise.reject()`  | Returns a promise that is already rejected.                                    |
+
+---
+
+### **When to Use What**
+- Use `Promise.all()` when **all tasks must succeed**.
+- Use `Promise.allSettled()` when you care about **all results**, even if some fail.
+- Use `Promise.race()` when you need the **fastest result**.
+- Use `Promise.any()` when you care about the **first success**, ignoring failures.
+
+## Async-Await
