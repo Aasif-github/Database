@@ -695,3 +695,11 @@ Ring....
 Ring....
 Ring....
 ```
+
+https://www.geeksforgeeks.org/node-interview-questions-and-answers/
+
+21. What is event-driven programming in Node.js?
+Event-driven programming is used to synchronize the occurrence of multiple events and to make the program as simple as possible. The basic components of an Event-Driven Program are:
+
+A callback function ( called an event handler) is called when an event is triggered.
+An event loop that listens for event triggers and calls the corresponding event handler for that event.
