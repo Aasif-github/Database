@@ -42,7 +42,7 @@ These tasks are called "low-level" because they involve direct interaction with 
 
 
 
-### **How Does It Work?**
+### **How Does It Work?** (inside the event loop)
 When Node.js starts, it initializes the event loop, processes the provided input script, and then begins processing the event loop. The event loop consists of several phases, each responsible for different types of operations:
 
 1. **Timers**: Executes callbacks scheduled by `setTimeout()` and `setInterval()`.
@@ -137,7 +137,7 @@ from settimeout
 This priority handling between microtasks and macrotasks ensures that `from promise` is logged before `from settimeout`.
 
 
-# where does all the blocking code of node js execute??
+## Where does all the blocking code of node js execute??
 
 In Node.js, blocking code generally refers to operations that take a significant amount of time to complete and prevent the event loop from continuing to process other tasks. The way Node.js handles blocking operations depends on the type of operation:
 
@@ -178,7 +178,7 @@ In Node.js, blocking code generally refers to operations that take a significant
 - **I/O Operations**: Managed by Node.js using asynchronous methods and the Libuv library, which uses a thread pool to perform blocking I/O operations without blocking the event loop.
 
 
-# where does all non blocking code of node js execute??
+## Where does all non blocking code of node js execute??
 
 In Node.js, non-blocking code primarily executes within the main thread, often referred to as the event loop. The event loop is the core of Node.js's asynchronous, non-blocking architecture. Here's a breakdown of how non-blocking code is handled and executed:
 
