@@ -500,7 +500,6 @@ db.sales.aggregate([
 
 These examples showcase the versatility of the `$group` stage in MongoDB's aggregation pipeline, allowing you to perform different types of aggregations to suit a variety of data analysis needs.
 
-
 - $unwind
 - $lookup
 

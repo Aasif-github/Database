@@ -185,3 +185,22 @@ app.use((err, req, res, next) => {
   });   
 ```
 
+## 
+
+Node.js uses an event-driven architecture, meaning it listens for events (like a file upload or a user request) and runs specific functions (event handlers) to handle them when they occur. This makes it fast and efficient for handling multiple tasks.
+
+Example
+```javascript
+const EventEmitter = require('events');
+
+// Create an instance of EventEmitter
+const eventEmitter = new EventEmitter();
+
+// Register an event listener
+eventEmitter.on('dataReceived', (data) => {
+  console.log(`Data received: ${data}`);
+});
+
+// Emit the event
+eventEmitter.emit('dataReceived', 'Hello, Event-Driven Architecture!');
+```
