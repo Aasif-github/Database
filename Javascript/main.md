@@ -116,24 +116,26 @@ console.log(triple(5)); // Output: 15
 
 ## What is Closure?
 
-A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). 
-
-When we create a closure, we gain access to an outer function’s scope from an inner function. 
+Closure is a javascript function which retain the access of outer scope, even after the outer function has finished execution.
+It allows the function to remember and access variables from its outer function's scope.
 
 Closures are created automatically every time a when we create a function in JavaScript.
 
 ```js
-function makeCounter() {
+function counter(){
   let count = 0;
-
-  return function() {
+  // here the variable of outer scope is accessble by inner function 
+  return function(){
     return count++;
-  };
+  }
 }
-let counter = makeCounter();
-console.log(counter()); // 0
-console.log(counter()); // 1
 
+// after outer function finished execution
+let makeCount = counter();
+
+console.log(makeCount());
+console.log(makeCount());
+console.log(makeCount());
 ```
 Here we make two counters: counter and counter2 using the same makeCounter function.
 
