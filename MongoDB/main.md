@@ -1,3 +1,5 @@
+## Aggregation Pipeline
+
 The **aggregation pipeline** in MongoDB is a way to process and transform data by passing it through a series of steps called stages. Each stage performs a specific task, like filtering data, grouping it, sorting it, or calculating totals.
 
 ---
@@ -23,7 +25,7 @@ We want to:
 db.users.aggregate([
   { $match: { status: "active" } },  // Step 1: Filter active users
   { $project: { name: 1, age: 1, _id: 0 } },  // Step 2: Select specific fields
-  { $sort: { age: 1 } }  // Step 3: Sort by age
+  { $sort: { name: 1 } }  // Step 3: Sort by age
 ]);
 ```
 
@@ -119,3 +121,31 @@ db.users.aggregate([
 ---
 
 This approach makes it easy to group, count, and analyze your data in MongoDB!
+
+
+## What is Diff between `ref` and `$lookup`?
+The main difference between **`ref`** (in Mongoose) and **`$lookup`** (in MongoDB) is how they handle relationships between documents:
+
+### **`ref` (Mongoose)**:
+- Used in **Mongoose schemas** to create references between collections.
+- Requires an additional query with **`populate()`** to fetch the related data.
+- Example: Linking a `Post` to a `User` using the `ref` option in Mongoose.
+
+**Pro**: Easy to use with Mongoose for relational data.  
+**Con**: Involves multiple queries (one to fetch the main document and another to populate).
+
+---
+
+### **`$lookup` (MongoDB)**:
+- A **MongoDB aggregation operator** used to join collections at the database level.
+- Works directly in MongoDB without requiring an external library.
+- Performs a **left outer join** to merge related data in a single query.
+
+**Pro**: Combines data in one query, reducing round trips to the database.  
+**Con**: Slightly more complex to set up than `ref`.
+
+---
+
+### Summary:
+- Use **`ref`** with **Mongoose** for simpler schema-based relationships and queries.
+- Use **`$lookup`** when working directly with MongoDB or for performance when combining data in a single query.
