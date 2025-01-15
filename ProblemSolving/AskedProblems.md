@@ -28,3 +28,35 @@ function reverse(arr){
 const result = reverse(arr)
 console.log(result)
 ```
+## Find all duplicate numbers in an array
+
+```js 
+let arr = [1,2,4,1,4,6,6,6,3,9] // return all duplicate
+
+function getDuplicateElem(arr){
+    let result = []
+    let imap = new Map();
+    
+    //mark repeat elem by 1
+    for(let i=0; i < arr.length; i++){
+        
+        if(imap.has(arr[i])){
+          imap.set(arr[i], imap.get(arr[i]) || 1)
+        }else{
+          imap.set(arr[i], 0)
+        }
+    }
+    
+    //Map(6) { 1 => 1, 2 => 0, 4 => 1, 6 => 1, 3 => 0, 9 => 0 }
+    for(let [key, value] of imap){
+      if(value > 0){
+        result.push(key);
+      }
+    }
+    
+    return result;
+}
+
+let result = getDuplicateElem(arr)
+console.log(result) // [ 1, 4, 6 ]
+```
