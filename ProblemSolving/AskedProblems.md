@@ -60,3 +60,58 @@ function getDuplicateElem(arr){
 let result = getDuplicateElem(arr)
 console.log(result) // [ 1, 4, 6 ]
 ```
+
+
+## Sort Elements of an Array By Length
+
+```js
+let home = ['table', 'chair', 'bed', 'fridge', 'ac'];
+
+function sortByLength(home){
+  
+  let storeroomMap = new Map();
+  
+  for(let household of home){
+    
+    if(!storeroomMap.has(household)){
+      
+      storeroomMap.set(household, household.length);
+    }    
+  }
+
+  // Convert Map to Array
+  let arr = Array.from(storeroomMap);
+  
+  //bubble sort
+  for(let i=0; i<arr.length; i++){
+    
+    for(let j=0; j<arr.length-1-i; j++){
+      
+      
+      if(arr[j][1] > arr[j+1][1]){
+        //swap
+        const temp = arr[j];
+        arr[j] = arr[j+1];
+        arr[j+1] = temp;
+      }
+      
+    }
+    
+  }
+   
+  //convert it to into array
+  let newArr = arr.map((keys)=> keys[0])
+  
+  return newArr;
+  
+  // return home.sort((a,b)=> return a.length - b.length) // with sort() method  
+}
+
+let result = sortByLength(home);
+console.log(result); 
+```
+output: 
+
+```lua
+[ 'ac', 'bed', 'table', 'chair', 'fridge' ]
+```
