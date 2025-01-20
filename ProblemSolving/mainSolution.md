@@ -546,3 +546,31 @@ let checkStatus1 = containsCommenItem3(ar1,ar2);
 console.log(checkStatus1);
 containsCommenItem3(ar1, ar2);
 ```
+
+## Count Each Element
+```js
+
+let str='aaaabbbccccc'
+
+function countEachElm(str){
+  
+  let imap = new Map();
+  
+  let arrOfStr = str.split('');
+  
+  for(let i=0; i<arrOfStr.length; i++){
+    
+    if(!imap.has(arrOfStr[i])){
+      //set elem to imap
+      imap.set(arrOfStr[i], (imap.get(arrOfStr[i]) || 0) + 1);
+    } else {
+      imap.set(arrOfStr[i], imap.get(arrOfStr[i]) + 1);
+    } 
+    
+  }
+  return imap;
+}
+
+console.log(countEachElm(str)); // Map(3) { 'a' => 4, 'b' => 3, 'c' => 5 }
+
+```
