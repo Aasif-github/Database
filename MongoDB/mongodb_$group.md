@@ -2,10 +2,12 @@
 
 The `$group` aggregation stage in MongoDB is used to group documents by a specific field or expression and perform aggregations like sum, average, count, etc., on grouped data. It’s a versatile operator used in the aggregation pipeline.
 
-Performance
+**Performance**
+---
 `$group` is a blocking stage, which causes the pipeline to wait for all input data to be retrieved for the blocking stage before processing the data. A blocking stage may reduce performance because it reduces parallel processing for a pipeline with multiple stages. A blocking stage may also use substantial amounts of memory for large data sets.
 
-$group and Memory Restrictions
+**$group and Memory Restrictions**
+---
 If the $group stage exceeds `100 megabytes of RAM`, MongoDB writes data to temporary files. However, if the allowDiskUse option is set to false, $group returns an error. For more information, refer to Aggregation Pipeline Limits.
 
 Here’s how to use `$group` for different cases:
