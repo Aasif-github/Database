@@ -29,7 +29,68 @@
 - [Async-Await](#async-await) *
 
 ## Hoisting
-  
+
+`Hoisting` refers to the process where the JavaScript interpreter moves declarations (ie, variable and function declarations) to the top of their containing scope during the compile phase. 
+
+This means that a variable or function can be used before it has been declared in the code.
+
+However, only the declarations are hoisted, not the initializations.
+
+### Hoisting of Variables
+
+#### Using `var`
+
+When using `var`, the variable declaration is hoisted to the top, but the initialization stays in place. The variable is initialized with `undefined` until the assignment is encountered.
+
+**Example**:
+```javascript
+console.log(myVar); // Output: undefined
+var myVar = 10;
+console.log(myVar); // Output: 10
+```
+
+#### Using `let` and `const`
+
+With `let` and `const`, the declarations are also hoisted to the top of their block scope, but they are not initialized until the line of code where they are declared. Accessing them before the declaration results in a `ReferenceError`.
+
+**Example**:
+```javascript
+console.log(myLet); // Uncaught ReferenceError: Cannot access 'myLet' before initialization
+let myLet = 20;
+
+console.log(myConst); // Uncaught ReferenceError: Cannot access 'myConst' before initialization
+const myConst = 30;
+```
+
+### Hoisting of Functions
+
+#### Function Declarations
+
+Function declarations are hoisted entirely, meaning both the function name and its definition are moved to the top of their scope.
+
+**Example**:
+```javascript
+console.log(myFunction()); // Output: "Hello, World!"
+
+function myFunction() {
+    return "Hello, World!";
+}
+```
+
+#### Function Expressions
+
+Function expressions, whether assigned to a variable with `var`, `let`, or `const`, are not hoisted. This means the function definition remains at its place in the code.
+
+**Example**:
+```javascript
+console.log(myFuncExpression()); // Uncaught TypeError: myFuncExpression is not a function
+
+var myFuncExpression = function() {
+    return "Hi, there!";
+};
+```
+
+
 ## ProtoTypes
 
 In JavaScript, a **prototype** is an object that serves as a blueprint for other objects. 

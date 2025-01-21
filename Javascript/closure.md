@@ -1,10 +1,8 @@
 # Closures
 
-Closures in JavaScript are functions that retain access to variables from their containing scope even after the parent function has finished executing. They’re useful for maintaining private data, creating modular code, and implementing callback functions with persistent state.
+A closure in JavaScript is a function that can access variables from its outer scope even after the outer function has finished running. 
 
-What is a Closure?
-
-A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). When you create a closure, you gain access to an outer function’s scope from an inner function. Closures are automatically created every time a function is defined in JavaScript.
+It "remembers" these variables, allowing it to use them later. Closures are automatically created whenever you define a function.
 
 Lexical Scoping
 
