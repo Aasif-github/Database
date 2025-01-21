@@ -89,8 +89,6 @@ var myFuncExpression = function() {
     return "Hi, there!";
 };
 ```
-
-
 ## ProtoTypes
 
 In JavaScript, a **prototype** is an object that serves as a blueprint for other objects. 
