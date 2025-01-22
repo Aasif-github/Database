@@ -1,3 +1,4 @@
+/*
 const fs = require('fs');
  
 console.log('start');
@@ -34,7 +35,7 @@ process.nextTick(() => {
 });
 
 console.log('end');
-
+*/
 /*
 start
 end
@@ -47,3 +48,17 @@ inside - nextTick
 inside fs - setImmediate
 inside fs - setTimeout
 */ 
+
+const crypto = require('crypto');
+
+const data = 'MY_SECRET_KEY';
+
+const hash = crypto.createHash('sha256').update(data).digest('hex');
+
+console.log(hash);
+
+const password = '123456';
+const salt = crypto.randomBytes(16).toString('hex');
+const hashedPassword = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+
+console.log('hashedPassword',hashedPassword)

@@ -149,3 +149,152 @@ The main difference between **`ref`** (in Mongoose) and **`$lookup`** (in MongoD
 ### Summary:
 - Use **`ref`** with **Mongoose** for simpler schema-based relationships and queries.
 - Use **`$lookup`** when working directly with MongoDB or for performance when combining data in a single query.
+
+
+## how to use $lookup
+To create an aggregation pipeline with a `$lookup` stage to establish a relationship between books and authors in MongoDB, follow this example.
+
+---
+
+### Assumptions:
+1. You have two collections:
+   - **`books`**: Contains information about books, including a reference to an author ID.
+   - **`authors`**: Contains author details.
+
+2. **Sample Data**:
+
+#### `books` Collection
+```json
+[
+  { "_id": 1, "title": "Book A", "authorId": 101 },
+  { "_id": 2, "title": "Book B", "authorId": 102 },
+  { "_id": 3, "title": "Book C", "authorId": 101 }
+]
+```
+
+#### `authors` Collection
+```json
+[
+  { "_id": 101, "name": "Author One", "age": 45 },
+  { "_id": 102, "name": "Author Two", "age": 38 }
+]
+```
+
+---
+
+### Aggregation Query with `$lookup`
+```javascript
+db.books.aggregate([
+  {
+    $lookup: {
+      from: "authors",          // The target collection
+      localField: "authorId",   // Field in the `books` collection
+      foreignField: "_id",      // Field in the `authors` collection
+      as: "authorDetails"       // Output array field for matched authors
+    }
+  },
+  {
+    $unwind: "$authorDetails"  // Optional: Unwind the array to flatten the result
+  }
+]);
+```
+
+---
+
+### Output
+The aggregation will return documents where each book has its corresponding author details:
+
+#### Without `$unwind`
+```json
+[
+  {
+    "_id": 1,
+    "title": "Book A",
+    "authorId": 101,
+    "authorDetails": [
+      {
+        "_id": 101,
+        "name": "Author One",
+        "age": 45
+      }
+    ]
+  },
+  {
+    "_id": 2,
+    "title": "Book B",
+    "authorId": 102,
+    "authorDetails": [
+      {
+        "_id": 102,
+        "name": "Author Two",
+        "age": 38
+      }
+    ]
+  },
+  {
+    "_id": 3,
+    "title": "Book C",
+    "authorId": 101,
+    "authorDetails": [
+      {
+        "_id": 101,
+        "name": "Author One",
+        "age": 45
+      }
+    ]
+  }
+]
+```
+
+#### With `$unwind`
+```json
+[
+  {
+    "_id": 1,
+    "title": "Book A",
+    "authorId": 101,
+    "authorDetails": {
+      "_id": 101,
+      "name": "Author One",
+      "age": 45
+    }
+  },
+  {
+    "_id": 2,
+    "title": "Book B",
+    "authorId": 102,
+    "authorDetails": {
+      "_id": 102,
+      "name": "Author Two",
+      "age": 38
+    }
+  },
+  {
+    "_id": 3,
+    "title": "Book C",
+    "authorId": 101,
+    "authorDetails": {
+      "_id": 101,
+      "name": "Author One",
+      "age": 45
+    }
+  }
+]
+```
+
+---
+
+### Explanation
+1. **`$lookup`**:
+   - Joins the `books` collection with the `authors` collection.
+   - Matches `books.authorId` with `authors._id`.
+
+2. **`as`**:
+   - Specifies the field to store the joined data (`authorDetails`).
+
+3. **`$unwind`** (optional):
+   - Converts the `authorDetails` array into a single object for easier access.
+
+---
+
+This aggregation effectively links the two collections, allowing you to retrieve comprehensive details about books and their corresponding authors in a single query.
