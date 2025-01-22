@@ -61,7 +61,6 @@ let myLet = 20;
 console.log(myConst); // Uncaught ReferenceError: Cannot access 'myConst' before initialization
 const myConst = 30;
 ```
-
 ### Hoisting of Functions
 
 #### Function Declarations
@@ -175,8 +174,9 @@ console.log(triple(5)); // Output: 15
 
 ## What is Closure?
 
-Closure is a javascript function which retain the access of outer scope, even after the outer function has finished execution.
-It allows the function to remember and access variables from its outer function's scope.
+A closure in JavaScript is a function that can access variables from its outer scope even after the outer function has finished execution. 
+
+It "remembers" these variables, allowing it to use them later.  
 
 Closures are created automatically every time a when we create a function in JavaScript.
 
