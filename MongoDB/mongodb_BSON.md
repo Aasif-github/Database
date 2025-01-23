@@ -22,6 +22,7 @@ BSON is designed to be a superset of JSON, providing additional data types and b
      - `Double`
      - `Array`
      - `Embedded Document`
+  
    - **JSON**: Limited to a smaller set of data types:
      - `String`
      - `Number`
