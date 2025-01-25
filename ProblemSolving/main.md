@@ -64,3 +64,9 @@ const User = [
 let arr = [1,2,4,1,4,6,6,6,3,9] // return 6
 ```
 
+11. **Move zeros to the end of an array**
+```js   
+let arr = [1,0,3,0, 4,0,4,6,1,4,0] 
+// [1,3,4,4,6,1,4,0,0,0,0];
+```   
+  

@@ -574,3 +574,36 @@ function countEachElm(str){
 console.log(countEachElm(str)); // Map(3) { 'a' => 4, 'b' => 3, 'c' => 5 }
 
 ```
+
+## Move Zero At Last
+```js
+let arr = [1,0,3,0, 4,0,4,6,1,4,0] 
+// [1,3,4,4,6,1,4,0,0,0,0];
+
+function moveZeroAtLast(arr){
+  
+  let index = 0;
+  let result = [];
+  
+  for(let i=0; i<arr.length; i++){
+    if(arr[i] == 0) index++;  
+  }
+  
+  for(let i=0; i < arr.length; i++){
+    if(arr[i] !== 0){
+      result.push(arr[i])
+    }
+  }
+  
+  for(let i=result.length; i >= index; i--){
+      
+      arr[i] = 0
+      result.push(arr[i]);
+  }
+  return result;
+}
+
+let result = moveZeroAtLast(arr);
+console.log(result)//O(n)
+
+```
