@@ -574,8 +574,72 @@ function countEachElm(str){
 console.log(countEachElm(str)); // Map(3) { 'a' => 4, 'b' => 3, 'c' => 5 }
 
 ```
+## 8.Merge two arrays on base of id
+```js
+let arr1 = [{ id:1, name:'a' }, { id:2, name:'b' }, { id:3, name:'c' }];
+let arr2 = [{ id:1, name:'d' }, { id:5, name:'e'}];
+```
+Solution:
+```js
+function getUniqueId(arr1, arr2){
+  
+  let combinedArr = [...arr1, ...arr2];
+  
+  let imap = new Map();
+  
+  combinedArr.map((elem) => {
+    
+    if(!imap.has(elem.id)){
+      imap.set(elem.id, elem);
+    }
+  })
+  
+  let arr = Array.from(imap.values());
+  return arr;
+}
 
-## Move Zero At Last
+let result = getUniqueId(arr1, arr2)
+
+console.log(result);
+```
+Output:
+```js
+[
+  { id: 1, name: 'a' },
+  { id: 2, name: 'b' },
+  { id: 3, name: 'c' },
+  { id: 5, name: 'e' }
+]
+```
+
+## 10. Find the second largest number in an array.
+
+```js
+let arr = [1,2,4,1,4,6,6,6,3,9,9] // return 6
+```
+Output: 6
+```js
+let arr = [1,2,4,1,4,6,6,6,3,9, 9] // return 6
+
+function getSecondHighestNumber(arr){
+  
+  let iset = new Set();
+  
+  for(let i=0; i<arr.length; i++){
+    iset.add(arr[i])
+  }
+  
+  let sortedArr = Array.from(iset);
+  sortedArr.sort((a,b)=> a - b);
+  
+  return sortedArr[sortedArr.length-2]  
+}
+
+let value = getSecondHighestNumber(arr);
+console.log(value)
+```
+
+## 11. Move Zero At Last
 ```js
 let arr = [1,0,3,0, 4,0,4,6,1,4,0] 
 // [1,3,4,4,6,1,4,0,0,0,0];
