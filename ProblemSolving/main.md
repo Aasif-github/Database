@@ -11,7 +11,37 @@ let arr = ['OneCompiler','Javascript']
 3. **Bubble Sort**
 
 4. **Binary Search**
+```js
+function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
 
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+
+        if (arr[mid] === target) {
+            return mid; // Target found at index mid
+        } else if (arr[mid] < target) {
+            left = mid + 1; // Search in the right half
+        } else {
+            right = mid - 1; // Search in the left half
+        }
+    }
+
+    return -1; // Target not found
+}
+
+// Example usage:
+const sortedArray = [1, 3, 5, 7, 9, 11, 13, 15];
+const target = 7;
+const result = binarySearch(sortedArray, target);
+
+if (result !== -1) {
+    console.log(`Element found at index: ${result}`);
+} else {
+    console.log("Element not found");
+}
+```
 5. **Find Second Most Repeated Element in String**   
 ```js
 let str = "ahksadhkjdhsajhaksd"; 
@@ -70,3 +100,28 @@ let arr = [1,0,3,0, 4,0,4,6,1,4,0]
 // [1,3,4,4,6,1,4,0,0,0,0];
 ```   
   
+12. Generate index of an Object
+```js
+let arr = [2,3,2,1,2,4,5,6,7];
+
+let obj = {}
+
+arr.forEach((elem,index, arr)=>{
+  obj[`item_`+index] = elem;
+})
+console.log(obj)
+```
+Output:
+```js
+{
+  item_0: 2,
+  item_1: 3,
+  item_2: 2,
+  item_3: 1,
+  item_4: 2,
+  item_5: 4,
+  item_6: 5,
+  item_7: 6,
+  item_8: 7
+}
+```
