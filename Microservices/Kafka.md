@@ -30,7 +30,7 @@ Kafka consists of:
 4. **Partition** → A subset of a topic for scalability  
 5. **Consumer** → Reads messages from a topic  
 6. **Consumer Group** → A set of consumers reading from a topic in parallel  
-7. **ZooKeeper** → Manages Kafka’s cluster metadata (deprecated in new versions)  
+7. **ZooKeeper** → Manages Kafka’s cluster metadata (deprecated in new versions)  [KRaft - kafka RAFT (Kafka's newer version)] 
 
 ---
 
