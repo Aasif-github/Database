@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "Docker Node.js Launch",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: debug",
+            "platform": "node",
+            "node": {
+                "package": "${workspaceFolder}/Microservices/node-app-docker/package.json",
+                "localRoot": "${workspaceFolder}/Microservices/node-app-docker"
+            }
+        }
+    ]
+}

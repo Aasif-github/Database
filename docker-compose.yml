@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  appdocker:
+    image: appdocker
+    build:
+      context: Microservices/node-app-docker
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
