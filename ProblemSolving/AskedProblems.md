@@ -93,12 +93,10 @@ function sortByLength(home){
         const temp = arr[j];
         arr[j] = arr[j+1];
         arr[j+1] = temp;
-      }
-      
-    }
-    
+      }      
+    }    
   }
-   
+    
   //convert it to into array
   let newArr = arr.map((keys)=> keys[0])
   
