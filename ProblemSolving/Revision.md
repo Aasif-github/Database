@@ -78,11 +78,10 @@ function reverse(arr){
 const result = reverse(arr)
 console.log(result)
 ```
-<details>
+</details>
 
+### Array of Objects - Merge two arrays on base of id
 
-### Array of Objects
-8. Merge two arrays on base of id
 ```js    
 let arr1 = [{ id:1, name:'a' }, { id:2, name:'b' }, { id:3, name:'c' }];
 let arr2 = [{ id:1, name:'d' }, { id:5, name:'e' }];
@@ -98,12 +97,7 @@ Output:
 
 <details>
   <summary>Solution</summary>
-
-```js
-let arr1 = [{ id:1, name:'a' }, { id:2, name:'b' }, { id:3, name:'c' }];
-let arr2 = [{ id:1, name:'d' }, { id:5, name:'e' }];
-```
-
+  
 ```js
 function getUniqueId(arr1, arr2){
   
@@ -127,4 +121,4 @@ let result = getUniqueId(arr1, arr2)
 console.log(result);
 ```
 
-<details>
+</details>
