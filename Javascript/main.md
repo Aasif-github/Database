@@ -711,6 +711,8 @@ Even though the function `greet()` looks like it's returning a value, it actuall
 - It pauses the execution of the `async` function until the promise is resolved (or rejected).
 - Once the promise resolves, `await` gives you the resolved value of that promise.
 
+- It maintain the sequence of promises. like Task1,Task2,Task3 are executed one after another. If it outputs depending on each other.
+  
 #### Example:
 ```javascript
 async function fetchData() {

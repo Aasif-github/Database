@@ -139,7 +139,11 @@ app.get('/users/:id', (req, res) => {
 
 ## What is Event-emmiter in Nodejs?
 
-Event-emitter is a class in Node.js that allows you to create and manage events. It is a part of the core Node.js library and is used to handle asynchronous operations in Node.js.
+- Event-emitter is a class in Node.js that allows you to create and manage events. 
+
+- It is a part of the core Node.js library and is used to handle asynchronous operations in Node.js.
+
+- It is a part of event module and allow object to communicate asynchronously by emitting and listening to events.
 
 ```javascript
 const EventEmitter = require('events');
@@ -156,13 +160,134 @@ eventEmitter.on('greet', (name) => {
 eventEmitter.emit('greet', 'Alice'); // Output: Hello, Alice!
 ```
 
-## What is stream in Nodejs?
-
- 
-
 ## What is Buffer in Nodejs?
 
- 
+In nodejs, a Buffer is a temporary storage area for handle binary data.
+
+- Buffers are used to store data that is not a string, such as images, audio, or video data.
+
+- Buffers are used to store data in a memory area that is not associated with a file or other permanent storage location.
+
+- Buffers are designed to work with raw binary data, such as audio and video data, without having to worry about the encoding or decoding of the data. and make them useful when working with strams of data.
+```js
+const buffer = Buffer.from('hello world');
+console.log(buffer.toString()); // Output: hello world
+
+-- OR
+
+const fs = require('fs');
+
+fs.readFile('file.jpg', (err, data) => {
+    if (err) throw err;
+    const buffer = Buffer.from(data);
+    console.log(buffer);
+});
+```
+
+## What is streams in Nodejs?
+
+Streams are the Objects that allows us to read data from a source or write data to a destination.
+continuously in chunks, without loading the entire file into memory at once.
+
+This makes streams efficient for handling large amounts of data, such as files or other large data sources, in a way that is efficient and memory efficient.
+
+```javascript
+const fs = require('fs'); 
+
+const readableStream = fs.createReadStream('file.txt');
+
+readableStream.on('data', (chunk) => {
+    console.log(chunk.toString());  
+})
+
+readableStream.on('end', () => {
+    console.log('File read complete');  
+})
+readableStream.on('error', (err) => {
+    console.log(err);
+})
+```
+### Real World Example
+### **🌍 Real-World Example: Streaming Large Files in a Node.js API**  
+
+Imagine you have a **video streaming** service like **YouTube or Netflix**. Instead of loading an entire video file into memory (which would crash the server), **Node.js streams** allow you to serve videos in chunks efficiently.
+
+---
+
+### **📌 Scenario**  
+- A client requests a **large video file**.  
+- Instead of sending the whole file at once, we **stream it chunk by chunk**.  
+- This reduces **memory usage** and improves **performance**.  
+
+---
+
+### **🚀 Video Streaming API with Node.js and Express**
+```js
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+
+const app = express();
+const PORT = 3000;
+
+app.get("/video", (req, res) => {
+  const filePath = path.join(__dirname, "big-video.mp4");
+  const stat = fs.statSync(filePath);
+  const fileSize = stat.size;
+
+  // Get the range header from request
+  const range = req.headers.range;
+  if (!range) {
+    return res.status(400).send("Requires Range header");
+  }
+
+  // Parse the range
+  const parts = range.replace(/bytes=/, "").split("-");
+  const start = parseInt(parts[0], 10);
+  const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+  const chunkSize = end - start + 1;
+
+  // Create read stream for requested chunk
+  const fileStream = fs.createReadStream(filePath, { start, end });
+
+  // Set headers for streaming
+  res.writeHead(206, {
+    "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+    "Accept-Ranges": "bytes",
+    "Content-Length": chunkSize,
+    "Content-Type": "video/mp4",
+  });
+
+  // Pipe the video chunk to response
+  fileStream.pipe(res);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
+```
+
+---
+
+### **🔹 How This Works**
+1. The client sends a request with a **Range Header** (e.g., `Range: bytes=0-999999`).
+2. The server reads **only the requested portion** of the file using `fs.createReadStream()`.
+3. It sets the necessary **streaming headers** (`Content-Range`, `Accept-Ranges`).
+4. The **video file is streamed** chunk by chunk instead of loading the entire file into memory.
+
+---
+
+### **🔥 Why Use Streams for Video?**
+✅ **Efficient Memory Usage** – Doesn't load the entire file into RAM.  
+✅ **Faster Streaming** – The client can start watching **immediately** instead of waiting for the full download.  
+✅ **Resumable Playback** – Supports seeking within the video file using **range requests**.  
+
+---
+### **📌 Where This is Used in the Real World?**
+- **YouTube, Netflix, Amazon Prime Video** – Streaming video content.  
+- **Spotify, Apple Music** – Streaming audio.  
+- **Cloud Storage Services** – Large file downloads (Google Drive, Dropbox).  
+
 
 ## Nodejs Security
 
@@ -203,9 +328,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal Server Error' });
   });   
 ```
-
-## 
-
+## What is Event-Driven Architecture in Nodejs?
 Node.js uses an event-driven architecture, meaning it listens for events (like a file upload or a user request) and runs specific functions (event handlers) to handle them when they occur. This makes it fast and efficient for handling multiple tasks.
 
 Example
@@ -232,7 +355,91 @@ The `require` keyword is used to load modules in Node.js, while the `import` key
 
 
 ## What is middleware in Nodejs?
-Middleware is a function that acts as a bridge between an HTTP request and response, enabling additional processing, like logging, authentication, or error handling, during the request-response cycle. It enhances modularity, reusability, and maintainability in Node.js applications.
+Middleware is a function that acts as a bridge between an **HTTP request and response**, enabling additional processing, like logging, authentication, or error handling, during the request-response cycle. It enhances modularity, reusability, and maintainability in Node.js applications.
 
 a. Build-in middleware - morgan, cors, helmet.
 b. Custom middleware - logger, auth, error handler
+
+
+## What is CORS in Nodejs?
+## **🚀 Cross-Origin Resource Sharing (CORS) - Explained with Examples**  
+
+### **🔹 What is CORS?**  
+CORS (**Cross-Origin Resource Sharing**) is a **security feature** in web browsers that controls how resources (APIs, fonts, images) can be **requested from a different domain** than the one serving the web page.  
+
+By default, **browsers block cross-origin requests** for security reasons (known as the **same-origin policy**). CORS **relaxes** this restriction **safely** by allowing certain cross-origin requests.
+
+---
+
+### **🔹 When Does CORS Happen?**
+**Scenario:**  
+- You have a frontend running at **`http://frontend.com`**  
+- You have a backend API running at **`http://api.com`**  
+- If the frontend tries to fetch data from `http://api.com`, the **browser blocks the request** due to the **same-origin policy**.  
+
+👉 **Solution?** Enable CORS on the backend!
+
+---
+
+### **🔹 How to Enable CORS in Node.js (Express API Example)**  
+#### **✅ Using `cors` Middleware (Best Practice)**
+```js
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+
+// Enable CORS for all origins
+app.use(cors());
+
+app.get("/data", (req, res) => {
+    res.json({ message: "CORS enabled!" });
+});
+
+app.listen(3000, () => console.log("Server running on port 3000"));
+```
+
+#### **✅ Restrict CORS to Specific Origins**
+```js
+app.use(cors({
+    origin: "http://frontend.com", // Only allow this origin
+    methods: ["GET", "POST"], // Allowed HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"] // Allowed headers
+}));
+```
+🚀 **Now, only `http://frontend.com` can access the API!**
+
+---
+
+### **🔹 CORS Errors & Fixes**
+#### ❌ **Error: "Blocked by CORS Policy"**
+```
+Access to fetch at 'http://api.com/data' from origin 'http://frontend.com' has been blocked by CORS policy.
+```
+✅ **Fix:**  
+- Enable CORS on the backend (using `cors` middleware).  
+- Allow specific origins or use `"*"` (allow all).  
+
+#### ❌ **Error: "Preflight Request Blocked"**
+- Happens for **non-simple requests** (e.g., `PUT`, `DELETE`, `PATCH`).
+- Browser sends an **OPTIONS request** before the actual request.
+✅ **Fix:**  
+```js
+app.options("*", cors()); // Handle preflight requests globally
+```
+
+---
+
+### **🔹 Where is CORS Used?**
+✅ **APIs & Microservices** – Allowing frontend apps to access backend APIs.  
+✅ **CDNs (Content Delivery Networks)** – Serving fonts, images, scripts across domains.  
+✅ **Third-Party Integrations** – Allowing APIs to be consumed by external apps.  
+
+---
+
+### **🔥 Final Thoughts**
+- CORS is **a security feature** that prevents unauthorized cross-origin requests.  
+- You must **enable CORS on the backend** to allow specific domains.  
+- Use the `cors` middleware in **Express** for an easy fix.  
+
+🚀 **Need more advanced CORS handling (e.g., JWT authentication, cookies)? Let me know!**
