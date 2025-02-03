@@ -9,7 +9,32 @@ A callback is a function passed as an argument to another function and executed 
 
 Callbacks are a way to handle asynchronous operations like network requests, file reading, or user interactions in JavaScript.
 
+```js
+function doInterview(taskCallback, status){
+    
+    if(status){
+      return taskCallback;
+    }
+    
+    return false;
+}
 
+function taskCallback(msg){
+  
+  return msg;
+}
+
+let msg = 'cb is a function that passes as an arg.\nto other function and excute later'
+let result = doInterview(taskCallback(msg), true);
+
+!result ? console.log('failed') : console.log(result);
+```
+```lua
+Output:
+
+cb is a function that passes as an arg.
+to other function and excute later
+```
 ### Error Handling in Callbacks
 
 Error handling in callbacks often uses the "error-first" pattern. The first argument in the callback is reserved for an error object (if any), followed by the result.

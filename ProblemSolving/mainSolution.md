@@ -671,3 +671,5 @@ let result = moveZeroAtLast(arr);
 console.log(result)//O(n)
 
 ```
+
+
