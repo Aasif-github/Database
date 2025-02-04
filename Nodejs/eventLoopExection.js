@@ -1,4 +1,8 @@
-/*
+// # More event loop execution
+
+https://github.com/aasif-iqbal/Javascript-In-Depth/blob/master/NodeJs-EventLoop/eventLoopExection.md
+
+
 const fs = require('fs');
  
 console.log('start');
@@ -35,7 +39,7 @@ process.nextTick(() => {
 });
 
 console.log('end');
-*/
+
 /*
 start
 end

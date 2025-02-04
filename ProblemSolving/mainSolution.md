@@ -672,4 +672,41 @@ console.log(result)//O(n)
 
 ```
 
+## Find the Majority Element
+```lua
+Problem Statement: Given an array, find the element that appears more than n/2 times in the array (if it exists).
 
+Example:
+
+Input: [3, 3, 4, 2, 4, 4, 2, 4, 4]
+Output: 4
+```
+Solution:
+
+```js
+let arr = [3, 3, 4, 2, 4, 4, 2, 4, 4];
+
+function findFq(arr){
+let imap = new Map();
+
+for(let i=0; i< arr.length; i++){
+    if(!imap.has(arr[i])){
+        imap.set(arr[i], (imap.get(arr[i])||0) + 1)
+    }else{
+        imap.set(arr[i], (imap.get(arr[i])) + 1)
+        // imap.set(arr[i], (imap.get(i)) +1)
+    }    
+}
+console.log(imap)
+
+candidate = arr.length/2
+
+for(let [key,value] of imap){
+    if(candidate <= value) return key;
+}
+
+return -1;
+}
+
+console.log(findFq(arr))
+```
