@@ -119,3 +119,64 @@ For `s = "abcabcbb"`:
 ---
 
 Sliding window is a powerful technique for problems involving contiguous elements, and mastering it can help solve many real-world and competitive programming challenges efficiently.
+
+
+## Permutations of a String
+```lua
+Given a string s, which may contain duplicate characters, your task is to generate and return an array of all unique permutations of the string. You can return your answer in any order.
+
+Examples:
+
+Input: s = "ABC"
+Output: ["ABC", "ACB", "BAC", "BCA", "CAB", "CBA"]
+Explanation: Given string ABC has 6 unique permutations.
+```
+### **Generating Unique Permutations of a String**  
+
+We can solve this problem using **Backtracking + Set** to avoid duplicate permutations efficiently.  
+
+---
+
+### **Optimized Approach (Backtracking + Set)**
+1. Convert the string into an **array of characters**.
+2. Use **backtracking** to recursively swap characters and generate permutations.
+3. Use a **set** to store unique permutations and avoid duplicates.
+4. Convert the set into an array and return the result.
+
+---
+
+### **Efficient JavaScript Solution**
+```javascript
+function uniquePermutations(s) {
+    let result = new Set();
+    let arr = s.split(""); // Convert string to an array
+
+    function backtrack(start) {
+        if (start === arr.length) {
+            result.add(arr.join("")); // Store unique permutation
+            return;
+        }
+
+        for (let i = start; i < arr.length; i++) {
+            [arr[start], arr[i]] = [arr[i], arr[start]]; // Swap
+            backtrack(start + 1);
+            [arr[start], arr[i]] = [arr[i], arr[start]]; // Swap back (Backtrack)
+        }
+    }
+
+    backtrack(0);
+    return [...result]; // Convert Set to Array
+}
+
+// Example usage
+console.log(uniquePermutations("ABC")); 
+// Output: ["ABC", "ACB", "BAC", "BCA", "CAB", "CBA"]
+```
+
+---
+
+### **Time & Space Complexity**
+- **Time Complexity:** **O(n!)** (Factorial growth due to permutations)
+- **Space Complexity:** **O(n!)** (Storing all permutations)
+
+---

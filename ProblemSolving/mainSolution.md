@@ -710,3 +710,236 @@ return -1;
 
 console.log(findFq(arr))
 ```
+
+## Show all Prime Numbers upto N
+
+I think you meant the **Sieve of Eratosthenes**, which is an efficient algorithm to find all prime numbers up to a given limit **N**. Here’s how it works:
+
+### **🔹 Algorithm:**
+1. Create a **boolean array `isPrime[]`** of size **N+1**, initialized to **true** (assuming all numbers are prime).
+2. Start from **2 (first prime number)**, mark all its multiples as **false**.
+3. Move to the next number that is still **true** and repeat until `√N`.
+4. All numbers still marked **true** in the array are prime.
+
+---
+
+### **🔹 JavaScript Implementation**
+```js
+function sieveOfEratosthenes(n) {
+    let isPrime = new Array(n + 1).fill(true);
+    isPrime[0] = isPrime[1] = false; // 0 and 1 are not prime
+
+    for (let i = 2; i * i <= n; i++) {
+        if (isPrime[i]) {
+            for (let j = i * i; j <= n; j += i) {
+                isPrime[j] = false;
+            }
+        }
+    }
+
+    let primes = [];
+    for (let i = 2; i <= n; i++) {
+        if (isPrime[i]) primes.push(i);
+    }
+    return primes;
+}
+
+console.log(sieveOfEratosthenes(50));
+```
+### **🔹 Output**
+```
+[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
+```
+
+### **🔹 Time Complexity**
+✅ `O(N log log N)` — **Much faster than checking each number individually.**
+
+Would you like an optimized **segmented sieve** for larger numbers (e.g., `10^9` range)? 🚀
+
+### Problem: Find the Most Frequent Element in an Object Array
+```lua
+Problem Statement:
+You are given an array of objects where each object represents a product with a name and a category. Your task is to find the most frequently occurring category.
+```
+
+```js
+const products = [
+  { name: "Laptop", category: "Electronics" },
+  { name: "Shirt", category: "Clothing" },
+  { name: "Mobile", category: "Electronics" },
+  { name: "Jeans", category: "Clothing" },
+  { name: "Tablet", category: "Electronics" },
+  { name: "Sofa", category: "Furniture" }
+];
+
+Output: Electronics
+```
+Solution Approach:
+1. Use an object (hashmap) to store the frequency of each category.
+2. Iterate through the array and update counts.
+3. Find the category with the highest count
+
+Solution:
+```js
+function mostFrequentCategory(products) {
+    let categoryCount = {};
+
+    // Count the frequency of each category
+    for (let product of products) {
+        categoryCount[product.category] = (categoryCount[product.category] || 0) + 1;
+    }
+
+    // Find the category with the maximum count
+    let maxCategory = null;
+    let maxCount = 0;
+
+    for (let category in categoryCount) {
+        if (categoryCount[category] > maxCount) {
+            maxCategory = category;
+            maxCount = categoryCount[category];
+        }
+    }
+
+    return maxCategory;
+}
+
+// Example usage
+const products = [
+    { name: "Laptop", category: "Electronics" },
+    { name: "Shirt", category: "Clothing" },
+    { name: "Mobile", category: "Electronics" },
+    { name: "Jeans", category: "Clothing" },
+    { name: "Tablet", category: "Electronics" },
+    { name: "Sofa", category: "Furniture" }
+];
+
+console.log("Most frequent category:", mostFrequentCategory(products));
+```
+## Merge two sorted arrays
+```lua
+let a = [2, 4, 7, 10], b = [2, 3];
+Output: [ 2, 2, 3, 4, 7, 10 ]
+```
+
+Solution:
+```js
+let a = [2, 4, 7, 10], b = [2, 3];
+
+function mergeArray(a, b){
+  let newArr = [...a, ...b];   //or let newArr = a.concat(b);
+
+  for(let i=0; i<newArr.length; i++){
+    for(let j=0; j<newArr.length; j++){
+      
+      if(newArr[i] <= newArr[j]){
+        //do swap 
+        [newArr[i],newArr[j]] = [newArr[j],newArr[i]]
+      }
+    }  
+  }
+  
+  return newArr;  
+}
+
+console.log(mergeArray(a,b))
+
+Output: [ 2, 2, 3, 4, 7, 10 ]
+```
+
+optimizations:
+```js
+let a = [2, 4, 7, 10], b = [2, 3];
+
+function mergeArray(a, b){
+  let i=0;
+  let j=0;
+  let result = [];
+  
+  // merge Array in sorted Array
+  while(i < a.length && j < b.length){
+    
+    if(a[i] < b[j]){
+      result.push(a[i]);
+      i++;
+    }else{
+      result.push(b[j]);
+      j++;
+    }
+  }
+  
+  //push remaining elem
+  while(i<a.length){
+    result.push(a[i]);
+    i++;
+  }
+  
+  while(j < b.length){
+    result.push(b[j])
+    j++
+  }
+  
+  return result;
+}
+
+console.log(mergeArray(a,b))
+
+Output: [ 2, 2, 3, 4, 7, 10 ] 
+```
+```
+Time Complexity Analysis:
+O(n + m) → Where n and m are the sizes of arrays a and b, respectively.
+This is efficient because we traverse both arrays only once.
+```
+
+## Find Leader in an array
+
+To **find all leaders in the array**, we can iterate from **right to left** while keeping track of the **maximum element encountered so far**.  
+
+---
+
+### **Optimized Approach (Right-to-Left Traversal)**
+1. Start from the **last element** (which is always a leader).
+2. Keep track of the **maximum element found so far**.
+3. Traverse the array in **reverse order**, adding elements that are greater than or equal to this maximum.
+4. **Time Complexity:** **O(n)** → Since we traverse the array only once.
+
+---
+
+### **JavaScript Solution**
+```javascript
+function findLeaders(arr) {
+    let n = arr.length;
+    let leaders = [];
+    let maxSoFar = arr[n - 1]; // Rightmost element is always a leader
+    leaders.push(maxSoFar);
+
+    // Traverse from second last element to the first
+    for (let i = n - 2; i >= 0; i--) {
+        if (arr[i] >= maxSoFar) {
+            maxSoFar = arr[i];
+            leaders.push(maxSoFar);
+        }
+    }
+
+    return leaders.reverse(); // Reverse to maintain the original order
+}
+
+// Example usage
+let arr = [16, 17, 4, 3, 5, 2];
+console.log(findLeaders(arr));  // Output: [17, 5, 2]
+```
+
+---
+
+### **Explanation**
+1. Start from **2** (last element, always a leader).
+2. Move left:
+   - **5** > 2 → Add **5**.
+   - **3** < 5 → Ignore.
+   - **4** < 5 → Ignore.
+   - **17** > 5 → Add **17**.
+3. **16** < 17 → Ignore.
+
+Final **leaders array**: `[17, 5, 2]`
+
+---
