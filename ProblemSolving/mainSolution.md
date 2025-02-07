@@ -140,8 +140,30 @@ console.log(findDuplicates(nums));
 
 ```js
 function bubbleSort(arr) {
-  
+    let n = arr.length;
+    let swapped;
+    
+    for (let i = 0; i < n - 1; i++) {
+        swapped = false;
+        
+        for (let j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap the elements
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+                swapped = true;
+            }
+        }
+        
+        // If no swaps were made, the array is already sorted
+        if (!swapped) break;
+    }
+    
+    return arr;
 }
+
+// Example usage
+let numbers = [64, 34, 25, 12, 22, 11, 0, 0];
+console.log("Sorted Array:", bubbleSort(numbers));
 ```
 # Make the array empty
 
@@ -322,7 +344,7 @@ Object.fromEntries(output)
 }
 ```
 
-## Only duplicates element
+# Only duplicates element
 ```lua
 let arr = [22, 33, 33, 22, 2, 8]; should be output = [ 22, 22, 33, 33 ]
 ```
@@ -361,7 +383,7 @@ console.log(result); // Output: [22, 22, 2, 2, 11, 11, 11]
 ```
 
 
-## Create custom map function (high order function)
+# Create custom map function (high order function)
 
 To create a custom implementation of the `map()` function in JavaScript, you can define a function that takes an array and a callback as arguments. It should apply the callback to each element of the array and return a new array with the transformed values.
 
@@ -494,7 +516,7 @@ This makes it a robust replacement for the native `map()` function.
 
 Let me know if you'd like further details!
 
-### Find Common Items in Two Arrays
+# Find Common Items in Two Arrays
 ```js
 let ar1 = ['a','b','c','x'];
 let ar2 = ['z','x','y'];
@@ -547,7 +569,7 @@ console.log(checkStatus1);
 containsCommenItem3(ar1, ar2);
 ```
 
-## Count Each Element
+# Count Each Element
 ```js
 
 let str='aaaabbbccccc'
@@ -574,7 +596,7 @@ function countEachElm(str){
 console.log(countEachElm(str)); // Map(3) { 'a' => 4, 'b' => 3, 'c' => 5 }
 
 ```
-## 8.Merge two arrays on base of id
+# 8.Merge two arrays on base of id
 ```js
 let arr1 = [{ id:1, name:'a' }, { id:2, name:'b' }, { id:3, name:'c' }];
 let arr2 = [{ id:1, name:'d' }, { id:5, name:'e'}];
@@ -639,9 +661,9 @@ let value = getSecondHighestNumber(arr);
 console.log(value)
 ```
 
-## 11. Move Zero At Last
+# 11. Move Zero At Last
 ```js
-let arr = [1,0,3,0, 4,0,4,6,1,4,0] 
+let arr = [1,0,3,0,4,0,4,6,1,4,0] 
 // [1,3,4,4,6,1,4,0,0,0,0];
 
 function moveZeroAtLast(arr){
@@ -672,7 +694,7 @@ console.log(result)//O(n)
 
 ```
 
-## Find the Majority Element
+# Find the Majority Element
 ```lua
 Problem Statement: Given an array, find the element that appears more than n/2 times in the array (if it exists).
 
@@ -711,7 +733,7 @@ return -1;
 console.log(findFq(arr))
 ```
 
-## Show all Prime Numbers upto N
+# Show all Prime Numbers upto N
 
 I think you meant the **Sieve of Eratosthenes**, which is an efficient algorithm to find all prime numbers up to a given limit **N**. Here’s how it works:
 
@@ -756,7 +778,7 @@ console.log(sieveOfEratosthenes(50));
 
 Would you like an optimized **segmented sieve** for larger numbers (e.g., `10^9` range)? 🚀
 
-### Problem: Find the Most Frequent Element in an Object Array
+# Problem: Find the Most Frequent Element in an Object Array
 ```lua
 Problem Statement:
 You are given an array of objects where each object represents a product with a name and a category. Your task is to find the most frequently occurring category.
@@ -822,6 +844,17 @@ Output: [ 2, 2, 3, 4, 7, 10 ]
 ```
 
 Solution:
+
+***Brute force***
+
+```js
+function merge(ar1,ar2){
+
+  let combined = [...ar1, ...ar2];
+  return combined.sort((a,b)=>a-b);
+}
+```
+
 ```js
 let a = [2, 4, 7, 10], b = [2, 3];
 
@@ -891,7 +924,7 @@ O(n + m) → Where n and m are the sizes of arrays a and b, respectively.
 This is efficient because we traverse both arrays only once.
 ```
 
-## Find Leader in an array
+# Find Leader in an array
 
 To **find all leaders in the array**, we can iterate from **right to left** while keeping track of the **maximum element encountered so far**.  
 
@@ -944,7 +977,7 @@ Final **leaders array**: `[17, 5, 2]`
 
 ---
 
-## Permutations of a String
+# Permutations of a String
 ```lua
 Given a string s, which may contain duplicate characters, your task is to generate and return an array of all unique permutations of the string. You can return your answer in any order.
 
@@ -1001,5 +1034,378 @@ console.log(uniquePermutations("ABC"));
 ### **Time & Space Complexity**
 - **Time Complexity:** **O(n!)** (Factorial growth due to permutations)
 - **Space Complexity:** **O(n!)** (Storing all permutations)
+
+---
+
+# Remove given Key from Object
+```js
+function removeKeys(input, keysToRemove) {
+  keysToRemove.forEach(key => {
+    delete input[key];
+  });
+  return input;
+}
+
+const input = { a: 1, b: 2, c: 3 };
+const keysToRemove = ['b', 'c'];
+
+const result = removeKeys(input, keysToRemove);
+console.log(result); 
+```
+Output: 
+```js
+{ a: 1 }
+```
+***Using Reduce method***
+```js
+const input = { a: 1, b: 2, c: 3 };
+const keysToRemove = ['b', 'c'];
+
+const removeKeys = (obj, keys) => {
+  return Object.keys(obj).reduce((acc, key) => {
+    if (!keys.includes(key)) {
+      acc[key] = obj[key]; // Add the key-value pair if the key is not in keysToRemove
+    }
+    return acc;
+  }, {}); // Start with an empty object as the accumulator
+};
+
+const result = removeKeys(input, keysToRemove);
+console.log(result); // { a: 1 }
+```
+
+# Remove duplicate from Object of array.
+```js
+let obj = [
+    { name: 'Sid' },
+    { name: 'Mark' },
+    { name: 'Sid' },
+    { name: 'Jane' },
+    { name: 'Sid' }
+];
+```
+You can remove duplicates **without using `filter` or `Set`** by using an **object (hashmap)** to track seen values and then constructing a new array. Here's how:
+
+### **Solution using an Object (`Map` alternative)**
+```javascript
+let obj = [
+    { name: 'Sid' },
+    { name: 'Mark' },
+    { name: 'Sid' },
+    { name: 'Jane' },
+    { name: 'Sid' }
+];
+
+let seen = {}; // Hashmap to track seen names
+let uniqueArray = [];
+
+for (let i = 0; i < obj.length; i++) {
+    if (!seen[obj[i].name]) {
+        seen[obj[i].name] = true; // Mark name as seen
+        uniqueArray.push(obj[i]); // Add to result array
+    }
+}
+
+console.log(uniqueArray);
+```
+
+### **Output:**
+```javascript
+[
+  { name: 'Sid' },
+  { name: 'Mark' },
+  { name: 'Jane' }
+]
+```
+
+---
+
+### **💡 Explanation:**
+1. We create an **empty object (`seen`)** to track encountered names.
+2. Loop through the `obj` array:
+   - If `name` is **not in `seen`**, add it to `uniqueArray` and mark it as seen.
+   - If `name` is already in `seen`, **skip it**.
+3. This ensures that only the **first occurrence** of each name is kept.
+
+---
+
+### **🔹 Time Complexity:**
+- **O(N)** → Since we loop through the array once and lookup operations in objects are **O(1)**.
+
+# Longest Consecutive Sequence
+### **Optimized Approach (Using a Hash Set)**
+To efficiently find the **longest consecutive sequence**, we can use a **HashSet (Set in JavaScript)** to store all numbers and check for sequences in **O(n) time complexity**.
+
+---
+
+### **JavaScript Solution**
+```js
+function longestConsecutive(nums) {
+    if (nums.length === 0) return 0;
+
+    let numSet = new Set(nums); // Store all numbers in a Set for O(1) lookups
+    let maxLength = 0;
+
+    for (let num of numSet) {
+        // Check if it's the start of a sequence (num - 1 should not exist)
+        if (!numSet.has(num - 1)) {
+            let currentNum = num;
+            let currentStreak = 1;
+
+            // Expand the sequence
+            while (numSet.has(currentNum + 1)) {
+                currentNum++;
+                currentStreak++;
+            }
+
+            // Update maxLength if a longer sequence is found
+            maxLength = Math.max(maxLength, currentStreak);
+        }
+    }
+
+    return maxLength;
+}
+
+// Test Cases
+console.log(longestConsecutive([100, 4, 200, 1, 3, 2])); // Output: 4 (Sequence: [1, 2, 3, 4])
+console.log(longestConsecutive([9, 1, 4, 7, 3, 2, 6, 5, 8, 10])); // Output: 10 (Sequence: [1,2,3,4,5,6,7,8,9,10])
+console.log(longestConsecutive([0, -1])); // Output: 2 (Sequence: [-1, 0])
+console.log(longestConsecutive([10, 20, 30, 40])); // Output: 1 (No consecutive sequence)
+console.log(longestConsecutive([])); // Output: 0 (Empty input)
+```
+
+---
+
+### **Explanation**
+1. **Store elements in a Set** → Quick lookup in **O(1)** time.
+2. **Find sequence starts** → A number is a **sequence start** if `num - 1` is not in the set.
+3. **Expand the sequence** → Keep checking for `num + 1` and count the streak.
+4. **Update maxLength** → Track the longest sequence found.
+
+---
+
+### **Time & Space Complexity**
+- **Time Complexity:** \(O(n)\) (Each element is checked at most twice)
+- **Space Complexity:** \(O(n)\) (Set stores all elements)
+
+This approach ensures an **efficient** solution compared to sorting-based methods (**O(n log n)**). 🚀
+
+Would you like a **brute force approach** as well? 🔥
+### **Brute Force Approach (O(n²) Time Complexity)**  
+In a brute force solution, we check each number to see how long a consecutive sequence it can form. This results in an **O(n²) time complexity**, which is inefficient for large inputs.
+
+---
+
+### **JavaScript Brute Force Solution**
+```js
+function longestConsecutiveBruteForce(nums) {
+    if (nums.length === 0) return 0;
+
+    let maxLength = 0;
+
+    for (let i = 0; i < nums.length; i++) {
+        let currentNum = nums[i];
+        let currentStreak = 1;
+
+        // Check if next consecutive numbers exist in the array
+        while (nums.includes(currentNum + 1)) {
+            currentNum++;
+            currentStreak++;
+        }
+
+        maxLength = Math.max(maxLength, currentStreak);
+    }
+
+    return maxLength;
+}
+
+// Test Cases
+console.log(longestConsecutiveBruteForce([100, 4, 200, 1, 3, 2])); // Output: 4 (Sequence: [1, 2, 3, 4])
+console.log(longestConsecutiveBruteForce([9, 1, 4, 7, 3, 2, 6, 5, 8, 10])); // Output: 10 (Sequence: [1,2,3,4,5,6,7,8,9,10])
+console.log(longestConsecutiveBruteForce([0, -1])); // Output: 2 (Sequence: [-1, 0])
+console.log(longestConsecutiveBruteForce([10, 20, 30, 40])); // Output: 1 (No consecutive sequence)
+console.log(longestConsecutiveBruteForce([])); // Output: 0 (Empty input)
+```
+
+---
+
+### **Explanation**
+1. Loop through each number in the array.
+2. Try to build a consecutive sequence starting from that number.
+3. Use `nums.includes()` to check for the next consecutive number.
+4. Keep track of the maximum sequence length found.
+
+---
+
+### **Time & Space Complexity**
+- **Time Complexity:** \(O(n^2)\)  
+  - Each element is checked against `nums.includes()`, which is \(O(n)\) in the worst case.
+  - For every number, we scan the array to find the next number, leading to **nested loops**.
+- **Space Complexity:** \(O(1)\)  
+  - We only use a few integer variables for tracking lengths.
+
+🔴 **Why is this inefficient?**  
+- **`nums.includes()`** is called repeatedly, making the solution slow for large inputs.
+
+Would you like an even **more optimized** approach using sorting? 🚀
+
+
+### **Problem Statement:**  
+Given two arrays, check if they are **permutations** of each other.  
+Two arrays are permutations if they contain the **same elements with the same frequency**, but possibly in a different order.
+
+---
+
+## Check if two arrays are permutations of each other.  - [Frequency Counting]
+
+
+### **Example 1:**  
+#### **Input:**  
+```js
+checkPermutation([1, 2, 3, 4], [4, 3, 2, 1])
+```
+#### **Output:**  
+```js
+true
+```
+(Both arrays contain the same numbers, just in different orders.)
+
+---
+
+### **Example 2:**  
+#### **Input:**  
+```js
+checkPermutation([1, 2, 3], [1, 2, 2])
+```
+#### **Output:**  
+```js
+false
+```
+(Second array contains an extra **2** instead of **3**.)
+
+---
+
+### **Optimized Approach (Using Hash Map / Object)**
+Instead of sorting, we use a **hash map (object) to count frequencies** in **O(n) time**.
+
+```js
+function checkPermutation(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false; // Different lengths → Not permutations
+
+    let frequencyMap = {};
+
+    // Count occurrences in arr1
+    for (let num of arr1) {
+        frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+    }
+
+    // Decrease occurrences using arr2
+    for (let num of arr2) {
+        if (!frequencyMap[num]) return false; // Element missing or extra
+        frequencyMap[num]--;
+    }
+
+    return true;
+}
+
+// Test Cases
+console.log(checkPermutation([1, 2, 3, 4], [4, 3, 2, 1])); // true
+console.log(checkPermutation([1, 2, 3], [1, 2, 2])); // false
+console.log(checkPermutation([5, 6, 7, 8], [8, 7, 6, 5])); // true
+console.log(checkPermutation([1, 2, 3], [1, 2, 3, 4])); // false
+console.log(checkPermutation([], [])); // true (Empty arrays are permutations)
+```
+
+---
+
+### **Time & Space Complexity**
+- **Time Complexity:** \(O(n)\)  
+  - Two passes over the array: One for counting, one for checking.
+- **Space Complexity:** \(O(n)\)  
+  - The **hash map** stores frequencies.
+
+---
+
+### **Alternative Approach (Sorting)**
+A simpler (but slightly slower) approach is to **sort both arrays and compare**.
+
+```js
+function checkPermutationSort(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    arr1.sort((a, b) => a - b);
+    arr2.sort((a, b) => a - b);
+    return JSON.stringify(arr1) === JSON.stringify(arr2);
+}
+
+// Test Cases
+console.log(checkPermutationSort([1, 2, 3, 4], [4, 3, 2, 1])); // true
+console.log(checkPermutationSort([1, 2, 3], [1, 2, 2])); // false
+console.log(checkPermutationSort([5, 6, 7, 8], [8, 7, 6, 5])); // true
+console.log(checkPermutationSort([1, 2, 3], [1, 2, 3, 4])); // false
+console.log(checkPermutationSort([], [])); // true
+```
+
+---
+### **Sorting vs Hash Map Approach**
+| Approach | Time Complexity | Space Complexity | Best Use Case |
+|----------|---------------|----------------|--------------|
+| **Hash Map (Frequency Count)** | **O(n)** | **O(n)** | Best for large arrays with unique values |
+| **Sorting & Comparing** | **O(n log n)** | **O(1) or O(n)** | Simple but slower for large inputs |
+
+Would you like a **brute-force approach** (O(n²)) as well? 🚀
+
+# Count Uppercase, Lowercase, and Digits in a String
+Problem:
+Write a function that takes a string and counts the number of uppercase letters, lowercase letters, and digits using ASCII values.
+
+Example Input:
+```js
+countCharacters("Hello123");
+```
+```js
+{ uppercase: 1, lowercase: 4, digits: 3 }
+```
+Here’s the solution for **Problem 4: Count Uppercase, Lowercase, and Digits in a String** using ASCII values in JavaScript (ES6):
+
+---
+
+### **Solution:**
+```javascript
+function countCharacters(str) {
+    let counts = { uppercase: 0, lowercase: 0, digits: 0 };
+
+    for (let char of str) {
+        let ascii = char.charCodeAt(0);
+
+        if (ascii >= 65 && ascii <= 90) {
+            counts.uppercase++;  // A-Z
+        } else if (ascii >= 97 && ascii <= 122) {
+            counts.lowercase++;  // a-z
+        } else if (ascii >= 48 && ascii <= 57) {
+            counts.digits++;     // 0-9
+        }
+    }
+
+    return counts;
+}
+
+// Example usage
+console.log(countCharacters("Hello123")); 
+// Output: { uppercase: 1, lowercase: 4, digits: 3 }
+
+console.log(countCharacters("A1b2C3d4E5"));
+// Output: { uppercase: 3, lowercase: 2, digits: 5 }
+```
+
+### **Explanation:**
+1. Initialize an object `counts` to track uppercase, lowercase, and digits.
+2. Iterate through each character of the string.
+3. Use `char.charCodeAt(0)` to get the ASCII value.
+4. Check if the ASCII value falls within:
+   - **65-90** → Uppercase letters (`A-Z`)
+   - **97-122** → Lowercase letters (`a-z`)
+   - **48-57** → Digits (`0-9`)
+5. Increment the corresponding counter in the `counts` object.
+6. Return the final counts.
 
 ---
