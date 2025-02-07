@@ -693,6 +693,34 @@ let result = moveZeroAtLast(arr);
 console.log(result)//O(n)
 
 ```
+More Efficient Solution:
+```js
+const input = [0, 1, 2, 0, 3, 4, 0];
+const output = moveZeroes(input);
+console.log(output); // Output: [1, 2, 3, 4, 0, 0, 0]
+
+function moveZeroes(arr){
+  
+  let indexZero = 0;
+  let sortedArr =[]
+  
+  for(let i=0; i<arr.length; i++){
+    
+    if(arr[i] == 0) indexZero++;
+    
+    if(arr[i] != 0){
+      sortedArr.push(arr[i]);
+    }
+  }
+  
+  sortedArr = sortedArr.sort((a,b)=>a-b);
+  
+  for(let i = 0; i < indexZero; i++){
+    sortedArr.push(0)
+  }
+  return sortedArr;
+}
+ ```
 
 # Find the Majority Element
 ```lua
