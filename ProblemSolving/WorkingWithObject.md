@@ -545,3 +545,112 @@ console.log(userMap.size); // 3
 - **Use Maps** when dealing with large key-value pairs, frequent updates, or non-string keys.  
 
 Would you like a benchmark test comparing their performance? 🚀
+
+# Difference between for-in and for-of loops
+### **🔍 Difference Between `for...in` and `for...of` in JavaScript**  
+
+Both `for...in` and `for...of` are used to iterate over data, but they work differently.  
+
+---
+
+### **📌 `for...in` (Iterates Over Keys/Indexes)**
+- Used to iterate over **enumerable properties** (keys) of an object or indexes of an array.  
+- Returns **keys** (property names) instead of values.  
+- Works on **Objects and Arrays**, but primarily meant for Objects.  
+- **Includes inherited properties** (use `hasOwnProperty()` to avoid this).  
+
+📌 **Example with Object:**  
+```js
+const user = { name: "Alice", age: 25, country: "USA" };
+
+for (let key in user) {
+  console.log(key, ":", user[key]);
+}
+// Output:
+// name : Alice
+// age : 25
+// country : USA
+```
+
+📌 **Example with Array:**  
+```js
+const colors = ["red", "green", "blue"];
+
+for (let index in colors) {
+  console.log(index, ":", colors[index]);
+}
+// Output:
+// 0 : red
+// 1 : green
+// 2 : blue
+```
+🔹 **Drawback:** Iterates over keys, not values. If you need values, use `for...of`.
+
+---
+
+### **📌 `for...of` (Iterates Over Values)**
+- Used to iterate over **iterable objects** like Arrays, Strings, Maps, Sets.  
+- Returns **values** instead of keys.  
+- Cannot be used directly on Objects (not iterable by default).  
+
+📌 **Example with Array:**  
+```js
+const colors = ["red", "green", "blue"];
+
+for (let color of colors) {
+  console.log(color);
+}
+// Output:
+// red
+// green
+// blue
+```
+
+📌 **Example with String:**  
+```js
+const text = "Hello";
+
+for (let char of text) {
+  console.log(char);
+}
+// Output:
+// H
+// e
+// l
+// l
+// o
+```
+
+📌 **Example with Map:**  
+```js
+const myMap = new Map();
+myMap.set("name", "Alice");
+myMap.set("age", 25);
+
+for (let [key, value] of myMap) {
+  console.log(key, ":", value);
+}
+// Output:
+// name : Alice
+// age : 25
+```
+
+---
+
+### **📌 Key Differences Summary**  
+
+| Feature | `for...in` | `for...of` |
+|---------|-----------|------------|
+| **Works On** | Objects, Arrays | Arrays, Strings, Maps, Sets, NodeLists, etc. |
+| **Iterates Over** | **Keys** (property names/indexes) | **Values** |
+| **Use Case** | Best for **Objects** | Best for **iterables** (Arrays, Strings, Maps, Sets) |
+| **Includes Inherited Properties?** | ✅ Yes | ❌ No |
+| **Can Be Used on Objects?** | ✅ Yes | ❌ No (unless using `Object.entries()`) |
+
+---
+
+### **🚀 When to Use What?**
+- ✅ **Use `for...in`** when iterating over an **Object's properties**.  
+- ✅ **Use `for...of`** when iterating over **values in arrays, strings, maps, sets, etc.**  
+
+Would you like a real-world example demonstrating both? 🚀
