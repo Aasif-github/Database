@@ -473,3 +473,75 @@ ID: 103, Name: Headphones, Price: ₹3000, Stock: 50
 - 💡 You can extend this further by adding **categories, discounts, or a user-friendly interface (UI).**  
 
 Would you like to implement a **web-based UI** for this inventory system using **React or Angular**? 🎨💻
+
+# Object vs Map
+### **Object vs Map in JavaScript – Which One to Use?**  
+
+Both **Objects** and **Maps** allow you to store key-value pairs, but they have different use cases and performance characteristics.  
+
+---
+
+### **📌 Quick Comparison**  
+| Feature | **Object** | **Map** |
+|---------|----------|-------|
+| **Key Type** | Only strings & symbols | Any type (numbers, objects, functions, etc.) |
+| **Iteration Order** | Unordered (key order is not guaranteed) | Ordered (keys iterate in insertion order) |
+| **Performance** | Slower for frequent additions/removals | Faster for frequent key-value operations |
+| **Size Property** | No direct way (`Object.keys(obj).length`) | Has `.size` property |
+| **Prototype Inheritance** | Has default properties from `Object.prototype` | No prototype by default (safer for key lookups) |
+| **Better for** | Small sets of key-value pairs, structured data | Large datasets, fast lookups, and frequent updates |
+
+---
+
+### **📌 When to Use Objects?**  
+✅ You should use an **Object** when:  
+1. You need a **simple key-value store** with string-based keys.  
+2. The data structure represents an entity with properties (e.g., `{ name: "Alice", age: 25 }`).  
+3. You need to serialize/deserialize JSON data.  
+4. You want **prototypal inheritance**.  
+
+📌 **Example Using Object**  
+```js
+const user = {
+  name: "Alice",
+  age: 25,
+  country: "USA"
+};
+
+console.log(user.name); // "Alice"
+```
+
+---
+
+### **📌 When to Use Maps?**  
+✅ You should use a **Map** when:  
+1. Keys can be **any type** (numbers, objects, functions).  
+2. You need **faster lookups**, additions, and deletions.  
+3. You need to store a large number of dynamic key-value pairs.  
+4. You need to maintain **insertion order** when iterating.  
+
+📌 **Example Using Map**  
+```js
+const userMap = new Map();
+userMap.set("name", "Alice");
+userMap.set("age", 25);
+userMap.set({ id: 1 }, "Unique Key");
+
+console.log(userMap.get("name")); // "Alice"
+console.log(userMap.size); // 3
+```
+
+---
+
+### **📌 Performance Considerations**  
+- **Map is faster** for large datasets due to its optimized structure.  
+- **Objects are slower** when adding/removing keys frequently.  
+- **Objects take up more memory** because they inherit from `Object.prototype`.  
+
+---
+
+### **🚀 Conclusion**  
+- **Use Objects** when dealing with structured data (like JSON or entity models).  
+- **Use Maps** when dealing with large key-value pairs, frequent updates, or non-string keys.  
+
+Would you like a benchmark test comparing their performance? 🚀
