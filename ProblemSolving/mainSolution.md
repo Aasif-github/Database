@@ -1437,3 +1437,42 @@ console.log(countCharacters("A1b2C3d4E5"));
 6. Return the final counts.
 
 ---
+
+# Remove Kyes from an array of objects
+Problem:
+```js
+const data = [{
+    id: 1,
+    name: 'John',
+    age: 30
+}, {
+    id: 2,
+    name: 'Jane',
+    age: 25
+}, {
+    id: 3,
+    name: 'Bob',
+    age: 25
+}] ;
+```
+solution:
+
+```js
+function removeKeys(arr, keys) {
+ 
+ return arr.map(({keys, ...rest}) => rest);
+}
+
+let result = removeKeys(data, age);
+````
+output:
+
+```json
+[
+  { id: 1, name: 'John' },
+  { id: 2, name: 'Jane' },
+  { id: 3, name: 'Bob' }
+]
+```
+
+
