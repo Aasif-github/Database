@@ -1464,10 +1464,10 @@ function removeKeys(arr, keys) {
 }
 
 let result = removeKeys(data, age);
-````
+```
 output:
 
-```json
+```js
 [
   { id: 1, name: 'John' },
   { id: 2, name: 'Jane' },
@@ -1475,4 +1475,77 @@ output:
 ]
 ```
 
+# Find Minimum Window Substring Problem [Hard]
+
+💡 Problem Statement:
+Given two strings s and t, find the smallest substring in s that contains all the characters of t (including duplicates).
+
+📌 Example:
+```lua
+s = "ddaaabbca"  
+t = "abc"
+```
+Output:
+```lua
+"bca"
+```
+Here’s another simple approach using the **Brute Force Method** for better understanding. This method checks all substrings and finds the smallest valid one.
+
+### **Approach:**
+1. Generate all substrings of `s`.
+2. Check if a substring contains all characters of `t` (including duplicates).
+3. Keep track of the smallest valid substring.
+
+### **Code (JavaScript, ES6)**
+```javascript
+function containsAllChars(sub, t) {
+    let subCount = {};
+    let tCount = {};
+
+    for (let char of t) {
+        tCount[char] = (tCount[char] || 0) + 1;
+    }
+
+    for (let char of sub) {
+        subCount[char] = (subCount[char] || 0) + 1;
+    }
+
+    for (let char in tCount) {
+        if (!subCount[char] || subCount[char] < tCount[char]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function minWindow(s, t) {
+    let minLen = Infinity;
+    let minSub = "";
+
+    for (let i = 0; i < s.length; i++) {
+        for (let j = i; j < s.length; j++) {
+            let sub = s.substring(i, j + 1);
+            if (containsAllChars(sub, t) && sub.length < minLen) {
+                minLen = sub.length;
+                minSub = sub;
+            }
+        }
+    }
+
+    return minSub;
+}
+
+// Example usage:
+console.log(minWindow("ddaaabbca", "abc"));  // Output: "bca"
+```
+
+### **Explanation:**
+1. **Nested Loop**: Generate all possible substrings.
+2. **Check Validity**: The function `containsAllChars()` verifies if a substring has all characters from `t`.
+3. **Track the Smallest**: If a valid substring is found, update the minimum.
+
+🔹 **Time Complexity:** O(N²) (since we check all substrings)  
+🔹 **Space Complexity:** O(1) (only character frequency counts are stored)  
+
+This method is slower than the sliding window approach but is useful for understanding the problem conceptually. 🚀 Let me know if you need more variations!
 
