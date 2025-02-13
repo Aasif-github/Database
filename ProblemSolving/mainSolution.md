@@ -1549,3 +1549,51 @@ console.log(minWindow("ddaaabbca", "abc"));  // Output: "bca"
 
 This method is slower than the sliding window approach but is useful for understanding the problem conceptually. 🚀 Let me know if you need more variations!
 
+# 125. Valid Palendrome
+```lua
+A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
+
+Given a string s, return true if it is a palindrome, or false otherwise.
+
+ 
+
+Example 1:
+
+Input: s = "A man, a plan, a canal: Panama"
+Output: true
+Explanation: "amanaplanacanalpanama" is a palindrome.
+Example 2:
+
+Input: s = "race a car"
+Output: false
+Explanation: "raceacar" is not a palindrome.
+Example 3:
+
+Input: s = " "
+Output: true
+Explanation: s is an empty string "" after removing non-alphanumeric characters.
+Since an empty string reads the same forward and backward, it is a palindrome.
+```
+Solution:
+```js
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isPalindrome = function(s) {
+    let str = s.replace(/[^a-zA-Z0-9]/g,'');   // Removes all special characters
+  str = str.toLowerCase();
+
+  let str2 = '';
+  
+  for(let i=str.length-1; i >= 0; i--){
+    str2 += str[i];  
+  }
+  
+  if(str === str2){
+    return true;
+  }else{
+    return false;
+  }
+};
+```
