@@ -1549,7 +1549,7 @@ console.log(minWindow("ddaaabbca", "abc"));  // Output: "bca"
 
 This method is slower than the sliding window approach but is useful for understanding the problem conceptually. 🚀 Let me know if you need more variations!
 
-# 125. Valid Palendrome
+# 125. Valid Palendrome [Easy]
 ```lua
 A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
 
@@ -1596,4 +1596,34 @@ var isPalindrome = function(s) {
     return false;
   }
 };
+```
+
+# Longest Palindromic Substring [Medium](https://leetcode.com/problems/longest-palindromic-substring/)
+
+```lua
+input s = 'babad' output='aba' is also valid answer
+
+input s = 'cbbd' output = 'bb' 
+
+```
+Solution:
+```js
+
+function getValidPalindrome(s){
+  let rev = '';
+  
+  for(let i=0; i<s.length; i++){
+    for(let j=i; j<s.length; j++){
+      let substr = s.substring(i, j+1);
+      
+      if(substr == substr.split('').reverse().join('') && substr.length > rev.length){
+        rev = substr
+      }
+    }
+  }
+  return rev;
+}
+let s = 'babad';
+let result = getValidPalindrome(s);
+console.log(result);  // output: 'bab'
 ```
