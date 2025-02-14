@@ -2068,3 +2068,124 @@ function getNonRepeatChar(strg) {
 console.log(getNonRepeatChar("leetcode"));      // Output: 0
 console.log(getNonRepeatChar("loveleetcode"));  // Output: 2
 console.log(getNonRepeatChar("aabb"));          // Output: -1
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+49. Reverse Words in a String - [Medium]
+    
+    Given an input string s, reverse the order of the words.
+
+A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+
+Return a string of the words in reverse order concatenated by a single space.
+
+Note that s may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
+
+Example 1:
+
+Input: s = "the sky is blue"
+Output: "blue is sky the"
+Example 2:
+
+Input: s = "  hello world  "
+Output: "world hello"
+Explanation: Your reversed string should not contain leading or trailing spaces.
+Example 3:
+
+Input: s = "a good   example"
+Output: "example good a"
+Explanation: You need to reduce multiple spaces between two words to a single space in the reversed string.
+ 
+
+Constraints:
+
+- 1 <= s.length <= 104
+- s contains English letters (upper-case and lower-case), digits, and spaces ' '.
+- There is at least one word in s.
+ 
+
+Follow-up: If the string data type is mutable in your language, can you solve it in-place with O(1) extra space?
+
+function reverseWords(s) {
+    let result = "";
+    let word = "";
+    
+    // Step 1: Traverse the string in reverse
+    for (let i = s.length - 1; i >= 0; i--) {
+        const char = s[i];
+        
+        // Step 2: Build words character by character
+        if (char !== ' ') {
+            word = char + word;
+        } else if (word) { // If a word is completed and there's a space
+            if (result) result += " ";
+            result += word;
+            word = ""; // Reset for the next word
+        }
+    }
+    
+    // Step 3: Add the last word if it exists
+    if (word) {
+        if (result) result += " ";
+        result += word;
+    }
+
+    return result;
+}
+
+// Test cases
+console.log(reverseWords("the sky is blue"));       // Output: "blue is sky the"
+console.log(reverseWords("  hello world  "));       // Output: "world hello"
+console.log(reverseWords("a good   example"));      // Output: "example good a"
+console.log(reverseWords("   a"));                  // Output: "a"
+
+---------------------------------------------------------------------------
+
+50. Length of Last Word
+    Given a string s consisting of words and spaces, return the length of the last word in the string.
+
+A word is a maximal 
+substring
+ consisting of non-space characters only.
+
+Example 1:
+
+Input: s = "Hello World"
+Output: 5
+Explanation: The last word is "World" with length 5.
+Example 2:
+
+Input: s = "   fly me   to   the moon  "
+Output: 4
+Explanation: The last word is "moon" with length 4.
+Example 3:
+
+Input: s = "luffy is still joyboy"
+Output: 6
+Explanation: The last word is "joyboy" with length 6.
+ 
+Constraints:
+
+1 <= s.length <= 104
+s consists of only English letters and spaces ' '.
+There will be at least one word in s.
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLargestWord = function(s) {
+  let str = s.trim();
+     
+     let arr = str.split(' ');
+     let imap = new Map();
+     
+     for(let i=0; i< arr.length; i++){
+            imap.set(arr[i], arr[i].length)    
+     };
+     
+     let sortMap = Array.from(imap).sort((a, b)=>b[1] - a[1])
+     // return largest string in array.
+     let output = sortMap[0].slice(1)
+     return parseInt(output);  
+};
