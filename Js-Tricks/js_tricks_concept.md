@@ -43,3 +43,20 @@ output:
 rate 10
 fun call 11
 ```
+
+### What is the output of the following code?
+
+```js
+function sum(num1, num2){
+
+  'use strict'
+  // we want to pass value of sum(2,3)  
+  
+  num1 = 4; // By using use strict num1 & num2 value will ignore
+  num2 = 5;
+  
+  return arguments[0]+arguments[1];
+}
+
+console.log(sum(2,3)) // 5
+```
