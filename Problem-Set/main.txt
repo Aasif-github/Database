@@ -2189,3 +2189,485 @@ var lengthOfLargestWord = function(s) {
      let output = sortMap[0].slice(1)
      return parseInt(output);  
 };
+
+-------------------------------------------------------------------------------------------------
+
+51. Group similar elements together (e.g., even numbers first, then odd).
+
+Here’s a solution to **Group similar elements together** where we separate even numbers first, followed by odd numbers.
+
+---
+
+### **Problem Recap**
+Given an array of integers, rearrange the elements such that:
+1. All even numbers come first.
+2. All odd numbers come after the even numbers.
+3. The relative order within even and odd groups does not matter unless specified.
+
+---
+
+### **Solution 1: Using Partitioning (Two-Pointer Approach)**
+
+We use two pointers:
+- One pointer to place even numbers at the beginning.
+- The other to handle odd numbers.
+
+This approach is efficient with **O(n)** time complexity and **O(1)** space.
+
+```javascript
+function groupEvenOdd(nums) {
+  let left = 0; // Start of the array
+  let right = nums.length - 1; // End of the array
+
+  while (left < right) {
+    // If the left pointer is on an even number, move it forward
+    if (nums[left] % 2 === 0) {
+      left++;
+    } 
+    // If the right pointer is on an odd number, move it backward
+    else if (nums[right] % 2 !== 0) {
+      right--;
+    } 
+    // Swap odd on the left with even on the right
+    else {
+      [nums[left], nums[right]] = [nums[right], nums[left]];
+      left++;
+      right--;
+    }
+  }
+
+  return nums;
+}
+
+// Example Usage:
+const nums = [1, 2, 3, 4, 5, 6];
+console.log(groupEvenOdd(nums)); // Output: [6, 2, 4, 3, 5, 1] (or similar)
+```
+### **Solution 2: Using Filtering**
+
+You can split the array into two groups (even and odd) and then concatenate them.
+
+```javascript
+function groupEvenOdd(nums) {
+  const even = nums.filter(num => num % 2 === 0); // All even numbers
+  const odd = nums.filter(num => num % 2 !== 0);  // All odd numbers
+  return [...even, ...odd];
+}
+
+// Example Usage:
+const nums = [1, 2, 3, 4, 5, 6];
+console.log(groupEvenOdd(nums)); // Output: [2, 4, 6, 1, 3, 5]
+```
+
+---
+
+### **Solution 3: Maintain Original Order with Stable Partition**
+
+For preserving the original relative order, use a **Stable Partition** approach with a helper array.
+
+```javascript
+function groupEvenOddStable(nums) {
+  const result = [];
+  // Add all even numbers first
+  for (let num of nums) {
+    if (num % 2 === 0) result.push(num);
+  }
+  // Add all odd numbers next
+  for (let num of nums) {
+    if (num % 2 !== 0) result.push(num);
+  }
+  return result;
+}
+
+// Example Usage:
+const nums = [1, 2, 3, 4, 5, 6];
+console.log(groupEvenOddStable(nums)); // Output: [2, 4, 6, 1, 3, 5]
+```
+-------------------------------------------------------------------------------------------------
+52. Given an array of strings, group them based on their lengths.
+
+### **Solution: Group by String Length**
+
+We can use a hash map (object) to group strings by their lengths.
+
+```javascript
+function groupByStringLength(strings) {
+  const lengthMap = {};
+
+  for (let str of strings) {
+    const len = str.length;
+    if (!lengthMap[len]) {
+      lengthMap[len] = [];
+    }
+    lengthMap[len].push(str);
+  }
+
+  return Object.values(lengthMap);
+}
+
+// Example Usage:
+const strings = ["cat", "dog", "elephant", "bat", "ant"];
+console.log(groupByStringLength(strings));
+// Output: [['cat', 'dog', 'bat', 'ant'], ['elephant']]
+```
+-------------------------------------------------------------------------------------------------
+53. Group numbers based on the frequency of their digits. For example, numbers with repeated digits (`121`, `112`) should appear in one group, while numbers with unique digits (`123`) in another.
+---
+### **Solution: Group by Frequency Check**
+
+We use a helper function to determine whether a number has repeated digits.
+
+```javascript
+function groupByDigitFrequency(nums) {
+  const repeated = [];
+  const unique = [];
+
+  const hasRepeatedDigits = (num) => {
+    const str = Math.abs(num).toString();
+    const set = new Set(str);
+    return set.size !== str.length;
+  };
+
+  for (let num of nums) {
+    if (hasRepeatedDigits(num)) {
+      repeated.push(num);
+    } else {
+      unique.push(num);
+    }
+  }
+
+  return [...unique, ...repeated];
+}
+
+// Example Usage:
+const nums = [123, 112, 456, 121, 789];
+console.log(groupByDigitFrequency(nums));
+// Output: [123, 456, 789, 112, 121]
+```
+-------------------------------------------------------------------------------------------------
+54. Group by Multiple Conditions (Even, Odd, Negative, Positive)**
+
+const nums = [-5, 3, -2, 4, -1, 2, 7];
+
+**Problem:**  
+Rearrange the array such that:
+1. All negative numbers come first.
+2. Followed by even numbers.
+3. Followed by odd numbers.
+4. Maintain relative order within each group.
+
+---
+
+### **Solution: Stable Partition with Multiple Conditions**
+
+We can use the **Stable Partition** approach to group elements into three categories:  
+1. Negative numbers.  
+2. Positive even numbers.  
+3. Positive odd numbers.  
+
+```javascript
+function groupByConditions(nums) {
+  const negatives = [];
+  const evens = [];
+  const odds = [];
+
+  for (let num of nums) {
+    if (num < 0) {
+      negatives.push(num);
+    } else if (num % 2 === 0) {
+      evens.push(num);
+    } else {
+      odds.push(num);
+    }
+  }
+
+  return [...negatives, ...evens, ...odds];
+}
+
+// Example Usage:
+const nums = [-5, 3, -2, 4, -1, 2, 7];
+console.log(groupByConditions(nums));
+// Output: [-5, -2, -1, 4, 2, 3, 7]
+```
+
+55. Rotate Clockwise
+let arr = [1,2,3,4,5,6];
+
+function rotateClockwise(arr, k){
+    // k Number of rotations
+    let n = arr.length;
+    
+    for(let i=0; i < k; i++){
+      
+      
+      let last = arr[n-1];  
+      
+      for(let j=n-1; j>0; j--){
+      
+        //shift each elem 
+        arr[j] = arr[j-1]
+        
+      }
+      arr[0] = last;
+    }
+    return arr;
+}
+
+console.log(rotateClockwise(arr,2))
+Output:
+[ 5, 6, 1, 2, 3, 4 ]
+
+-------------------------------------------------------------------------------------------------
+
+56. Given an array of characters chars, compress it using the following algorithm:
+
+Begin with an empty string s. For each group of consecutive repeating characters in chars:
+
+If the group's length is 1, append the character to s.
+Otherwise, append the character followed by the group's length.
+The compressed string s should not be returned separately, but instead, be stored in the input character array chars. Note that group lengths that are 10 or longer will be split into multiple characters in chars.
+
+After you are done modifying the input array, return the new length of the array.
+
+You must write an algorithm that uses only constant extra space.
+
+Example 1:
+
+Input: chars = ["a","a","b","b","c","c","c"]
+Output: Return 6, and the first 6 characters of the input array should be: ["a","2","b","2","c","3"]
+Explanation: The groups are "aa", "bb", and "ccc". This compresses to "a2b2c3".
+Example 2:
+
+Input: chars = ["a"]
+Output: Return 1, and the first character of the input array should be: ["a"]
+Explanation: The only group is "a", which remains uncompressed since it's a single character.
+Example 3:
+
+Input: chars = ["a","b","b","b","b","b","b","b","b","b","b","b","b"]
+Output: Return 4, and the first 4 characters of the input array should be: ["a","b","1","2"].
+Explanation: The groups are "a" and "bbbbbbbbbbbb". This compresses to "ab12".
+ 
+
+Constraints:
+
+1 <= chars.length <= 2000
+chars[i] is a lowercase English letter, uppercase English letter, digit, or symbol.
+```
+Here's an **efficient JavaScript solution** using **constant extra space (O(1))**:
+
+---
+
+### **Approach**
+1. Use a **pointer `i`** to traverse the array.
+2. Use a **write pointer `writeIndex`** to track where the compressed characters should be written.
+3. For each group of consecutive characters:
+   - Write the character to `chars[writeIndex]` and increment `writeIndex`.
+   - If the group has more than one occurrence, write the count **digit by digit**.
+4. Continue until `i` reaches the end of the array.
+5. Return `writeIndex` as the new length of the modified array.
+
+---
+```js
+function compress(chars) {
+    let writeIndex = 0; // Pointer to write compressed chars
+    let i = 0; // Pointer to traverse the array
+
+    while (i < chars.length) {
+        let char = chars[i];
+        let count = 0;
+
+        // Count occurrences of the current character
+        while (i < chars.length && chars[i] === char) {
+            i++;
+            count++;
+        }
+
+        // Write the character
+        chars[writeIndex] = char;
+        writeIndex++;
+
+        // Write the count if greater than 1
+        if (count > 1) {
+            for (let digit of count.toString()) {
+                chars[writeIndex] = digit;
+                writeIndex++;
+            }
+        }
+    }
+
+    return writeIndex; // New length of the array
+}
+
+// Example Test Cases
+console.log(compress(["a","a","b","b","c","c","c"])); // Output: 6 (["a","2","b","2","c","3"])
+console.log(compress(["a"])); // Output: 1 (["a"])
+console.log(compress(["a","b","b","b","b","b","b","b","b","b","b","b","b"])); // Output: 4 (["a","b","1","2"])
+```
+
+Brute force:
+
+```js
+var compress = function(chars) {
+   let imap = new Map();
+   if(chars.length == 1) return 1;
+   for(let i=0; i<chars.length; i++){     
+     if(!imap.has(chars[i])){
+        imap.set(chars[i], (imap.get(chars[i])||0) + 1)  
+     }else{
+       imap.set(chars[i], imap.get(chars[i]) + 1)  
+     }
+   }
+   
+   let arr = Array.from([...imap])
+   let newStr = arr.join().replace('1','').replaceAll(',','');
+   return newStr.split('').length;
+};
+```
+-------------------------------------------------------------------------------------------------
+57. Minimum Window Substring Problem
+💡 **Problem Statement:**  
+Given two strings **s** and **t**, find the **smallest substring** in `s` that contains **all the characters of `t`** (including duplicates).  
+
+📌 **Example:**  
+```plaintext
+s = "ddaaabbca"  
+t = "abc"
+```
+✅ **Output:** `"bca"`
+
+---
+
+### **🔹 Approach: Sliding Window + Two Pointers**
+We use a **sliding window** technique with two pointers (`left` and `right`).
+
+#### **Step-by-Step Solution:**
+1. **Use a frequency map** to track required characters from `t`.
+2. **Expand the right pointer** to include characters until all `t` characters are found.
+3. **Shrink the left pointer** to minimize the window while maintaining all `t` characters.
+4. **Update the minimum window** whenever a valid substring is found.
+5. **Return the smallest valid window**.
+
+---
+
+### **📝 JavaScript Code (Two Pointers + Sliding Window)**
+```javascript
+function minWindow(s, t) {
+    if (s.length < t.length) return ""; // Edge case
+
+    let freqT = new Map(), freqS = new Map();
+    for (let char of t) freqT.set(char, (freqT.get(char) || 0) + 1);
+
+    let left = 0, minLength = Infinity, minStart = 0;
+    let required = freqT.size, formed = 0;
+
+    for (let right = 0; right < s.length; right++) {
+        let char = s[right];
+        freqS.set(char, (freqS.get(char) || 0) + 1);
+
+        if (freqT.has(char) && freqS.get(char) === freqT.get(char)) {
+            formed++;
+        }
+
+        while (formed === required) { // Shrink the window
+            if (right - left + 1 < minLength) {
+                minLength = right - left + 1;
+                minStart = left;
+            }
+
+            let leftChar = s[left];
+            freqS.set(leftChar, freqS.get(leftChar) - 1);
+            if (freqT.has(leftChar) && freqS.get(leftChar) < freqT.get(leftChar)) {
+                formed--;
+            }
+            left++;
+        }
+    }
+
+    return minLength === Infinity ? "" : s.substring(minStart, minStart + minLength);
+}
+
+// Example Usage
+let s = "ddaaabbca", t = "abc";
+console.log(minWindow(s, t)); // Output: "bca"
+```
+-------------------------------------------------------------------------------------------------
+58. Isomorphic Strings - [Easy]
+
+```txt
+Given two strings s and t, determine if they are isomorphic.
+
+Two strings s and t are isomorphic if the characters in s can be replaced to get t.
+
+All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.
+
+Example 1:
+
+Input: s = "egg", t = "add"
+
+Output: true
+
+Explanation:
+
+The strings s and t can be made identical by:
+
+Mapping 'e' to 'a'.
+Mapping 'g' to 'd'.
+Example 2:
+
+Input: s = "foo", t = "bar"
+
+Output: false
+
+Explanation:
+
+The strings s and t can not be made identical as 'o' needs to be mapped to both 'a' and 'r'.
+
+Example 3:
+
+Input: s = "paper", t = "title"
+
+Output: true
+
+Constraints:
+
+- 1 <= s.length <= 5 * 104
+- t.length == s.length
+- s and t consist of any valid ascii character.
+```
+```js
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var isIsomorphic = function(s, t) {
+     // Mappings for s -> t and t -> s
+    const mappingSToT = new Map();
+    const mappingTToS = new Map();
+
+    for (let i = 0; i < s.length; i++) {
+        const charS = s[i];
+        const charT = t[i];
+
+        // Check if the mapping is consistent for s -> t
+        if (mappingSToT.has(charS)) {
+            if (mappingSToT.get(charS) !== charT) {
+                return false;
+            }
+        } else {
+            mappingSToT.set(charS, charT);
+        }
+
+        // Check if the mapping is consistent for t -> s
+        if (mappingTToS.has(charT)) {
+            if (mappingTToS.get(charT) !== charS) {
+                return false;
+            }
+        } else {
+            mappingTToS.set(charT, charS);
+        }
+    }
+    return true;
+};
+```
+---------------------------------------------------------------------------------------------------

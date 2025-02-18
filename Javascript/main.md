@@ -35,11 +35,12 @@ JavaScript (JS) is a high-level, dynamic typed, multi-paradigm programming langu
 It is interpreted (JIT compiler) and executed in a browser or runtime environment (like Node.js) to enable interactive and asynchronous web functionalities.
 
 Technical Features:
+
 - Event-Driven and Non-Blocking: Uses an event loop to handle asynchronous operations without blocking the main thread.
 - Prototype-Based Object Orientation: Implements inheritance and object manipulation using prototypes rather than classes (though ES6 introduced class syntax as syntactic sugar).
 - Dynamically Typed: Variable types are determined at runtime.
 - JIT Compilation: Uses Just-In-Time (JIT) compilers to improve execution speed.
-Garbage-Collected: Automatically manages memory allocation and deallocation.
+- Garbage-Collected: Automatically manages memory allocation and deallocation.
 
 ## Hoisting
 
@@ -149,17 +150,23 @@ console.log(Object.getPrototypeOf(person1) === Person.prototype); // true
 
 1. Takes one or more functions as arguments
    ```js
-   function calculate(operation, a, b) {
-     return operation(a, b);
+   function calculate(operationCallback, a, b) {
+     return operationCallback(a, b);
    }
 
    function add(a, b) {
      return a + b;
    }
 
+   function sub(a, b) {
+     return a - b;
+   }
+
    const result = calculate(add, 3, 4);
+   const result2 = calculate(sub, 7, 3);
 
    console.log(result); // 7
+   console.log(result2); // 4
    ```
 2. Returns a function as its result
 ```js
@@ -196,6 +203,7 @@ It "remembers" these variables, allowing it to use them later.
 Closures are created automatically every time a when we create a function in JavaScript.
 
 ```js
+
 function counter(){
   let count = 0;
   // here the variable of outer scope is accessble by inner function 
@@ -247,7 +255,7 @@ It consists of two main parts:
 - Environment Record: an object that stores all local variables as its properties (and some other information like the value of this).
 
 - Outer Lexical Environment Reference: A link to the parent environment, enabling access to variables in outer scopes.
-
+    
 ### Real World Example - Closures
 ---
 
@@ -279,52 +287,6 @@ errorLogger('Unable to connect to the database'); // Outputs: [ERROR] Unable to 
 
 ### Practical Application:
 You can use this in a larger app to create loggers with specific contexts, such as debugging, warnings, or error tracking.
-
-## Hoisting
-Hoisting refers to the process where the JavaScript interpreter moves declarations (variable and function declarations) to the top of their containing scope during the compile phase. This means that a variable or function can be used before it has been declared in the code.
-
-However, only the declarations are hoisted, not the initializations.
-
-#### Variable Hoisting - var, let, const
-
-```javascript
-// Variable declaration (hoisted)
-console.log(myVar); // undefined
-var myVar = 10;
-
-// Let declaration (not hoisted)    
-console.log(myLet); // ReferenceError: myLet is not defined 
-let myLet = 20;
-
-// Const declaration (not hoisted)  
-console.log(myConst); // ReferenceError: myConst is not defined
-const myConst = 30; 
-
-```
-Explanation:
-
-Temporal Dead Zone (TDZ): The time between the entering of the scope and the declaration where accessing the variable leads to a ReferenceError.
-
-Initialization: let and const variables are not initialized until the declaration is executed.
-
-#### Function Hoisting - function declaration and function expression
-
-```javascript
-// Function declaration (hoisted)
-console.log(myFunction()); // "Hello, World!"
-function myFunction() {
-    return "Hello, World!";
-}
-
-// Function expression (not hoisted)
-console.log(myFuncExpression()); // TypeError: myFuncExpression is not a function
-var myFuncExpression = function() {
-    return "Hi, there!";
-};
-```
-
-Explanation: Function declarations are hoisted, while function expressions are not. This means that you can call a function before it is defined, but you cannot call a function expression before it is defined. 
-
 
 ## CallBack Functions
 A callback is a function passed as an argument to another function and executed later.

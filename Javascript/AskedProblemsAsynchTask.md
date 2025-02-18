@@ -11,7 +11,7 @@ let task1 = () => {
             }else{
                 reject('Task-1 Failed')
             }    
-        }, 1000)
+        }, 1000);
     })
 }
 
@@ -19,6 +19,7 @@ const taskHandler = async() => {
     let taskOneStatus = await task1();
     console.log(taskOneStatus);
 }
+
 taskHandler()
 ```
 
