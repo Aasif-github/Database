@@ -1,4 +1,4 @@
-    ### **Truthy and Falsy Values in JavaScript**  
+### **Truthy and Falsy Values in JavaScript**  
 
 In JavaScript, values are categorized as either **truthy** or **falsy** based on how they are evaluated in a boolean context (e.g., inside an `if` statement).  
 

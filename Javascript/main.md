@@ -28,6 +28,19 @@
     - Promise Api's
 - [Async-Await](#async-await) *
 
+## What is Javascript?
+
+JavaScript (JS) is a high-level, dynamic typed, multi-paradigm programming language used for client-side and server-side web development.
+
+It is interpreted (JIT compiler) and executed in a browser or runtime environment (like Node.js) to enable interactive and asynchronous web functionalities.
+
+Technical Features:
+- Event-Driven and Non-Blocking: Uses an event loop to handle asynchronous operations without blocking the main thread.
+- Prototype-Based Object Orientation: Implements inheritance and object manipulation using prototypes rather than classes (though ES6 introduced class syntax as syntactic sugar).
+- Dynamically Typed: Variable types are determined at runtime.
+- JIT Compilation: Uses Just-In-Time (JIT) compilers to improve execution speed.
+Garbage-Collected: Automatically manages memory allocation and deallocation.
+
 ## Hoisting
 
 `Hoisting` refers to the process where the JavaScript interpreter moves declarations (ie, variable and function declarations) to the top of their containing scope during the compile phase. 
@@ -35,6 +48,8 @@
 This means that a variable or function can be used before it has been declared in the code.
 
 However, only the declarations are hoisted, not the initializations.
+
+***Temporal Dead Zone(TDZ)***: The time between the entering of the scope and the declaration where accessing the variable leads to a ReferenceError.
 
 ### Hoisting of Variables
 
