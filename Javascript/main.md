@@ -247,7 +247,7 @@ Functions counter and counter2 are created by different invocations of makeCount
 So they have independent outer Lexical Environments, each one has its own count.
 ```
 
-## Lexical Environment
+### Lexical Environment
 Lexical Environment is a runtime data structure that holds variable bindings (name-value pairs) and manages the scope of variables during code execution. 
 
 It consists of two main parts:
