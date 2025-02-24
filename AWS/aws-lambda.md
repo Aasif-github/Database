@@ -123,3 +123,7 @@ Here are some commonly asked **AWS Lambda interview questions**, categorized by 
 ---
 
 💡 **Would you like solutions to these hands-on questions or code samples for your projects?** 🚀
+
+
+---
+
