@@ -5,6 +5,6 @@
 
 ## Implementation of kafka in microservices
 
-[Kafka  ](https://www.youtube.com/watch?v=K-kp3veiyu0&t=2994s)
+[Kafka - nodejs ](https://www.youtube.com/watch?v=K-kp3veiyu0&t=2994s)
 
 
