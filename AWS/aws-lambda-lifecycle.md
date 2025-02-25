@@ -107,5 +107,3 @@ Once the function is initialized, AWS Lambda executes the **handler function** w
 4. **Use IAM Best Practices:** Apply **least privilege** access using **IAM roles**.
 
 ---
-
-Let me know if you need more details or code examples! 🚀
