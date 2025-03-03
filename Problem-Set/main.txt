@@ -2671,3 +2671,21 @@ var isIsomorphic = function(s, t) {
 };
 ```
 ---------------------------------------------------------------------------------------------------
+59. Convert a sentence into an Acronym.
+
+let str ="As soon as possible"; 
+// return "ASAP" (String)
+
+function acroymn(str){
+  
+  let arr = str.split(' ');
+  let output = "";
+  
+  for(let i=0; i< arr.length; i++){
+    output += arr[i][0];
+    
+  }
+    return output.toUpperCase();
+}
+
+console.log(acroymn(str))
