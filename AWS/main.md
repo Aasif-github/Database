@@ -58,13 +58,13 @@ A **cold start** happens when AWS **creates a new execution environment** to run
 
 ## What are the solutions for cold start in AWS Lambda.
 
-## **1. Use Provisioned Concurrency** ✅ **(Best for Critical Applications)**
+#### **1. Use Provisioned Concurrency** ✅ **(Best for Critical Applications)**
 Provisioned Concurrency **keeps Lambda instances warm** so that they are ready to execute immediately.  
 - **Reduces cold start latency to near-zero**  
 - **Costs extra but ensures fast responses**  
 
-### **How to Enable Provisioned Concurrency**  
-#### **Using AWS Console**  
+##### **How to Enable Provisioned Concurrency**  
+###### **Using AWS Console**  
 1. Go to **AWS Lambda > Functions**  
 2. Select your function  
 3. Click on **Configuration > Concurrency**  
@@ -92,16 +92,16 @@ new lambda.CfnProvisionedConcurrencyConfig(this, 'ProvisionedConcurrency', {
 });
 ```
 
-## **2. Keep Lambda Functions Warm Manually** 🕒 **(Cheaper Alternative)**
+### **2. Keep Lambda Functions Warm Manually** 🕒 **(Cheaper Alternative)**
 - Invoke your Lambda function **every 5-15 minutes** to keep it warm.  
 - You can use **Amazon EventBridge (CloudWatch Events) or a simple cron job**.  
 
-### **Using AWS EventBridge (Preferred)**
+#### **Using AWS EventBridge (Preferred)**
 1. Go to **AWS EventBridge > Create Rule**  
 2. Choose **Schedule Expression** and set `rate(5 minutes)`  
 3. Select **Target** as your Lambda function  
 
-### **Using AWS CDK**
+#### **Using AWS CDK**
 ```typescript
 import * as events from 'aws-cdk-lib/aws-events';
 import * as targets from 'aws-cdk-lib/aws-events-targets';
@@ -113,14 +113,14 @@ const rule = new events.Rule(this, 'KeepWarmRule', {
 rule.addTarget(new targets.LambdaFunction(myFunction));
 ```
 
-## **3. Increase Memory Allocation**
+### **3. Increase Memory Allocation**
 - **More memory = faster cold starts** (even if you don’t need extra RAM).  
 - Try **512MB or 1024MB** instead of **128MB**.  
 
-### **Using AWS Console**  
+#### **Using AWS Console**  
 Go to **Lambda > Configuration > General Configuration** → Increase **Memory (MB)**  
 
-### **Using AWS CDK**
+#### **Using AWS CDK**
 ```typescript
 const myFunction = new lambda.Function(this, 'MyFunction', {
   memorySize: 1024, // Increased memory
@@ -256,7 +256,7 @@ AWS **CloudFormation** is an **Infrastructure as Code (IaC)** service that lets 
 - **Scaling applications** with reusable templates.  
 - **Disaster recovery** by restoring infrastructure using templates.  
 
-
+---
 
 ## What is Event Driven Architecture.
 
