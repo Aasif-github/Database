@@ -1,6 +1,12 @@
 # Resources
 https://www.youtube.com/watch?v=N9TDwaDfCW0&t=2053s
 
+
+For Microservices
+https://github.com/codergogoi/kafka_elastic_search_ms/blob/main/order_service/src/service/order.service.ts
+
+https://www.youtube.com/watch?v=v4fEaLefGr8&list=PLaLqLOj2bk9aaZZYoH7tMDj5obE7os45_&index=28
+
 # Kafka
 ### **🔹 Kafka Interview Questions & Answers Cheat Sheet 🚀**  
 

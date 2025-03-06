@@ -1,17 +1,18 @@
-AWS Cloud Development Kit (CDK) is an open-source framework that lets you define and provision cloud infrastructure using programming languages like Python, Java, and TypeScript. [1, 2, 3, 4]  
-How does AWS CDK work? [3, 4]  
+AWS Cloud Development Kit (CDK) is an open-source framework that lets you define and provision cloud infrastructure using programming languages like Python, Java, and TypeScript.  
 
-1. You use programming languages to define cloud infrastructure as code. [3, 4]  
-2. AWS CloudFormation provisions the cloud infrastructure in a safe and repeatable way. [2, 3]  
+How does AWS CDK work? 
 
-Benefits of AWS CDK [2, 5]  
+1. You use programming languages to define cloud infrastructure as code.
+2. AWS CloudFormation provisions the cloud infrastructure in a safe and repeatable way.
 
-• You can use your existing Integrated Development Environment (IDE) and testing tools. [2, 5]  
-• You can apply the same best practices used in software development. [4]  
-• You can create and manage AWS resources more efficiently. [1]  
-• You can create complex architectures for deployment in AWS. [2]  
+Benefits of AWS CDK.
 
-Components of AWS CDK [6]  
+• You can use your existing Integrated Development Environment (IDE) and testing tools. 
+• You can apply the same best practices used in software development.
+• You can create and manage AWS resources more efficiently. 
+• You can create complex architectures for deployment in AWS.
+
+Components of AWS CDK.
 
 • CDK apps: The top-level component of your CDK project that contains all stacks 
 • CDK stacks: Correspond to CloudFormation stacks 
