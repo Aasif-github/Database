@@ -13,10 +13,10 @@
 
 [Folder Structure for CQRS - nest-cqrs-example](https://github.com/kamilmysliwiec/nest-cqrs-example/tree/master)
 
-## what is AWS Lambda.
+## What is AWS Lambda.
 - AWS Lambda is a serverless computing service that runs your code only when needed, without requiring you to manage servers. It automatically scales, executes code in response to events, and you only pay for the execution time used.
 
-## what is life cycle of AWS lambda.
+## What is life cycle of AWS lambda.
 ### **Life Cycle of an AWS Lambda Function (Short & Simple)**  
 
 AWS Lambda executes functions in **three main phases**:  
@@ -40,7 +40,7 @@ AWS Lambda executes functions in **three main phases**:
 🔹 **Warm Start** = Reusing the existing environment (faster).  
 
 
-## what is cold start of AWS lambda.
+## What is cold start of AWS lambda.
 ### **Cold Start in AWS Lambda (Short & Simple)**  
 A **cold start** happens when AWS **creates a new execution environment** to run your Lambda function **after a period of inactivity**. This includes:  
 ✅ Setting up a new **container**  
@@ -128,12 +128,12 @@ const myFunction = new lambda.Function(this, 'MyFunction', {
 });
 ```
 
-## what is serverless framework.
+## What is serverless framework.
 - Serverless Framework is an open-source tool that helps you build, deploy, and manage serverless applications easily on cloud platforms like AWS, Azure, and Google Cloud.  
 - It provides a **simple and flexible way** to create and manage serverless applications without the need for complex infrastructure management.
 - Simplifies AWS Lambda deployment (No manual setup).
 
-## what is sam cli(serverless application model command line interface).
+## What is sam cli(serverless application model command line interface).
 AWS SAM (Serverless Application Model) CLI is a command-line tool that helps developers build, test, and deploy serverless applications on AWS, especially using AWS Lambda, API Gateway, DynamoDB, and other services.
 
 🔹 Why Use AWS SAM CLI?
@@ -146,16 +146,16 @@ AWS SAM (Serverless Application Model) CLI is a command-line tool that helps dev
 ## What is API Gateway?
 - An API gateway is a server that acts as an entry point for API calls. It receives requests from clients and forwards them to the appropriate services.
 
-## what is AWS API Gateway.
+## What is AWS API Gateway.
 - AWS **API Gateway (HTTP API)** is a fully managed service that allows you to **create, manage, and secure APIs** for your applications. It enables you to expose AWS Lambda functions, backend services, or any HTTP-based endpoint as RESTful APIs with minimal configuration.
 
-## what is EC2(Elastic Compute Cloud)
+## What is EC2(Elastic Compute Cloud)
 - AWS EC2 (Elastic Compute Cloud) is a cloud service that provides virtual servers (instances) to run applications. It allows you to scale computing power on demand without managing physical hardware.
 
 🔹 Why Use AWS EC2?
 ✅ Flexible – Choose OS, CPU, RAM, and storage.
 ✅ Scalable – Increase or decrease instances as needed.
-✅ Cost-Effective – Pay only for what you use.
+✅ Cost-Effective – Pay only for What you use.
 ✅ Secure – Integrated with AWS security features.
 
 💡 Example Use Cases:
@@ -164,7 +164,7 @@ AWS SAM (Serverless Application Model) CLI is a command-line tool that helps dev
 - Running databases, backend services, or APIs.
 - Deploying machine learning models.
 
-## what is RDS(Relational Database Service)
+## What is RDS(Relational Database Service)
 - AWS RDS (Relational Database Service) is a managed database service that makes it easy to set up, operate, and scale relational databases in the cloud without managing servers.
 
 🔹 Why Use AWS RDS?
@@ -179,7 +179,7 @@ AWS SAM (Serverless Application Model) CLI is a command-line tool that helps dev
 - Storing user data for an e-commerce platform.
 - Managing transactional data for banking applications.
 
-## what is S3(Simple Storage Service)
+## What is S3(Simple Storage Service)
 AWS S3 (Simple Storage Service) - Short & Simple
 AWS S3 (Simple Storage Service) is a scalable cloud storage service that lets you store and retrieve any type of data (files, images, videos, backups, etc.) securely.
 
@@ -187,7 +187,7 @@ AWS S3 (Simple Storage Service) is a scalable cloud storage service that lets yo
 ✅ Unlimited storage – Store as much data as needed.
 ✅ Highly durable & available – 99.999999999% (11 9’s) durability.
 ✅ Secure – Supports encryption & access control.
-✅ Cost-effective – Pay only for what you use.
+✅ Cost-effective – Pay only for What you use.
 
 💡 Example Use Cases:
 
@@ -195,7 +195,7 @@ AWS S3 (Simple Storage Service) is a scalable cloud storage service that lets yo
 - Hosting a static website.
 - Keeping backup files and logs.
 
-## what is AWS cloudFront.
+## What is AWS cloudFront.
 AWS **CloudFront** is a **Content Delivery Network (CDN)** that speeds up the delivery of websites, videos, APIs, and other content to users worldwide by caching it at **edge locations** close to them.  
 
 🔹 **Why Use AWS CloudFront?**  
@@ -229,7 +229,7 @@ AWS **CloudFront** is a **Content Delivery Network (CDN)** that speeds up the de
 
 ---
 
-## what is cdk(cloud development kit)
+## What is cdk(cloud development kit)
 AWS Cloud Development Kit (CDK) is an open-source framework that lets you define and provision cloud infrastructure using programming languages like Python, Java, and TypeScript. instead of writing YAML/JSON.
 
 🔹 Why Use AWS CDK?
@@ -240,7 +240,7 @@ AWS Cloud Development Kit (CDK) is an open-source framework that lets you define
 
 ---
 
-## what is CloudFormation.
+## What is CloudFormation.
 ### **AWS CloudFormation (Short & Simple)**  
 
 AWS **CloudFormation** is an **Infrastructure as Code (IaC)** service that lets you define and provision AWS infrastructure **automatically** using **YAML or JSON templates**.  
@@ -276,8 +276,99 @@ Instead of directly calling a function or service (like making a phone call), an
 Event Broker(Channel): A system that passes the order information from the producer to the consumer. (Like a message queue like Kafka or RabbitMQ, AWS SNS/SQS)
 Here, no one is waiting for a direct response—everyone **reacts to the event** when it's their turn. This makes the process **faster and more efficient**.  
 
+## What is PubSub(Publish-Subscribe) Architecture.
+### **Pub-Sub Architecture (Short & Simple)**  
+
+**Publish-Subscribe (Pub-Sub) Architecture** is a messaging pattern where **senders (publishers) don’t directly send messages to receivers (subscribers)**. Instead, messages go through an **intermediary (message broker)** that delivers them to interested subscribers.  
+
+🔹 **How It Works?**  
+1️⃣ **Publisher** sends an **event/message**.  
+2️⃣ **Message Broker (Event Bus)** receives and routes the message.  
+3️⃣ **Subscribers** receive the message **if they have subscribed to that topic.**  
+
+🔹 **Why Use Pub-Sub?**  
+✅ **Decouples services** – Publishers & subscribers don’t need to know each other.  
+✅ **Scalable** – Multiple subscribers can process events independently.  
+✅ **Asynchronous processing** – Improves system performance.  
+
+💡 **Example in AWS:**  
+- **Amazon SNS (Simple Notification Service)** – Sends messages to multiple subscribers.  
+- **Amazon SQS (Simple Queue Service)** – Queues messages for processing.  
+- **EventBridge / Kafka** – Event-driven architecture for microservices.  
+
+---
+
 ## What is SNS(Simple Notification Service)
+
+AWS **SNS (Simple Notification Service)** is a **fully managed messaging service** that allows applications to send **notifications or messages** to multiple subscribers **at once** using a **Pub-Sub model**.  
+
+🔹 **How AWS SNS Works?**  
+1️⃣ **Publishers** send messages to an **SNS topic**.  
+2️⃣ **SNS topic** forwards messages to **subscribers** (Email, SMS, Lambda, SQS, etc.).  
+3️⃣ **Subscribers** receive messages **instantly** if they are subscribed to the topic.  
+
+🔹 **Why Use AWS SNS?**  
+✅ **Instant message delivery** to multiple subscribers.  
+✅ **Supports multiple protocols** (SMS, Email, HTTP, Lambda, SQS).  
+✅ **Decouples services** – Publishers don’t need to know the subscribers.  
+✅ **Scalable & reliable** – Built-in AWS fault tolerance.  
+
+💡 **Example Use Cases:**  
+- Sending **email/SMS alerts** for application events.  
+- Triggering **Lambda functions** when an event occurs.  
+- Broadcasting **system notifications** across microservices.  
+
 ## What is SQS(Simple Queue Service)
+
+AWS **SQS (Simple Queue Service)** is a **fully managed message queue** that allows **asynchronous communication** between distributed systems, microservices, and serverless applications.  
+
+🔹 **How AWS SQS Works?**  
+1️⃣ **Producers** send messages to an **SQS queue**.  
+2️⃣ **Messages are stored** in the queue until processed.  
+3️⃣ **Consumers** (workers, Lambda, EC2, etc.) retrieve and process messages.  
+
+🔹 **Why Use AWS SQS?**  
+✅ **Decouples microservices** – No direct dependency between sender & receiver.  
+✅ **Scalable & reliable** – Handles millions of messages per second.  
+✅ **Message retention** – Stores messages for up to **14 days**.  
+✅ **Supports two queue types**:  
+   - **Standard Queue** – Best effort ordering, unlimited throughput.  
+   - **FIFO Queue** – First-In-First-Out ordering, exactly-once processing.  
+
+💡 **Example Use Cases:**  
+- Processing **order requests** in e-commerce applications.  
+- **Task queues** for background jobs (e.g., video encoding, data processing).  
+- **Event-driven architectures** with AWS Lambda.  
 
 ## What is Docker.
 
+### **Docker - Short & Simple**  
+
+Docker is a **containerization platform** that allows developers to **package applications and dependencies into lightweight, portable containers** that run consistently across different environments.  
+
+🔹 **Why Use Docker?**  
+✅ **Works Everywhere** – Run the same app on any OS (Windows, Mac, Linux).  
+✅ **Lightweight & Fast** – Uses fewer resources than virtual machines.  
+✅ **Isolated Environment** – No conflicts between different applications.  
+✅ **Easy Deployment** – Move code from development to production seamlessly.  
+
+🔹 **Key Concepts:**  
+- **Container** – A running instance of an application with everything it needs.  
+- **Image** – A blueprint for creating containers.  
+- **Dockerfile** – A script defining how to build an image.  
+- **Docker Hub** – A registry to store and share images.  
+
+💡 **Basic Example:**  
+1️⃣ **Create a `Dockerfile`**  
+   ```dockerfile
+   FROM node:18
+   WORKDIR /app
+   COPY . .
+   RUN npm install
+   CMD ["node", "server.js"]
+   ```
+2️⃣ **Build & Run the Container**  
+   ```bash
+   docker build -t my-app .
+   docker run -p 3000:3000 my-app
+   ```
