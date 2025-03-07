@@ -92,9 +92,60 @@ Database
 │  ├─ TypesInProjects.md
 │  └─ WorkingWithDatabase.md
 ├─ index.html
-└─ personalInfo
-   ├─ Aasif_Nodejs_developer.pdf
-   ├─ Aasif_backend_developer.pdf
-   └─ epfo.pdf
+ 
 
 ```
+
+### Which part of interview is so important ?? Project explanation, Concepts, Problem solving and database.
+### **Most Important Parts of a Node.js Backend Interview** 🚀  
+
+Each part of the interview is important, but **some have more weight** depending on the company and role. Here’s how they rank in importance:  
+
+### **1️⃣ Problem-Solving & Data Structures (Most Important 💯🔥)**  
+✅ **Why?**  
+- Shows your logic, efficiency, and ability to write optimized code.  
+- Many companies (especially FAANG) focus on **DSA & algorithms**.  
+- Topics: Arrays, HashMaps, Recursion, Graphs, Dynamic Programming.  
+💡 **Tip:** Leetcode (Medium), CodeSignal, or HackerRank problems are useful.  
+
+---
+
+### **2️⃣ Project Explanation & System Design (Very Important 💡💻)**  
+✅ **Why?**  
+- Proves real-world experience and ability to build scalable systems.  
+- You should be able to explain architecture, tech stack, challenges, and optimizations.  
+💡 **Tip:** Prepare a **well-structured explanation** of your projects (especially **microservices, authentication, and database design**).  
+
+---
+
+### **3️⃣ Concepts (Very Important – But Can Vary 🧠⚙️)**  
+✅ **Why?**  
+- Shows deep understanding of backend principles.  
+- Topics:  
+  - **Node.js Core** (Event Loop, Streams, Cluster, Async/Await).  
+  - **Microservices & Kafka** (or message queues like SQS).  
+  - **Authentication** (JWT, OAuth, Session-based).  
+  - **Caching** (Redis, CDN).  
+💡 **Tip:** Be ready for **high-level questions** on Node.js internals & architecture.  
+
+---
+
+### **4️⃣ Database & Query Optimization (Important 📊🔥)**  
+✅ **Why?**  
+- Every backend project relies on **database efficiency**.  
+- Focus on:  
+  - **MongoDB (Indexes, Aggregations, Sharding, Replication).**  
+  - **MySQL (Joins, Indexing, Query Optimization, Transactions).**  
+  - **ORMs (Mongoose, Sequelize, TypeORM).**  
+💡 **Tip:** Be ready to **write queries** and explain their performance.  
+
+---
+
+### **Final Priority Ranking (From Most Important to Least):**  
+1️⃣ **Problem-Solving & DSA (Most Important – Especially for big companies).**  
+2️⃣ **Project Explanation & System Design (Must have real experience).**  
+3️⃣ **Concepts (Especially if working on large-scale applications).**  
+4️⃣ **Database & Query Optimization (Very important for backend-heavy roles).**  
+
+Would you like **guidance on how to explain your project in an interview?** 😊
+
