@@ -137,9 +137,13 @@ const myFunction = new lambda.Function(this, 'MyFunction', {
 AWS SAM (Serverless Application Model) CLI is a command-line tool that helps developers build, test, and deploy serverless applications on AWS, especially using AWS Lambda, API Gateway, DynamoDB, and other services.
 
 🔹 Why Use AWS SAM CLI?
-✅ Simplifies deployment of serverless apps.
+
+✅ Simplifies deployment of serverless apps. 
+
 ✅ Local testing before deploying to AWS.
+
 ✅ Faster development with live-reloading.
+
 ✅ Supports infrastructure as code (IaC) using template.yaml.
 
 
@@ -153,9 +157,13 @@ AWS SAM (Serverless Application Model) CLI is a command-line tool that helps dev
 - AWS EC2 (Elastic Compute Cloud) is a cloud service that provides virtual servers (instances) to run applications. It allows you to scale computing power on demand without managing physical hardware.
 
 🔹 Why Use AWS EC2?
+
 ✅ Flexible – Choose OS, CPU, RAM, and storage.
+
 ✅ Scalable – Increase or decrease instances as needed.
+
 ✅ Cost-Effective – Pay only for What you use.
+
 ✅ Secure – Integrated with AWS security features.
 
 💡 Example Use Cases:
@@ -168,9 +176,14 @@ AWS SAM (Serverless Application Model) CLI is a command-line tool that helps dev
 - AWS RDS (Relational Database Service) is a managed database service that makes it easy to set up, operate, and scale relational databases in the cloud without managing servers.
 
 🔹 Why Use AWS RDS?
+
 ✅ Automated backups & maintenance
+
 ✅ Highly available & scalable
-✅ Supports multiple database engines (MySQL, PostgreSQL, MariaDB, SQL Server, and more)
+
+✅ Supports multiple database engines (MySQL, PostgreSQL, MariaDB, SQL Serve
+r, and more)
+
 ✅ Secure with encryption & IAM integration
 
 💡 Example Use Cases:
@@ -180,13 +193,19 @@ AWS SAM (Serverless Application Model) CLI is a command-line tool that helps dev
 - Managing transactional data for banking applications.
 
 ## What is S3(Simple Storage Service)
+
 AWS S3 (Simple Storage Service) - Short & Simple
+
 AWS S3 (Simple Storage Service) is a scalable cloud storage service that lets you store and retrieve any type of data (files, images, videos, backups, etc.) securely.
 
 🔹 Why Use AWS S3?
+
 ✅ Unlimited storage – Store as much data as needed.
+
 ✅ Highly durable & available – 99.999999999% (11 9’s) durability.
+
 ✅ Secure – Supports encryption & access control.
+
 ✅ Cost-effective – Pay only for What you use.
 
 💡 Example Use Cases:
@@ -233,9 +252,13 @@ AWS **CloudFront** is a **Content Delivery Network (CDN)** that speeds up the de
 AWS Cloud Development Kit (CDK) is an open-source framework that lets you define and provision cloud infrastructure using programming languages like Python, Java, and TypeScript. instead of writing YAML/JSON.
 
 🔹 Why Use AWS CDK?
+
 ✅ Code-based infrastructure – Use real programming languages instead of YAML.
+
 ✅ Reusable & Scalable – Write modular, reusable infrastructure components.
+
 ✅ Easier Deployment – Generates AWS CloudFormation templates automatically.
+
 ✅ Supports multiple AWS services – EC2, S3, Lambda, API Gateway, etc.
 
 ---
