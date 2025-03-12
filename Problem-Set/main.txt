@@ -726,41 +726,35 @@ console.log(findFq(arr))
 
 22. Show all Prime Numbers upto N
 
-I think you meant the Sieve of Eratosthenes, which is an efficient algorithm to find all prime numbers up to a given limit N. 
-Here’s how it works:
-
-🔹 Algorithm:
-1. Create a boolean array isPrime[] of size N+1, initialized to true (assuming all numbers are prime).
-2. Start from 2 (first prime number), mark all its multiples as false.
-3. Move to the next number that is still true and repeat until √N.
-4. All numbers still marked true in the array are prime.
-
-function sieveOfEratosthenes(n) {
-    let isPrime = new Array(n + 1).fill(true);
-    isPrime[0] = isPrime[1] = false; // 0 and 1 are not prime
-
-    for (let i = 2; i * i <= n; i++) {
-        if (isPrime[i]) {
-            for (let j = i * i; j <= n; j += i) {
-                isPrime[j] = false;
-            }
-        }
+function isPrime(num){
+  
+  if(num == 0 || num == 1){
+    return false;
+  }
+  
+  for(let i=2; i<= Math.sqrt(num); i++){
+    
+    if(num % i == 0){
+      return false;
     }
-
-    let primes = [];
-    for (let i = 2; i <= n; i++) {
-        if (isPrime[i]) primes.push(i);
-    }
-    return primes;
+  }
+  return true;
 }
 
-console.log(sieveOfEratosthenes(50));
+function generatePrime(range){
+  
+  for(let i=1; i<range; i++){
+    if(isPrime(i)){
+      console.log(i)
+    } 
+  }
+}
+
+let result = generatePrime(100);
 
 Output:
 [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
 
-Time Complexity
-# O(N log log N) — Much faster than checking each number individually.
 
 ---------------------------------------------------------------------------------------------------------------------------
 
@@ -2689,3 +2683,36 @@ function acroymn(str){
 }
 
 console.log(acroymn(str))
+
+---------------------------------------------------------------------------------------------------
+
+60. Check Palendrome
+
+const isPalindrome = (num) => {
+    if (num < 0 || (num % 10 === 0 && num !== 0)) return false; // Negative numbers & multiples of 10 (except 0) are not palindromes
+
+    let reversed = 0;
+    let original = num;
+
+    while (original > reversed) {
+        reversed = reversed * 10 + original % 10;
+        original = Math.floor(original / 10);
+    }
+
+    return original === reversed || original === Math.floor(reversed / 10);
+};
+
+// Example usage:
+console.log(isPalindrome(121));  // true
+console.log(isPalindrome(123));  // false
+console.log(isPalindrome(1221)); // true
+console.log(isPalindrome(10));   // false
+console.log(isPalindrome(0));    // true
+
+# Using toString Method.
+
+const isPalindrome = (num) => {
+    const strNum = num.toString();
+    const reversedNum = strNum.split('').reverse().join('');
+    return strNum === reversedNum;
+};
