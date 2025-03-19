@@ -2745,3 +2745,51 @@ We do this using the formula:
 - If `arr[i]` is greater than `currentSum + arr[i]`, we **start a new subarray** from `arr[i]`.  
 
 -------------------------------------------------------------------------------------------------
+
+## Matrix Multiplication
++ Matrix Multiplication Rules
+  - If A is an m × n matrix and B is an n × p matrix, the result C = A × B will be an m × p matrix.
+  
+  - The number of columns in A must match the number of rows in B.
+
+function multiplyMatrices(A, B){
+  let rowA = A.length;    // 2
+  let rowB = B.length;    // 3
+  let colA = A[0].length; // 3
+  let colB = B[0].length; // 2
+  
+  if(rowB !== colA){
+    throw new Error("Rows of the matrix B must be equal to Column of matrix A");
+  }
+  
+  // Initialize the result matrix with zeros
+  let result = new Array(rowA).fill(0).map(()=> new Array(colB).fill(0));
+  
+  // Perform matrix multiplication
+  for(let i=0; i< rowA; i++){
+    for(let j=0; j < colB; j++){
+      for(let k=0; k < colA; k++){
+        
+        result[i][j] += A[i][k] * B[k][j];
+      }
+    }
+  }
+  
+  return result;
+}
+
+
+// Example Usage:
+let A = [             // 2x3
+    [1, 2, 3],  
+    [4, 5, 6]
+];
+
+let B = [             // 3x2
+    [7, 8],
+    [9, 10],
+    [11, 12]
+];
+
+let result = multiplyMatrices(A, B);
+console.log(result);
