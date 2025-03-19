@@ -2746,7 +2746,7 @@ We do this using the formula:
 
 -------------------------------------------------------------------------------------------------
 
-## Matrix Multiplication
+62. Matrix Multiplication
 + Matrix Multiplication Rules
   - If A is an m × n matrix and B is an n × p matrix, the result C = A × B will be an m × p matrix.
   
