@@ -1575,7 +1575,28 @@ console.log(mergeAlternately("abcd", "pq"));   // Output: "apbqcd"
 
 ### **Time Complexity:**
 - **O(N + M)** → Where `N` and `M` are the lengths of `word1` and `word2`.
+-------------------------------------
+- Alternately way - (two pointer)
 
+function mergeAlternately(s1, s2){
+   
+  let a = 0; 
+  let b = 0;
+  
+  let len = s1.length > s2.length ? s1.length:s2.length;
+   
+  let result = "";
+  
+  for(let i=0; i < len; i++){
+     result += s1[a] == undefined ? '':s1[a];
+     result += s2[b] == undefined ? '':s2[b];
+     a++;
+     b++;
+  }
+  return result
+}
+
+console.log(mergeAlternately("abcd", "pq")); // apbqcd
 ---------------------------------------------------------------------------------------------------------------------------------
 
 38. Greatest Common Divisor of Strings
