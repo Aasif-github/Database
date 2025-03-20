@@ -1893,6 +1893,44 @@ function lengthOfLongestSubstring(s) {
 
 44. Balanced Brackets
 
+function isValidParentheses(s) {
+  
+  if (s.length % 2 !== 0) return false; // Odd-length strings can't be balanced
+
+  const stack = [];
+  
+  const parenthesesSet = new Map([
+    ["(", ")"],
+    ["{", "}"],
+    ["[", "]"]
+  ]);
+
+  for (let char of s) {
+    if (parenthesesSet.has(char)) {
+      // If it's an opening bracket, push it onto the stack
+      stack.push(char);
+    } else {
+      // If it's a closing bracket, check if it matches the last opened bracket
+      const last = stack.pop();
+      
+      if (parenthesesSet.get(last) !== char) {
+        return false;
+      }
+    }
+  }
+
+  // Stack should be empty if all brackets are properly closed
+  return stack.length === 0;
+}
+
+// ✅ Example Test Cases:
+console.log(isValidParentheses("{[()]}")); // true (Balanced)
+console.log(isValidParentheses("{[(])}")); // false (Unbalanced)
+console.log(isValidParentheses("{[}"));    // false (Unbalanced)
+console.log(isValidParentheses(""));       // true (Empty string is balanced)
+
+
+-----------------------
 function isBalanced(expression) {
     const stack = [];
     const matchingBrackets = {
@@ -2814,3 +2852,232 @@ let B = [             // 3x2
 
 let result = multiplyMatrices(A, B);
 console.log(result);
+
+------------------------------------------------------------------------------------------------
+
+63. Implementation of Stack
+
+class Stack {
+  constructor() {
+    this.stack = []; // Initialize an empty array
+  }
+
+  // Push operation
+  push(element) {
+    this.stack.push(element);
+  }
+
+  // Pop operation
+  pop() {
+    if (this.isEmpty()) {
+      console.log("Stack Underflow");
+      return null;
+    }
+    return this.stack.pop();
+  }
+
+  // Peek operation
+  peek() {
+    if (this.isEmpty()) {
+      return null;
+    }
+    return this.stack[this.stack.length - 1];
+  }
+
+  // Check if the stack is empty
+  isEmpty() {
+    return this.stack.length === 0;
+  }
+
+  // Get the size of the stack
+  size() {
+    return this.stack.length;
+  }
+
+  // Print the stack
+  printStack() {
+    console.log(this.stack.join(" -> "));
+  }
+}
+
+// Usage
+const myStack = new Stack();
+myStack.push(10);
+myStack.push(20);
+myStack.push(30);
+myStack.printStack();  // Output: 10 -> 20 -> 30
+
+console.log("Top Element:", myStack.peek());  // Output: 30
+
+console.log("Popped Element:", myStack.pop()); // Output: 30
+myStack.printStack();  // Output: 10 -> 20
+
+------------------------------------------------------------------------------------------------
+64. Implementation of Queue
+
+class Queue {
+  constructor() {
+    this.queue = [];
+  }
+
+  // Enqueue operation
+  enqueue(element) {
+    this.queue.push(element);
+  }
+
+  // Dequeue operation
+  dequeue() {
+    if (this.isEmpty()) {
+      console.log("Queue Underflow");
+      return null;
+    }
+    return this.queue.shift();
+  }
+
+  // Peek operation
+  peek() {
+    return this.isEmpty() ? null : this.queue[0];
+  }
+
+  // Check if the queue is empty
+  isEmpty() {
+    return this.queue.length === 0;
+  }
+
+  // Get the size of the queue
+  size() {
+    return this.queue.length;
+  }
+
+  // Print the queue
+  printQueue() {
+    console.log(this.queue.join(" -> "));
+  }
+}
+
+// Usage
+const myQueue = new Queue();
+myQueue.enqueue(10);
+myQueue.enqueue(20);
+myQueue.enqueue(30);
+myQueue.printQueue(); // Output: 10 -> 20 -> 30
+
+console.log("Front Element:", myQueue.peek()); // Output: 10
+
+console.log("Dequeued Element:", myQueue.dequeue()); // Output: 10
+myQueue.printQueue(); // Output: 20 -> 30
+
+------------------------------------------------------------------------------------------------
+
+65. Implementing a Stack Using a Queue (more efficient).
+
+
+class StackUsingQueue {
+  constructor() {
+    this.queue = [];
+  }
+
+  push(x) {
+    // Add the new element
+    this.queue.push(x);
+
+    // Rotate elements to move the new element to the front
+    let size = this.queue.length;
+    for (let i = 0; i < size - 1; i++) {
+      this.queue.push(this.queue.shift()); // Move front element to the back
+    }
+  }
+
+  pop() {
+    return this.queue.shift(); // Remove the top element
+  }
+
+  top() {
+    return this.queue[0] ?? null; // Return the front element (top of stack)
+  }
+
+  isEmpty() {
+    return this.queue.length === 0;
+  }
+
+  print(){
+    console.log(this.queue.join('->'));
+  }
+}
+
+// ✅ Example Usage
+const myStack = new StackUsingQueue();
+myStack.push(10);
+myStack.push(20);
+myStack.push(30);
+
+console.log(myStack.top()); // Output: 30 (Last pushed element)
+console.log(myStack.pop()); // Output: 30
+console.log(myStack.pop()); // Output: 20
+console.log(myStack.isEmpty()); // Output: false
+console.log(myStack.pop()); // Output: 10
+console.log(myStack.isEmpty()); // Output: true
+
+------------------------------------------------------------------------------------------------
+66. Implementing a Stack Using Two Queues.(Less Efficient)
+
+class Stack {
+  constructor() {
+    this.q1 = [];
+    this.q2 = [];
+  }
+
+  push(x) {
+    this.q1.push(x); // Add element to queue1
+  }
+
+  pop() {
+    if (!this.q1.length) return null;
+
+    // Move elements except the last one
+    while (this.q1.length > 1) {
+      this.q2.push(this.q1.shift());
+    }
+
+    let popped = this.q1.shift(); // Last element is popped
+
+    // Swap queues
+    [this.q1, this.q2] = [this.q2, this.q1];
+
+    return popped;
+  }
+
+  top() {
+    if (!this.q1.length) return null;
+
+    while (this.q1.length > 1) {
+      this.q2.push(this.q1.shift());
+    }
+
+    let topElement = this.q1[0]; // Get the last element
+    this.q2.push(this.q1.shift()); // Move it to queue2
+
+    [this.q1, this.q2] = [this.q2, this.q1];
+
+    return topElement;
+  }
+
+  isEmpty() {
+    return this.q1.length === 0;
+  }
+}
+
+// ✅ Example Usage
+const stack = new Stack();
+stack.push(1);
+stack.push(2);
+stack.push(3);
+
+console.log(stack.top()); // Output: 3
+console.log(stack.pop()); // Output: 3
+console.log(stack.pop()); // Output: 2
+console.log(stack.isEmpty()); // Output: false
+console.log(stack.pop()); // Output: 1
+console.log(stack.isEmpty()); // Output: true
+----------------------------------------------------------------------------------------------
+
