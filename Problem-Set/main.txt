@@ -3120,3 +3120,59 @@ function len(arry){
 
 console.log(len(arry)) // 8
  
+-----------------------------------------------------------------------------
+68. Find the length of the smallest subarray with a sum ≥ s.
+
+Problem Explanation:
+Given an array of positive integers and a target sum s, the goal is to find the length of the smallest contiguous subarray whose sum is greater than or equal to s. If no such subarray exists, return 0.
+
+Example Scenarios
+-----------------
+Example 1
+Input: arr = [2, 3, 1, 2, 4, 3], s = 7
+Output: 2
+Explanation: The subarray [4, 3] has the smallest length with sum ≥ 7.
+
+Example 2 
+Input: arr = [1, 4, 4], s = 4
+Output: 1
+Explanation: The subarray [4] meets the condition.
+
+Example 3 
+Input: arr = [1, 1, 1, 1, 1, 1, 1], s = 11
+Output: 0
+Explanation: No subarray has a sum ≥ 11.
+
+Optimal Approach: Sliding Window (O(n) Time Complexity)
+We use the Sliding Window technique to efficiently find the smallest subarray:
+
+Expand the right pointer (right) to increase the sum.
+
+Shrink the left pointer (left) to minimize the subarray length when the sum condition is met.
+
+Track the smallest length encountered.
+
+
+
+function minSubarrayLen(s, arr) {
+    let minLength = Infinity;
+    let start = 0;
+    let currentSum = 0;
+
+    for (let end = 0; end < arr.length; end++) {
+        currentSum += arr[end];
+
+        // Shrink the window as much as possible while the condition is satisfied(to find currentSum)
+        while (currentSum >= s) {
+            minLength = Math.min(minLength, end - start + 1);
+            currentSum -= arr[start];
+            start++;
+        }
+    }
+
+    return minLength === Infinity ? 0 : minLength;
+}
+
+console.log(minSubarrayLen(7, [2, 3, 1, 2, 4, 3])); // Output: 2
+console.log(minSubarrayLen(7, [2, 3, 1, 2, 2, 3])); // Output: 3
+-------------------------------------------------------------------------------
