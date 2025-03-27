@@ -983,7 +983,7 @@ console.log(longestConsecutive([])); // Output: 0 (Empty input)
 
 
 Optimized Approach (Using a Hash Set)
-To efficiently find the longest consecutive sequence, we can use a HashSet (Set in JavaScript) \n to store all numbers and check for sequences in O(n) time complexity.
+To efficiently find the longest consecutive sequence, we can use a HashSet (Set in JavaScript) to store all numbers and check for sequences in O(n) time complexity.
 
 function longestConsecutive(nums) {
     if (nums.length === 0) return 0;
