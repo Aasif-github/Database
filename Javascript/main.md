@@ -254,6 +254,23 @@ Functions counter and counter2 are created by different invocations of makeCount
 So they have independent outer Lexical Environments, each one has its own count.
 ```
 
+Why we need Closure?
+
+***Data Encapsulation and Privacy:***
+Closures allow you to create private variables and methods within a function scope, hiding them from the global scope and preventing unintended external access. This promotes modularity and maintainability by encapsulating data and logic within functions. 
+
+***Maintaining State:***
+Closures enable functions to retain access to variables from their outer scope, even after the outer function has finished executing, allowing you to maintain state between function calls. 
+
+***Event Handling:***
+Closures are essential for event handlers in web development, allowing you to attach functions to events while retaining access to the surrounding scope and data, which is particularly useful for data encapsulation and avoiding global variables. 
+
+***Higher-Order Functions:***
+Closures are fundamental to creating higher-order functions, where functions can be dynamically created and configured, allowing for the simple generation of functions with preset states. 
+
+***Currying:***
+Closures are used to implement currying, a technique where a function that takes multiple arguments is transformed into a sequence of functions that each take a single argument. 
+
 ### Lexical Environment
 Lexical Environment is a runtime data structure that holds variable bindings (name-value pairs) and manages the scope of variables during code execution. 
 
@@ -775,3 +792,211 @@ All tasks completed!
 - Makes code easier to read and maintain.
 - Avoids deeply nested `.then()` and `.catch()` blocks (i.e., callback hell).
 - Clean error handling with `try-catch`.
+
+---
+
+## ES6 (ECMAScript 2015)
+
+ES6 (also known as **ECMAScript 6** or **ECMAScript 2015**) is a major update to JavaScript that introduced many powerful and much-needed features to the language. It was finalized in **June 2015** and significantly improved how developers write and organize JavaScript code.
+
+Let’s break it down in detail:
+
+---
+
+## 📌 **What is ECMAScript (ES)?**
+
+**ECMAScript** is the standard specification that JavaScript follows. JavaScript is an implementation of ECMAScript.
+
+- ES5: Published in 2009 (widely supported by all browsers).
+- **ES6 (ECMAScript 2015):** Major upgrade with new syntax and features.
+- ES7, ES8, …: Incremental updates released yearly after ES6.
+
+---
+
+## 🚀 **Key Features of ES6 (ECMAScript 2015)**
+
+### 1. **`let` and `const`**
+Before ES6, we used only `var`. ES6 introduced `let` and `const` with **block scope**.
+
+```js
+let x = 10; // can be reassigned
+const y = 20; // cannot be reassigned
+```
+
+---
+
+### 2. **Arrow Functions**
+Shorter syntax and no binding of `this`.
+
+```js
+// Traditional function
+function add(a, b) {
+  return a + b;
+}
+
+// Arrow function
+const add = (a, b) => a + b;
+```
+
+---
+
+### 3. **Template Literals**
+Use backticks \``\` for strings. Supports interpolation.
+
+```js
+const name = "Aasif";
+console.log(`Hello, ${name}!`); // Hello, Aasif!
+```
+
+---
+
+### 4. **Default Parameters**
+Set default values for function parameters.
+
+```js
+function greet(name = "Guest") {
+  return `Hello, ${name}`;
+}
+console.log(greet()); // Hello, Guest
+console.log(greet("Aasif")); // Hello, Aasif
+```
+
+---
+
+### 5. **Destructuring Assignment**
+Extract values from arrays or objects easily.
+
+```js
+const person = { name: "Aasif", age: 25 };
+const { name, age } = person;
+
+const arr = [1, 2];
+const [a, b] = arr;
+```
+
+---
+
+### 6. **Rest & Spread Operators**
+- **Rest (`...`)**: Gathers values.
+- **Spread (`...`)**: Spreads values.
+
+```js
+// Rest
+function sum(...nums) {
+  return nums.reduce((a, b) => a + b);
+}
+
+// Spread
+const arr1 = [1, 2];
+const arr2 = [...arr1, 3, 4]; // [1, 2, 3, 4]
+```
+
+---
+
+### 7. **Enhanced Object Literals**
+Shorthand property and method definitions.
+
+```js
+const name = "Aasif";
+const person = {
+  name, // same as name: name
+  greet() {
+    console.log("Hi!");
+  }
+};
+```
+
+---
+
+### 8. **For...of Loop**
+Simplifies iteration over iterable objects (like arrays).
+
+```js
+for (let value of [1, 2, 3]) {
+  console.log(value);
+}
+```
+
+---
+
+### 9. **Classes**
+A cleaner, more intuitive way to create objects and deal with inheritance.
+
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  greet() {
+    console.log(`Hi, I'm ${this.name}`);
+  }
+}
+```
+
+---
+
+### 10. **Promises**
+Used for asynchronous operations. Replaces callback hell.
+
+```js
+fetch("https://api.example.com/data")
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(err => console.error(err));
+```
+
+---
+
+### 11. **Modules (`import` / `export`)**
+Allows code splitting and modular development.
+
+```js
+// file1.js
+export const greet = () => "Hello";
+
+// file2.js
+import { greet } from './file1.js';
+```
+
+---
+
+### 12. **Symbol Type**
+New primitive type for unique identifiers.
+
+```js
+const sym = Symbol("id");
+const obj = {
+  [sym]: "value"
+};
+```
+
+---
+
+### 13. **Map and Set**
+- `Map`: Key-value pairs with any type of key.
+- `Set`: Collection of unique values.
+
+```js
+const map = new Map();
+map.set("key", "value");
+
+const set = new Set([1, 2, 2, 3]); // => {1, 2, 3}
+```
+
+---
+
+## 🎯 Summary: Why ES6 Matters
+
+| Feature | Benefit |
+|--------|---------|
+| `let` & `const` | Safer variable declarations |
+| Arrow Functions | Shorter syntax, lexical `this` |
+| Classes | OOP support |
+| Promises | Easier async code |
+| Modules | Better code organization |
+| Template Literals | Easier string formatting |
+| Destructuring | Cleaner syntax |
+| Spread/Rest | Simpler handling of collections |
+
+---
