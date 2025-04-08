@@ -339,6 +339,30 @@ greet('Alice', sayThanks);
 
 ```
 
+`Scenario: Login with Callback`
+```js
+function loginUser(username, callback) {
+  console.log("Checking credentials...");
+
+  setTimeout(() => {
+    console.log(`Welcome, ${username}!`);
+    callback(); // Call the callback once login is done
+  }, 2000);
+}
+
+function redirectToDashboard() {
+  console.log("Redirecting to dashboard...");
+}
+
+// Usage
+loginUser("aasif_iqbal", redirectToDashboard);
+
+// Output:
+// Checking credentials...
+// Welcome, aasif_iqbal!
+// Redirecting to dashboard...
+```
+
 `Real use case of callback`
 
 ```js
