@@ -50,7 +50,14 @@ This means that a variable or function can be used before it has been declared i
 
 However, only the declarations are hoisted, not the initializations.
 
-***Temporal Dead Zone(TDZ)***: The time between the entering of the scope and the declaration where accessing the variable leads to a ReferenceError.
+Note: JavaScript moves declarations (not initializations) to the top of their scope. var and function declarations are hoisted.
+
+***Temporal Dead Zone(TDZ)***: It is a period within a scope where variables declared with let or const are inaccessible, and attempting to access them results in a ReferenceError. 
+
+```js
+    console.log(myVariable); // ReferenceError: Cannot access 'myVariable' before initialization
+    let myVariable = "Hello";
+```
 
 ### Hoisting of Variables
 
