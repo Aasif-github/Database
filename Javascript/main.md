@@ -775,15 +775,19 @@ function fetchOrders(user) {
 }
 
 async function processOrders() {
-  console.log("Fetching user...");
-  const user = await fetchUser(); // Pauses here until resolved
-  console.log(user);
+  try{
+      console.log("Fetching user...");
+      const user = await fetchUser(); // Pauses here until resolved
+      console.log(user);
 
-  console.log("Fetching orders...");
-  const orders = await fetchOrders(user); // Pauses here until resolved
-  console.log(orders);
+      console.log("Fetching orders...");
+      const orders = await fetchOrders(user); // Pauses here until resolved
+      console.log(orders);
 
-  console.log("All tasks completed!");
+      console.log("All tasks completed!");
+  } catch(error){
+      console.error(error);
+  }
 }
 
 processOrders();
