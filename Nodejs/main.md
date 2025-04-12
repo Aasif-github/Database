@@ -168,7 +168,7 @@ In nodejs, a Buffer is a temporary storage area for handle binary data.
 
 - Buffers are used to store data in a memory area that is not associated with a file or other permanent storage location.
 
-- Buffers are designed to work with raw binary data, such as audio and video data, without having to worry about the encoding or decoding of the data. and make them useful when working with streams of data.
+- Buffers are designed to work with raw binary data, such as audio and video data, without having to worry about the encoding or decoding of the data. and make them useful when working with streams, which are used to handle large amounts of data.
 ```js
 const buffer = Buffer.from('hello world');
 console.log(buffer.toString()); // Output: hello world
