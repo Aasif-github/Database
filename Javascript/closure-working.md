@@ -33,6 +33,72 @@ Even though `outer()` has finished executing, `inner()` still has access to `nam
 
 ---
 
+## Lexical Scoping
+Absolutely! Let’s break down **lexical scope** in super simple terms:
+
+---
+
+### 🧠 **Lexical Scope = Where a variable is defined in the code.**
+
+That’s it!
+
+It means:
+
+> A function **can access variables from the place (scope) where it was written** — not from where it’s called.
+
+---
+
+### 📦 Example:
+
+```js
+function outer() {
+  let name = 'Aasif';
+
+  function inner() {
+    console.log(name); // 👈 this works!
+  }
+
+  inner();
+}
+
+outer();
+```
+
+✅ `inner()` can access `name` because it was **written inside `outer()`**.
+
+That’s **lexical scope** — variables are accessible **based on the location in the source code**, not runtime behavior.
+
+---
+
+### 🚫 Not based on where it's *called*:
+
+```js
+function outer() {
+  let secret = 'Top secret';
+
+  return function inner() {
+    console.log(secret);
+  };
+}
+
+const f = outer(); // `secret` is in lexical scope of `inner`
+f(); // ✅ still prints 'Top secret' because of lexical scope
+```
+
+Even though `f()` is called outside `outer()`, it still **remembers** `secret` because of **where it was defined** — that's lexical scope in action.
+
+---
+
+### 🔑 In Simple Terms:
+Think of lexical scope as:
+> “Where was this function **born** in the code?”
+
+That determines what variables it has access to.
+
+---
+
+
+
 ## 🔁 Real-World Use Cases
 
 ---
