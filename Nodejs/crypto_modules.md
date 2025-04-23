@@ -9,7 +9,7 @@ Hashing is a one-way process used to generate a unique fixed-length string from 
 
 #### Example: Hashing with SHA-256
 ```javascript
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 const data = 'This is a secret message';
 const hash = crypto.createHash('sha256').update(data).digest('hex');
@@ -28,7 +28,7 @@ For securely storing passwords, you can use a salt (random data) to make the has
 
 #### Example:
 ```javascript
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 const password = 'myPassword123';
 const salt = crypto.randomBytes(16).toString('hex'); // Generate a random salt
@@ -49,7 +49,7 @@ You can use symmetric encryption (e.g., AES) for securely encrypting and decrypt
 
 #### Example: AES Encryption and Decryption
 ```javascript
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 const algorithm = 'aes-256-cbc';
 const key = crypto.randomBytes(32); // 256-bit key
