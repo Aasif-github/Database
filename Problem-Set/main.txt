@@ -3273,3 +3273,63 @@ Worst Case (Already Sorted, Poor Pivot Choice)|	O(n²)
 ✅ No extra space required (in-place sorting possible)
 
 --------------------------------------------------------------------------------------------------------
+
+71. Reverse a number
+
+function reverseNumber(num){
+  
+  if(typeof num != 'number') return new Error('Type mis-match');
+  
+  const isNegative = num < 0;
+  num = Math.abs(num)
+  
+  let reversed = 0
+  
+  while(num != 0){
+    let digit = num % 10;
+    reversed = reversed * 10 + digit;
+    num = Math.floor(num / 10);
+  }
+  return isNegative? -reversed : reversed;
+}
+
+let num = -123;
+let result = reverseNumber(num)
+console.log(result) // -321
+
+--------------------------------------------------------------------------------------------------------
+
+72. Check if a number is an Armstrong number (Example: 153 → 1³ + 5³ + 3³ = 153)
+
+function isArmstrong(num) {
+  let originalNum = num;
+  let digits = 0;
+  let temp = num;
+
+  // Count digits
+  while (temp > 0) {
+    digits++;
+    temp = Math.floor(temp / 10);
+  }
+
+  let sum = 0;
+  temp = num;
+
+  // Calculate the sum of each digit raised to the power of digits
+  while (temp > 0) {
+    let digit = temp % 10;
+    sum += Math.pow(digit, digits);
+    temp = Math.floor(temp / 10);
+  }
+
+  return sum === originalNum;
+}
+
+console.log(isArmstrong(153)); // true
+console.log(isArmstrong(370)); // true
+console.log(isArmstrong(9474)); // true
+console.log(isArmstrong(123)); // false
+
+----------------------------------------------------------------------------------------------------------
+
+
