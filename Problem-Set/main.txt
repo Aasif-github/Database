@@ -350,6 +350,42 @@ for (let i = 0; i < obj.length; i++) {
 
 console.log(uniqueArray);
 
+---
+Using Map:
+
+function removeDuplicate(obj){
+  
+  let imap = new Map();
+  
+  obj.map((elem)=>{
+    
+    if(!imap.has(elem.name)){
+      imap.set(elem.name, elem)
+    }
+  })
+  
+  return [...imap.values()];
+}
+---
+Using for - of
+
+function removeDuplicate(obj){  
+   
+  let output = {};
+  let result = [];
+  
+  for(let elem of obj){
+    
+    if(!output[elem.name]){
+      output[elem.name] = true;   
+      result.push(elem);  
+    }    
+  }
+  return result;
+}
+
+---
+
 Using Set:
 
 let obj = [
