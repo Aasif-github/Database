@@ -3371,7 +3371,7 @@ console.log(isArmstrong(123)); // false
 
 73. Write a function that finds the longest word in a given sentence.
 
-let Input="The quick brown fox jumps over the lazy dog";
+let Input = "The quick brown fox jumps over the lazy dog";
 // → Output: "jumps"
 
 function getLongestWord(Input){
