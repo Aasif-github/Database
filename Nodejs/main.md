@@ -587,4 +587,14 @@ curl -X GET http://localhost:3000/protected -H "Authorization: Bearer my-secret-
 | `req.body` | Complex data (e.g., forms, JSON payloads) |
 | `multer` | File uploads |
 
-Let me know if you need further details! 🚀 
+---
+
+## Package.json vs package-lock.json
+
+## dependencies vs devDependencies
+
+## what is npm?
+
+## Why we need nodejs although we have many other framework like springboot, flask, django etc.
+
+
