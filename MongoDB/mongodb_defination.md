@@ -145,21 +145,3 @@ In summary, **replication in MongoDB** is crucial for building robust, fault-tol
 [Ref : Database Scaling](https://www.mongodb.com/resources/basics/scaling)
 
 [Ref : horizontal-vs-vertical-scaling](https://www.mongodb.com/resources/basics/horizontal-vs-vertical-scaling)
-
-## 2. Why we choose MongoDB?
-
-MongoDB is built on a scale-out architecture that has become popular with developers of all kinds for developing scalable applications with evolving data schemas.
-
-As a document database, MongoDB makes it easy for developers to store structured or unstructured data. It uses a JSON-like format to store documents. This format directly maps to native objects in most modern programming languages, making it a natural choice for developers, as they don’t need to think about normalizing data. MongoDB can also handle high volume and can scale both vertically or horizontally to accommodate large data loads.
-
-MongoDB was built for people building internet and business applications who need to evolve quickly and scale elegantly. Companies and development teams of all sizes use MongoDB for a wide variety of reasons.
-
-[Reference Link - Why Use MongoDB (Official)](https://www.mongodb.com/resources/products/fundamentals/why-use-mongodb#:~:text=MongoDB%20is%20built%20on%20a,like%20format%20to%20store%20documents.)
-
-[Ref: Mongodb working](https://www.techtarget.com/searchdatamanagement/definition/MongoDB#:~:text=MongoDB%20is%20used%20for%20high,JavaScript%20execution%20and%20other%20features.)
-
-
-
-
-# More Interview Questions on MongoDB based on Turing.com
-[Click here to visit website - Interview questions on mongodb](https://www.turing.com/interview-questions/mongodb)

@@ -92,6 +92,6 @@
 ---
 
 ### **Tips for Interview Preparation**
-- Focus on MongoDB features like replication, sharding, and indexing.
+- Focus on MongoDB features like `replication`, `sharding`, and `indexing`.
 - Practice writing aggregation pipelines and optimizing queries.
 - Be familiar with modeling relationships and designing schemas for real-world scenarios.
