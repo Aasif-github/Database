@@ -3399,3 +3399,96 @@ let result = getLongestWord(Input);
 console.log(result);
 
 ------------------------------------------------------------------------------------------------
+
+74. String Rotation - Clockwise (right rotation)
+
+let str = 'abcde'; // eabcd
+
+function rotateClockwise(str, k) {
+  const n = str.length;
+  k = k % n;
+  let result = "";
+
+  // Append last k characters
+  for (let i = n - k; i < n; i++) {
+    result += str[i];
+  }
+
+  // Append the remaining characters
+  for (let i = 0; i < n - k; i++) {
+    result += str[i];
+  }
+
+  return result;
+}
+
+---------------------------------------------------------------------------------------
+
+75. Rotate String - Anti-Clockwise [left rotation]
+
+let str = 'abcde'; // bcdea
+
+function rotateAntiClockwise(str, k) {
+  const n = str.length;
+  k = k % n;
+  let result = "";
+
+  // Append from k to end
+  for (let i = k; i < n; i++) {
+    result += str[i];
+  }
+
+  // Append first k characters
+  for (let i = 0; i < k; i++) {
+    result += str[i];
+  }
+
+  return result;
+}
+
+console.log(rotateAntiClockwise('abcde', 1)) // bcdea
+
+---------------------------------------------------------------------------------------
+
+76. In-Place Rotation (Optimized for Space)
+
+Rotate the array without using additional space (in-place operations).
+
+Algorithm:
+1. Reverse the entire array.
+2. Reverse the first d elements.
+3. Reverse the remaining elements.
+
+Left Rotation (In-Place):
+
+function reverse(arr, start, end) {
+  while (start < end) {
+    [arr[start], arr[end]] = [arr[end], arr[start]]; // Swap elements
+    start++;
+    end--;
+  }
+}
+
+function leftRotate(arr, d) {
+  d = d % arr.length; // Handle cases where d > arr.length
+  reverse(arr, 0, arr.length - 1); // Step 1: Reverse entire array
+  reverse(arr, 0, arr.length - d - 1); // Step 2: Reverse first part
+  reverse(arr, arr.length - d, arr.length - 1); // Step 3: Reverse second part
+  return arr;
+}
+
+console.log(leftRotate([1, 2, 3, 4, 5], 2)); // Output: [3, 4, 5, 1, 2]
+
+Right Rotation (In-Place):
+
+function rightRotate(arr, d) {
+  d = d % arr.length; // Handle cases where d > arr.length
+  reverse(arr, 0, arr.length - 1); // Step 1: Reverse entire array
+  reverse(arr, 0, d - 1); // Step 2: Reverse first part
+  reverse(arr, d, arr.length - 1); // Step 3: Reverse second part
+  return arr;
+}
+
+console.log(rightRotate([1, 2, 3, 4, 5], 2)); // Output: [4, 5, 1, 2, 3]
+
+-------------------------------------------------------------------------------------------------
