@@ -1,5 +1,27 @@
 
 ## Laravel Advanced FAQ
+1. What are Relationships in Laravel?
+2. What is Eloquent in Laravel?
+3. What is throttling and how to implement it in Laravel?
+4. What are facades?
+5. What are Events in Laravel?
+6. Explain logging in Laravel?
+7. What is Localization in Laravel?
+8. What are Requests in Laravel?
+9. How to do request validation in Laravel?
+10. What is a Service Container in Laravel?
+11. What is a Service Provider?
+12. What is the register and boot method in the Service Provider class?
+13. How to define routes in Laravel?
+14. What are named routes?
+15. What are route groups?
+16. What is Middleware and how to create one in Laravel?
+17. How to create a route for resources in laravel?
+18. What is dependency Injection in Laravel?
+19. What are collections?
+20. What are contracts?
+21. What are queues in Laravel?
+22. What are accessors and mutators?
 
 ---
 

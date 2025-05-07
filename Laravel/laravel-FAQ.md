@@ -1,3 +1,5 @@
+## Laravel FAQ
+
 1. What are migrations in Laravel?
 2. What is the latest Laravel version?
 3. What are Models?
