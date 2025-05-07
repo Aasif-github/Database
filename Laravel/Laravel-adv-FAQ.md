@@ -1,5 +1,6 @@
 
 ## Laravel Advanced FAQ
+
 1. What are Relationships in Laravel?
 2. What is Eloquent in Laravel?
 3. What is throttling and how to implement it in Laravel?
