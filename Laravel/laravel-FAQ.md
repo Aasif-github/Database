@@ -119,7 +119,9 @@ Factories in Laravel are used to generate fake data for testing or seeding datab
 ---
 
 ### 6. **What are seeders in Laravel?**
-Seeders are classes that populate the database with initial or test data. They are stored in `database/seeders` and executed via Artisan commands.
+Seeders(Insert default / sample data)
+
+Seeders are classes that populate the database with initial or test/sample data. They are stored in `database/seeders` and executed via Artisan commands.
 - **Example**:
   ```php
   namespace Database\Seeders;
